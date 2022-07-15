@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="为自己的 Hexo Fluid 主题注入自动选择 CDN 加速的脚本，同时记录 GitHub 图床加速。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitHub 图床加速">
+<meta property="og:url" content="https://chunshuyumao.github.io/2022/05/23/GitHub-%E5%9B%BE%E5%BA%8A%E5%8A%A0%E9%80%9F/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="为自己的 Hexo Fluid 主题注入自动选择 CDN 加速的脚本，同时记录 GitHub 图床加速。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://101.200.84.36/images/2022/05/23/202205231714065.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chunshuyumao/202203bf/master/202203132034512.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203132034512.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/05/23/202205231727605.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/05/23/202205231740399.png">
+<meta property="article:published_time" content="2022-05-23T10:23:50.000Z">
+<meta property="article:modified_time" content="2022-05-28T06:11:29.000Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="图床">
+<meta property="article:tag" content="Fluid">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://101.200.84.36/images/2022/05/23/202205231714065.png">
+  
+  
+  <title>GitHub 图床加速 - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="GitHub 图床加速">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-23 18:23" pubdate>
+        2022年5月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">GitHub 图床加速</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>图床迁移到 GitHub 之后，我也面临 DNS 污染的问题。图片保存在 GitHub 通常不会有什么问题，就是访问比较慢，国内如此。想要加速，我们就的使用 CDN 加速。</p>
+<p>CDN<ruby>（内容分发网络）<rt>Content Delivery Network</rt></ruby> 尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定。一句话总结，就是让距离最近的服务器响应请求，加快网络内容的传输。一般用于加速静态资源，如网站上面上传的图片、媒体等。</p>
+<p>通常我们使用的是 <a target="_blank" rel="noopener" href="https://www.jsdelivr.com/" title="JsDelivr">JsDelivr</a>，一个免费、可靠的 CDN 加速。下面是官网，主页面直接放了大量的使用方法：</p>
+<p><img src="http://101.200.84.36/images/2022/05/23/202205231714065.png" srcset="/img/loading.gif" lazyload alt="JsDelivr 官网主页" title="JsDelivr 官网主页"></p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>首先找一张 GitHub 上的图片，我这里选了一张之前用过的 Zettlr 官网的图片，地址是</p>
+<figure class="highlight markdown"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs markdown">https://raw.githubusercontent.com/chunshuyumao/202203bf/master/202203132034512.png<br>或者<br>https://github.com/chunshuyumao/202203bf/raw/master/202203132034512.png<br></code></pre></div></td></tr></table></figure>
+
+<p>效果如下——一般是看不到下面的图片的，也不排除图片可以显示，只是加载比较慢。</p>
+<p><img src="https://raw.githubusercontent.com/chunshuyumao/202203bf/master/202203132034512.png" srcset="/img/loading.gif" lazyload alt="未加速前 Zettlr 官网图片" title="未加速前 Zettlr 官网图片"></p>
+<p>要使用 CDN 加速，需要把地址改成下面的形式</p>
+<figure class="highlight markdown"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs markdown">https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203132034512.png<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203132034512.png" srcset="/img/loading.gif" lazyload alt="JsDelivr 加速后的 Zettlr 编辑器官网主页图片" title="JsDelivr 加速后的 Zettlr 编辑器官网主页图片"></p>
+<p>可以看到，要加速 GitHub 的图片，加速地址是这样的</p>
+<figure class="highlight markdown"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs markdown">https://cdn.jsdelivr.net/gh/github帐号名/仓库名@分支名/图片名<br></code></pre></div></td></tr></table></figure>
+
+<p>其中，分支名一般是主分支，也就是 master 或者 main，至于到底是哪个，要是看你的仓库的主分支。</p>
+<h1 id="PicGo-加速"><a href="#PicGo-加速" class="headerlink" title="PicGo 加速"></a>PicGo 加速</h1><p>如果使用 GitHub 作为图床，建议配合 PicGo 使用。使用 PicGo ，需要修改 GitHub 的配置。打开 PicGo，转到 GitHub 设置，按照下面进行配置。</p>
+<p>首先，分支名要写你的 GitHub 分支，我这里是 main 分支。其次写自定义域名，格式和上面说的一样。这样，PicGo 上传后会自动返回加速后的地址。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs markdown">https://cdn.jsdelivr.net/gh/GitHub帐号/仓库名@分支名<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="http://101.200.84.36/images/2022/05/23/202205231727605.png" srcset="/img/loading.gif" lazyload alt="PicGo 中的 GitHub 设置" title="PicGo 中的 GitHub 设置"></p>
+<h1 id="Hexo-加速"><a href="#Hexo-加速" class="headerlink" title="Hexo 加速"></a>Hexo 加速</h1><p><code>cdn.jsdelivr.net</code> 加速也不一定完全可靠，比如前几天这个加速也样被污染了。<code>cdn.jsdelivr.net</code> 使用不了，我们可以改成 <code>fastly.jsdelivr.net</code> 或者 <code>gcore.jsdelivr.net</code>。如果使用 Hexo 管理静态博客，我们可能需要修改博客中的图片地址。</p>
+<p>如果不嫌麻烦，可以使用文本编辑器直接全局修改。例如在 Linux 系统上使用 <ruby>SED（文件流编辑器）<rt>Stream Editor</rt></ruby> 全局修改：首先转到博客源文件（Markdown 文件）目录，然后输入修改代码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">cd</span> Docment/NotePages/source/_posts <span class="hljs-comment"># 进入源文件目录</span><br>$ <span class="hljs-built_in">ls</span> | xargs -i sed -i <span class="hljs-string">&#x27;s/cdn.jsdelivr.net/fastly.jsdelivr.net/g&#x27;</span> &#123;&#125; <span class="hljs-comment"># 修改文件内地址</span><br></code></pre></div></td></tr></table></figure>
+
+<p><img src="http://101.200.84.36/images/2022/05/23/202205231740399.png" srcset="/img/loading.gif" lazyload alt="SED 批量修改地址" title="SED 批量修改地址"></p>
+<p>如果是其他系统的用户，可以使用文件编辑器打开文件，然后使用全局修改。</p>
+<p>不过这只是权宜之计，我希望还是使用 <code>cdn.jsdelivr.net</code> 只是在它使用不了的时候再改成其他加速。既然如此，我们就需要借助其他工具了。</p>
+<p><a target="_blank" rel="noopener" href="https://hexo.fluid-dev.com/" title="Hexo Fluid 主题">Hexo Fluid 主题</a> 有 <a target="_blank" rel="noopener" href="https://hexo.fluid-dev.com/posts/hexo-injector/" title="Fluid 主题注入功能">注入功能</a>，也就是下面用到的。如果想要真正了解该主题的注入功能，最好到 <a target="_blank" rel="noopener" href="https://hexo.fluid-dev.com/posts/hexo-injector/" title="Fluid 主题注入功能">官网</a> 查看。</p>
+<p>然后上 GitHub 用户 <a target="_blank" rel="noopener" href="https://github.com/PipecraftNet/jsdelivr-auto-fallback" title="PipecraftNet">PipecraftNet</a> 的仓库下载 <code>index.min.js</code> 或者 <code>index.js</code> 文件，或者直接复制里边的内容。这位大佬写了一个自动检测加速有没有用的脚本，会给自己的博客自动替换更好的 CDN 加速。</p>
+<p>转到博客源文件根目录（也就是 source 目录），新建一个 js 文件夹，把下载的 <code>index.js</code> 文件放到里边，最好重命名。如果是直接复制内容，那就在 js 文件夹中新建一个扩展名为 <code>js</code> 的文件，把复制的内容粘贴到里边。</p>
+<p>下面演示使用 axel 下载，并且重命名文件为 <code>change_cdn.js</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">cd</span> Documents/NotePages/source <span class="hljs-comment"># 转到源文件根目录</span><br>$ tree -L 1 <span class="hljs-comment"># 查看是否有 js 文件夹，没有就新建</span><br>.<br>├── about<br>├── _drafts<br>└── _posts<br><br>3 directories, 0 files<br>$ <span class="hljs-built_in">mkdir</span> js <span class="hljs-comment"># 新建 js 文件夹</span><br>$ tree -L 1<br>.<br>├── about<br>├── _drafts<br>├── js<br>└── _posts<br><br>4 directories, 0 files<br>$ <span class="hljs-built_in">cd</span> js<br>$ axel https://github.91chi.fun/https://raw.githubusercontent.com/PipecraftNet/jsdelivr-auto-fallback/main/index.js -o change_cdn.js<br></code></pre></div></td></tr></table></figure>
+
+<p>下载完之后，转到 Hexo 博客根目录，在根目录下创建一个 <code>scripts</code> 文件夹，在里边创建一个名为 <code>insert.js</code> 的文件（文件名随便取）。将后面的代码复制到 <code>insert.js</code> 文件内。<code>src</code> 后面写的是刚刚下载的文件的文件名，我的是 <code>change_cdn.js</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">cd</span> ~/Documents/NotesPage<br>$ <span class="hljs-built_in">mkdir</span> scripts<br>$ vim scripts/insert.js<br><br>hexo.extend.injector.register(<span class="hljs-string">&#x27;head_begin&#x27;</span>, <span class="hljs-string">&#x27;&lt;script defer src=&quot;/js/change_cdn.js&quot;&gt;&lt;/script&gt;&#x27;</span>, <span class="hljs-string">&#x27;default&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p>保存退出，完成脚本的注入了。</p>
+<p>输入 <code>hexo clean &amp;&amp; hexo g -d</code> 进行博客部署，脚本会自己判断哪一个 CDN 更好用，然后自动修改。当然，这个只对博客的展示产生影响，不会直接修改你的博客内容。</p>
+<h1 id="后语"><a href="#后语" class="headerlink" title="后语"></a>后语</h1><p>好像 <code>cdn.jsdelivr.net</code> 加速又可以访问了，其实已经卡了好几天了。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%8D%9A%E5%AE%A2/">博客</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%9B%BE%E5%BA%8A/">图床</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Fluid/">Fluid</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/06/08/Shell%E8%84%9A%E6%9C%AC%E4%B8%8B%E8%BD%BDB%E7%AB%99%E8%A7%86%E9%A2%91/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Shell脚本下载B站视频</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/19/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%8D%89%E5%BC%84ta/">
+                        <span class="hidden-mobile">为什么要捉弄ta...</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

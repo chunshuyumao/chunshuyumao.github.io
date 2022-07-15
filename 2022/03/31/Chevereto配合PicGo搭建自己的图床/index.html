@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="哈哈，我居然忘了我还有一个服务器？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chevereto 配合 PicGo 搭建自己的图床">
+<meta property="og:url" content="https://chunshuyumao.github.io/2022/03/31/Chevereto%E9%85%8D%E5%90%88PicGo%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%BE%E5%BA%8A/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="哈哈，我居然忘了我还有一个服务器？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311924121.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311928363.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311935014.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311940652.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311943548.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311946674.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312009531.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312027429.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312033765.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312040197.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312043700.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312106787.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312107148.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312120424.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312121054.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312123309.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312127809.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312129523.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312135945.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312136390.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312139840.png">
+<meta property="article:published_time" content="2022-03-31T08:24:12.000Z">
+<meta property="article:modified_time" content="2022-05-28T11:39:31.000Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="图床">
+<meta property="article:tag" content="Chevereto">
+<meta property="article:tag" content="PicGo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://101.200.84.36/images/2022/03/31/202203311924121.png">
+  
+  
+  <title>Chevereto 配合 PicGo 搭建自己的图床 - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Chevereto 配合 PicGo 搭建自己的图床">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-31 16:24" pubdate>
+        2022年3月31日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      23 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Chevereto 配合 PicGo 搭建自己的图床</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前一阵子，自己的图床没了觉得很可惜，当时还想，要不要去租个网络存储服务？等到冷静下来之后才想起：我有一个服务器来着！真是神奇。</p>
+<p>有了想法自然要付诸行动，准备搭建自己的图床。之前我曾试着手动搭过 <ruby>LNMP<rt>Linux Nginx MariaDB PHP</rt></ruby>，可惜失败了。此外我还在自己的服务器里装过 OpenResty，所以还得进行一些清理工作。不得不说，当初搭建环境都是一次性代过，没有给服务器来个快照或者备份什么的，导致可能乱装了点啥——不过大多数时候我都会选择卸载掉自己安装的东东，除非哪个配置文件我忘了。</p>
+<blockquote>
+<p>LNMP 原来是指 Linux、Nginx、MySQL 和 PHP。只不过我用的是 MariaDB，所以没带上 MySQL.</p>
+</blockquote>
+<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><p>搭建图床服务的环境如下：</p>
+<ol>
+<li>Linux 服务器，我用的是 Rocky Linux 8.5, 同等于 RHEL 8 和 CentOS 8。因为安装完成之后我才写的博客，所以这次用 Docker 下的 Rocky Linux 8.5 演示，勉强看作一个虚拟机吧。</li>
+<li><a target="_blank" rel="noopener" href="https://www.lnmp.org/" title="LNMP">LNMP</a>，一键安装环境脚本，比手动简单多。我手动搭建过，各种配置太麻烦。这里提供一键安装它不香吗？</li>
+<li>Chevereto，一个图床自建程序。</li>
+<li>PicGo, 选择性。</li>
+</ol>
+<p>下面我们慢慢介绍。</p>
+<h2 id="LNMP-安装"><a href="#LNMP-安装" class="headerlink" title="LNMP 安装"></a>LNMP 安装</h2><p>LNMP 是一个网站服务器框架。简而言之，网络上很多东西都建立在这个框架基础之上。只要搭好这个框架，除了图床还可以快速搭建博客、网站等等。背景什么的咱就不介绍了——毕竟我也不是行家。</p>
+<p>登陆自己的服务器，下载一个叫做 screen 的程序。简单说一下，使用 SSH 登陆服务器久不操作连接会自己断开。当然，为什么我们不操作呢，是吧？其实还是有可能的，比如安装软件，特别是 Linux 系统，有些时候编译某些东东的时间很长，长时间不操作 SSH 链接会自己断开。在 Linux 系统中，我们的操作基本都来自操作终端——就是我们的命令行——如果连接断开，终端就终止了。终端终止，我们的所有操作就都终止了。这样我们不得不重试，重试之后又断开，反反复复。</p>
+<p>为了避免这种情况，我们使用 screen 命令创建一个独立于当前终端的空间，即使我们的连接突然断了，命令仍然被执行。这就是保命的东西。我们的操作基本都需要超级管理员权限，所以索性切换到超级管理员——root</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">su - root<br>yum install screen -y<br></code></pre></div></td></tr></table></figure>
+
+<p>安装完成之后使用 <code>screen -S lnmp</code> 创建一个叫做 lnmp 的空间。下载 <a target="_blank" rel="noopener" href="https://www.lnmp.org/" title="LNMP">LNMP</a> 一键安装脚本，然后解压，进入自己解压的文件夹：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">axel -n 32 http://soft.vpser.net/lnmp/lnmp1.8.tar.gz<br>tar zxf lnmp1.8.tar.gz<br>cd lnmp1.8<br></code></pre></div></td></tr></table></figure>
+
+<p>你可以选择自己喜欢的下载方式，我喜欢用 Axel 。</p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203311924121.png" srcset="/img/loading.gif" lazyload alt="下载解压"></p>
+<p>使用 <code>ls</code> 查看你的目录，输入 <code>./install.sh</code> 进行安装。如果你用的和我一样，都是 Rocky Linux, 那么恭喜你，你中奖了，喜提错误警告：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">Unable to get Linux distribution name, or do NOT support the current distribution.<br></code></pre></div></td></tr></table></figure>
+
+<p>这是因为这个脚本没有为 Rocky Linux 准备。现在有两个选择：选择其他发行版，自己动手改脚本。我选择后者。</p>
+<p>输入 <code>vim include/main.sh</code> 打开脚本，按 <kbd>/</kbd>，输入 Get_Dist_Name 找到目标函数，如下。回车。</p>
+<p>在 <code>if</code> 后面添加</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">elif grep -Eqi &quot;Rocky Linux&quot; /etc/issue || grep -Eq &quot;Rocky Linux&quot; /etc/*-release ;then<br>    DISTRO=&#x27;CentOS&#x27;<br>    PM=&#x27;yum&#x27;<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="http://101.200.84.36/images/2022/03/31/202203311928363.png" srcset="/img/loading.gif" lazyload alt="打开脚本"></p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203311935014.png" srcset="/img/loading.gif" lazyload alt="修改配置"></p>
+<p>这其实是让脚本以为自己在 CentOS 系统上运行——我说过 Rocky Linux 兼容 CentOS ，所以没必要担心。按 <kbd>Esc</kbd> ，输入 <code>:wq</code> ，回车，保存退出。重新执行脚本。</p>
+<p>重新执行之后脚本会让你选择自己的数据库，如果知道的话就选择，不懂的直接默认。我选择最新的 MariaDB 10.4.19，所以输入 10. 后面设置数据库密码。</p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203311940652.png" srcset="/img/loading.gif" lazyload alt="选择数据库类型"></p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203311943548.png" srcset="/img/loading.gif" lazyload alt="设置密码"></p>
+<p>安装 PHP。这就不是版本越高越好了，暂且选择 7.1 吧，因为我现在的数据库和 Chevereto 支持的就是这个版本。后面的那个内存分配器随便选择，也可以默认不选，我选择 2 。然后回车安装。</p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203311946674.png" srcset="/img/loading.gif" lazyload alt="PHP版本"></p>
+<p>到这里，基本可以洗洗睡了——会安装很久。我的服务器在安装过程中 CPU 使用率直接飙到 90% 以上，基本使劲浑身解数来解决编译问题，最后还是花了 126 分钟，简直慢到死。不过现在是在自己的电脑演示，速度还是挺快的。</p>
+<p>如果在等待的过程中，你的 SSH 连接断开了，你可以再次登陆自己的服务器，然后用 <code>screen -r lnmp</code> 恢复原来的工作。如果你忘了自己给取的名字是啥，使用 <code>screen -list</code> 查看。等到运行结束之后，可以直接用 <code>exit</code> 退出 screen .</p>
+<p>我们使用脚本的另一个好处是，如果自己的环境配错了，可以修改。比如我安装了 PHP 高版本，但是需要的是低版本，可以是使用 <code>./upgrade.sh</code> 进行修改。手动的话，比较麻烦。同理，如果想要卸载，也可以使用我们下载的 LNMP 中的脚本完成。也可以去 <a target="_blank" rel="noopener" href="https://www.lnmp.org/" title="LNMP">LNMP</a> 脚本官网查看教程。</p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312009531.png" srcset="/img/loading.gif" lazyload alt="安装完成"></p>
+<p>安装完成，使用了 22 分钟，比服务器强多了。我没有域名，所以就不搞虚拟主机了，直接上 IP.</p>
+<p>看最后几行，上面提示 nginx、php-fpm 等都没有运行——按理来说是应该运行的，不过我用的 Docker, 所以不行而已。如果使用虚拟机或者服务器，通常应该没问题。例行公事，给他们开机自启的权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">systemctl <span class="hljs-built_in">enable</span> nginx<br>systemctl <span class="hljs-built_in">enable</span> php-fpm<br>systemctl <span class="hljs-built_in">enable</span> mariadb<br><br>systemctl restart nginx<br>systemctl restart php-fpm<br>systemctl restart mariadb<br></code></pre></div></td></tr></table></figure>
+
+<p>这时候，<code>/home</code> 目录下会多出几个 www 开头的用户，其中 wwwroot 目录下的 default 就是我们的图床位置——可以随意改变位置，但是我只按照这个目录演示。</p>
+<p>可以看到 default 目录下有一个 phpmyadmin 文件夹，待会我们会访问它。</p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312027429.png" srcset="/img/loading.gif" lazyload alt="phpmyadmin"></p>
+<p>打开配置文件，找到 server  有 <code>listen 80</code> 的那一部分配置。在 <code>include enable-php.conf</code> 后面添加以下配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">vim /usr/local/nginx/conf/nginx.conf<br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">location / &#123;<br>    try_files <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span>/ /index.php?<span class="hljs-variable">$query_string</span>;<br>&#125;	<br><br>location ~ [^/]\.php(/|$) &#123;<br>    fastcgi_pass unix:/tmp/php-cgi.sock;<br>    fastcgi_index index.php;<br>    include fastcgi.conf;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312033765.png" srcset="/img/loading.gif" lazyload alt="配置"></p>
+<p>注意配置里的一些字段，例如后面有的图片格式后面的括号显示有效期 ( expires ) 是 30 天。你可以修改自己的。</p>
+<p>可以把 servername 改为自己的服务器公网 IP。</p>
+<p>修改完之后，在浏览器中输入 <code>http://ip/phpmyadmin</code> 登陆创建数据库，用户是 root, 密码是你刚刚创建的，我的是 chunshuyumao.</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://ip/phpmyadmin">http://ip/phpmyadmin</a> 中的 IP 是指你的服务器公网 IP，而不是这两个字符。</p>
+</blockquote>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312040197.png" srcset="/img/loading.gif" lazyload alt="登陆选择数据库"></p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312043700.png" srcset="/img/loading.gif" lazyload alt="创建图床数据库"></p>
+<p>创建数据库的时候，编码选择 utf8_general_ci . 我对数据库不是很了解，不能给专业的解释，只能告诉你这样避免乱码。</p>
+<h2 id="Chevereto"><a href="#Chevereto" class="headerlink" title="Chevereto"></a>Chevereto</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>准备安装 <a target="_blank" rel="noopener" href="https://github.com/rodber/chevereto-free" title="Chevereto">Chevereto</a>. 到 GitHub 下载压缩包或直接使用 <code>git clone</code> ，<a target="_blank" rel="noopener" href="https://chevereto-free.github.io/" title="Chevereto官网">官网</a>了解教程。</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">cd /tmp<br>axel -n 32 https://github.com/rodber/chevereto-free/archive/refs/heads/1.6.zip<br></code></pre></div></td></tr></table></figure>
+
+<p>下载完之后解压、移动到 default 目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">unzip chevereto-free-1.6.zip &amp;&amp; mv chevereto-free-1.6/* /home/wwwroot/default/<br></code></pre></div></td></tr></table></figure>
+
+<p>我下载的是 1.6 版，解压的时候需要看自己下载的是第几版，不要照抄我的步骤。解压之后 default 目录应该长这样：</p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312106787.png" srcset="/img/loading.gif" lazyload alt="default 目录"></p>
+<p>现在可以到浏览器直接输入你的服务器公网 IP 了：</p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312107148.png" srcset="/img/loading.gif" lazyload alt="登陆 Chevereto"></p>
+<p>当然，你最初看到的不是这个，而是一个初始界面。我没办法演示，但是你知道要填写这类信息就行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">Database host --&gt; 这个不用动<br>Database name --&gt; 这个是你刚刚新建的数据库名字，我记得是 picbed<br>Database user --&gt; 填 root <br>Database user password --&gt; 上面你创建的密码，我的是 chunshuyumao<br></code></pre></div></td></tr></table></figure>
+
+<p>之后就是你的一些信息了，随便填写，其中那三个邮箱地址可以一样。最后的 <strong>Website mode</strong> 选择 <strong>Person</strong>，如果你用的是中文的话是<strong>个人</strong>的意思。最后登陆即可。</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>登陆 Chevereto, 右上角选择 Dashbord –&gt; Settings –&gt; Website，修改 Website privacy mode 为 private, 这样你的网站就不会被别人接触到了。</p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312120424.png" srcset="/img/loading.gif" lazyload alt="设置"></p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312121054.png" srcset="/img/loading.gif" lazyload alt="设置"></p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312123309.png" srcset="/img/loading.gif" lazyload alt="修改为Website privacy mode 为 priavte"></p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312127809.png" srcset="/img/loading.gif" lazyload alt="上传的图片"></p>
+<p>你点击右上角的上传按钮进行上传——这个应该可以调成中文，我只是不想调而已。</p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312129523.png" srcset="/img/loading.gif" lazyload alt="上传"></p>
+<p>图床安装完毕。你的服务器里，图床在 &#x2F;home&#x2F;wwwroor&#x2F;default&#x2F;images 下边。</p>
+<h3 id="配合-PicGO"><a href="#配合-PicGO" class="headerlink" title="配合 PicGO"></a>配合 PicGO</h3><p>如果你愿意使用 PicGO, 我很乐意告诉你怎么做。</p>
+<p>打开 PicGo 查找 Chevereto 插件并安装，配置的时候 Url 写 <a target="_blank" rel="noopener" href="http://ip/api/1/upload">http://ip/api/1/upload</a> . 例如我的：</p>
+<blockquote>
+<p>这里的 IP 指的是你的服务器公网 IP ，不是两个字符。如果你选择了其他端口，请把端口带上：</p>
+<p><a href="http://ip:port/api/1/upload">http://ip:port/api/1/upload</a></p>
+<p>例如：</p>
+<p><a href="http://888.777.666:8080/api/1/upload">http://888.777.666:8080/api/1/upload</a> 就是 IP 为 888.777.666 ，端口为 8080</p>
+</blockquote>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312135945.png" srcset="/img/loading.gif" lazyload alt="搜索 Chevereto 插件"></p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312136390.png" srcset="/img/loading.gif" lazyload alt="配置"></p>
+<p>还缺一个 Key. 打开我们的 Chevereto –&gt; Dash Board –&gt; Settings –&gt; Website –&gt; API，把你的 Key 复制一份填写即可。</p>
+<p><img src="http://101.200.84.36/images/2022/03/31/202203312139840.png" srcset="/img/loading.gif" lazyload alt="Key"></p>
+<p>最后你就可以使用 PicGo 开心地上传自己的图床了！</p>
+<p>——当然，你得记得在 PicGo 中把 Chevereto 设置为默认图床。</p>
+<h1 id="后语"><a href="#后语" class="headerlink" title="后语"></a>后语</h1><p>这次没有超过 3000 字，又是一次胜利！步骤其实很简单，只是我们不够专业，所以才会觉得难。搭建完之后我试了试，发现图床并没有被公众号屏蔽——妙啊！这样一来，我以后要做的就是使用自己的图床，然后找个时间上传到 GitHub. 因为我的服务器只有一年的时间，到期我也未必续费，所以肯定需要转移自己的图片。一年之后的事一年之后再思考吧，现在为以后打算——以后就没事可做了。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%8D%9A%E5%AE%A2/">博客</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%9B%BE%E5%BA%8A/">图床</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Chevereto/">Chevereto</a>
+                    
+                      <a class="hover-with-bg" href="/tags/PicGo/">PicGo</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/04/24/%E5%A5%BD%E7%8E%A9%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">好玩的命令行工具</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/27/%E9%97%B2%E8%AF%9D/">
+                        <span class="hidden-mobile">闲话</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

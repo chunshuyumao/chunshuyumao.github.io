@@ -1,0 +1,573 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="抛弃 PicGO，自己动手丰衣足食！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shell 脚本加 cURL, 再见 PicGo">
+<meta property="og:url" content="https://chunshuyumao.github.io/2022/06/27/Shell-%E8%84%9A%E6%9C%AC%E5%8A%A0-cURL,%E5%86%8D%E8%A7%81-PicGo/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="抛弃 PicGO，自己动手丰衣足食！">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206271741491.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206271808381.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272005261.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272146001.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272200431.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272209181.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272247001.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272250411.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272251341.png">
+<meta property="article:published_time" content="2022-06-27T10:30:23.000Z">
+<meta property="article:modified_time" content="2022-07-15T05:57:11.189Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="Shell">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://101.200.84.36/images/2022/06/27/202206271741491.png">
+  
+  
+  <title>Shell 脚本加 cURL, 再见 PicGo - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Shell 脚本加 cURL, 再见 PicGo">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-06-27 18:30" pubdate>
+        2022年6月27日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      37 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Shell 脚本加 cURL, 再见 PicGo</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>谈谈最近的小事。</p>
+<h2 id="Sway-平铺窗口管理"><a href="#Sway-平铺窗口管理" class="headerlink" title="Sway-平铺窗口管理"></a>Sway-平铺窗口管理</h2><p>GNOME 桌面 的极简主义让我很满意。为了让 GNOME 更符合自己的审美，我添加了七八个插件。正因此，最近多次重启电脑，因为这货居然会卡住没反应！考虑到GNOME 一直以内存泄漏出名，我打算试试平铺窗口管理（Tiling Window Manager）。</p>
+<p>所谓”窗口平铺”，就是系统自动将打开的各种窗口排好，而不是一般系统的叠加（正确来说叫做”浮动（Floating）”）。</p>
+<p>Linux 上平铺窗口管理最著名的就是 <a target="_blank" rel="noopener" href="https://i3wm.org/" title="i3wm">i3wm</a>，我选择 <a target="_blank" rel="noopener" href="https://swaywm.org/" title="Sway">Sway</a>，适用于 <a target="_blank" rel="noopener" href="https://wayland.freedesktop.org/" title="Wayland">Wayland</a> 的 i3。<a target="_blank" rel="noopener" href="https://manjaro.org/" title="Manjaro Linux">Manjaro Linux</a> 社区有在维护 Sway 版，可惜我最开始的时候并没有选择 Sway。</p>
+<p><img src="http://101.200.84.36/images/2022/06/27/202206271741491.png" srcset="/img/loading.gif" lazyload alt="官网截的图，因为我的 Sway 已经被我卸了。" title="官网截的图，因为我的 Sway 已经被我卸了。"></p>
+<p>平铺有利于桌面空间的利用，全快捷键操作也可以让人脱离键盘，看起来极富极客（Geek）风格，也就是装～。其实 Windows 系统也有平铺的功能，以前都是快捷键，Windows11 之后直接在最大化按钮加上平铺。</p>
+<p>安装 Sway 主要借助的是 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/" title="Arch Linux Wiki">Arch Linux Wiki</a>。没办法，这家伙的文档贼丰富。Sway 的配置太难受了，包括 i3，由于不希望安装太多第三方软件，我真的是从头到脚写了各种脚本，真的要吐。折腾到后面，感觉虽然有成就感，但是自己不愿折腾了，回到了 GNOME。继续使用我的 GNOME 拓展 <a target="_blank" rel="noopener" href="https://extensions.gnome.org/extension/28/gtile/" title="gTile">gTile</a>。</p>
+<h2 id="GitHub-Copilot"><a href="#GitHub-Copilot" class="headerlink" title="GitHub-Copilot"></a>GitHub-Copilot</h2><p><a target="_blank" rel="noopener" href="https://github.blog/2022-06-21-github-copilot-is-generally-available-to-all-developers/" title="GitHub Copilot 消息来源">GitHub Copilot</a> 是一个可以根据注释生成代码的人工智能。Copilot，顾名思义，当你的副手。GitHub 对外开放不代表免费，实际上价格极其感人。好消息是，对于开源项目维护者和学生、老师来说，这东东是免费的。当然，前提是你得完成学生认证。GitHub 的<a target="_blank" rel="noopener" href="https://education.github.com/" title="学生认证">学生认证</a>其实好处多多（认证的邮箱建议使用学校邮箱），可以拿到各种优惠包。由于自己用不上，所以还没有进行认证。白嫖只是白白占有资源，何必呢。</p>
+<p>GitHub Copilot 支持 Visual Studio、Visual Studio Code 和 NeoVIM。如果感兴趣，也可以到<a target="_blank" rel="noopener" href="https://github.com/features/copilot/" title="GitHub Copilot">官网</a>瞄瞄这家伙如何工作。当然，如果进行学生认证的话还可以免费使用。</p>
+<p><img src="http://101.200.84.36/images/2022/06/27/202206271808381.png" srcset="/img/loading.gif" lazyload alt="GitHub Copilot" title="GitHub Copilot"></p>
+<h2 id="PicGo"><a href="#PicGo" class="headerlink" title="PicGo"></a>PicGo</h2><p><a target="_blank" rel="noopener" href="https://www.picgo.net/" title="PicGO">PicGo</a> 才是今天的主角，准确说是即将退场的主角。PicGo 是一款集成各类图床的上传工具，可以通过 图床API（Application Programming Interface，应用编程接口）轻松实现图片的上传。具体就不介绍了。</p>
+<p>是这样的，Linux 系统 PicGo 的 AppImage 包高达 100M。不得不说，对于有洁癖的人来说，是可忍孰不可忍？自己使用的图床主要包括 <a target="_blank" rel="noopener" href="https://chevereto-free.github.io/" title="Chevereto">Chevereto</a>、<a target="_blank" rel="noopener" href="https://github.com/" title="GitHub">GitHub</a> 和 <a target="_blank" rel="noopener" href="https://sm.ms/" title="SM.MS">SM.MS</a>，主要是前两者，后者只是以前用的。自己用不上 PicGo 的多功能，而且 PicGo 还那么臃肿，由此萌发了使用脚本自己写一个上传工具的念头。</p>
+<p>说到脚本，很多人想到的自然是 Python，不过很可惜，Python 在我眼中就是臃肿的另一个代表，虽然自己的系统就有Python。依赖越少的工具，越深得我的心，所以像 Python 这类脚本语言基本可以散了，实际上 Lua 可以考虑。Linux 系统离不开 Shell，所以后面决定用 Shell&#x2F;Bash。</p>
+<h1 id="替代-PicGo"><a href="#替代-PicGo" class="headerlink" title="替代 PicGo"></a>替代 PicGo</h1><p>写一个替代 PicGo 的脚本其实还是很简单的。Windows 系统没必要看，因为 Windows 系统的生态确实太好了，没必要折腾。</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>简单介绍用到的东东：</p>
+<ol>
+<li>Linux GNOME 桌面环境。指定 GNOME 系统是为了使用 GNOME 的全局自定义快捷键。因为我需要减少依赖，不可能为了设置全局快捷键下载一个软件或者程序。</li>
+<li>Xclip，Linux X桌面协议系统（Xorg）的剪贴板程序。Linux 不是 X协议 就是 Wayland协议。由于 Wayland协议 现在生态不咋地，为了兼容 Xorg 生出了 XWayland 这个缝合怪（对的，就是两者的结合），因此直接使用Xclip 就行，没必要用 wl-clipboard，徒增兼容问题。这是 Linux 标配。</li>
+<li>Bash&#x2F;Shell，最普遍的 Shell 环境，Linux 标配。</li>
+<li>SED，Stream Editor，流式编辑器，Linux 标配。</li>
+<li><a target="_blank" rel="noopener" href="https://curl.se/" title="cURL">cURL</a>，非常强大的命令行文件传输工具，Linux 标配。</li>
+<li>notify-send，命令行或者脚本下的通知工具，非常简单。不清楚是不是有桌面的 Linux 都会带着，但是一般确实如此。</li>
+<li>JQ，命令行环境处理 JSON 格式文件的利器，见鬼，以前自己不愿安装，纯手工解析 JSON,后面学乖了，好好使用 JQ 吧。一般需要安装，一般使用命令行的都会安装。</li>
+<li>GitHub 帐号，可选，用于保存图片，也就是做图床。</li>
+<li>SM.MS 帐号，可选，做图床。</li>
+</ol>
+<p>上面的工具基本都是一个正常的 Linux 系统自带的，除了 JQ 可能没有。还有，那两个帐号可不自带。</p>
+<h2 id="搭建框架"><a href="#搭建框架" class="headerlink" title="搭建框架"></a>搭建框架</h2><p>找一个放脚本的目录，例如我喜欢把自己的脚本放到 <code>$HOME/.scripts</code> 目录下，创建一个 Shell 脚本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash">$ <span class="hljs-built_in">cd</span> ~/.scripts <span class="hljs-comment"># 进入脚本目录</span><br>$ <span class="hljs-built_in">pwd</span> <span class="hljs-comment"># 输出当前目录</span><br>/home/chunshuyumao/.scripts<br>$ vim upload.sh<br><br><span class="hljs-comment"># 以下为脚本内容</span><br><span class="hljs-comment">#!/bin/bash</span><br><span class="hljs-built_in">set</span> -euo pipefail<br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">main</span></span>() &#123;<br><br>&#125;<br><br>main <span class="hljs-string">&quot;<span class="hljs-variable">$@</span>&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>创建脚本之后先写一个主函数(main)，让我们的脚本看起来更加清晰。这些内容之前的博客都出现过了，这就不解释了。</p>
+<p>我们使用的是 GNOME 桌面系统自带的截图工具。GNOME42 之后，这个工具的快捷键是 <code>prt</code>，也就是键盘上的打印键。默认截图之后会保留在剪贴板，接下来我们需要从剪贴板获得图片。</p>
+<p>不过想想，获取的图片保存到哪里？由于我们把图片上传到图床，本地保留一份看起来没必要，所以建议创建一个临时文件，上传之后删掉。我就是这么做的。实际上 PicGo 也是这样做的（之前，现在有内置方法）。从剪贴板获取图片使用以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash">xclip -sel clip -t image/png -o &gt; image.png<br></code></pre></div></td></tr></table></figure>
+
+<p>当然，你要是乐意，可以写全参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash">xclip -selection clipboard -target image/png -out &gt; image.png<br></code></pre></div></td></tr></table></figure>
+
+<p>懒人就不会选择长命令。长命令形式一目了然，我们从（selection）剪贴板（clipboard）获取目标图片PNG格式（target image&#x2F;png），输出（out &gt;）到 <code>image.png</code>。好家伙，完全不用解释哦！</p>
+<p>这样在脚本所在目录就会出现一个 <code>image.png</code> 文件。</p>
+<p><img src="http://101.200.84.36/images/2022/06/27/202206272005261.png" srcset="/img/loading.gif" lazyload alt="从剪贴板获取图片" title="从剪贴板获取图片"></p>
+<p>可是这样不优雅，图片直接在脚本所在的地方生成非常恶心。好在我们可以做得更好！一个优雅的方式是，创建一个临时目录，把所有的临时文件放到这个目录中，等到任务完成之后再删去目录。好巧不巧，刚刚好有一个这样的命令符合我们的预期，它就是 <code>mktemp</code>。通过查阅使用手册，我们可以知道，<code>mktemp</code> 可以这样创建临时文件夹：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash">$ <span class="hljs-built_in">mktemp</span> -d -t temp.XXXXXXXXXX<br>/tmp/tmp.e7Y2FzNj5Q<br></code></pre></div></td></tr></table></figure>
+
+<p><code>-d</code> 表示生成临时文件夹，不加的话会生成临时文件。<code>-t</code> 表示在临时文件夹（&#x2F;tmp）下生成。 <code>temp.XXXXXXXXXX</code> 是生成的文件夹名，其中 <code>temp.</code> 是随便取的，这是我自己选的；<code>XXXXXXXXXX</code> 代表生成多少个随机的字符，你要乐意，写一万个也行。<code>mktemp</code> 生成临时文件夹之后会返回文件夹的路径。</p>
+<p>为了让自己的脚本更加健壮，我们需要确认 <code>mktemp</code> 确实成功创建了文件夹，否则（||）直接退出（exit）。除此之外通过 <code>date</code> 创建图片的名字，然后和临时文件夹整合到一起作为图片的路径。因此我们的脚本现在变成了这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">set</span> -euo pipefail<br><br><span class="hljs-comment"># 按时间给图片命名，依次是 年 月 日 时 分 秒 星期</span><br><span class="hljs-comment"># [Y]ear [m]onth [d]ay [H]our [M]inute [S]econd  u --&gt; 鬼知道这是什么的缩写</span><br><span class="hljs-built_in">declare</span> -r image_name=<span class="hljs-string">&quot;<span class="hljs-subst">$(date +%Y%m%d%H%M%S%u)</span>.png&quot;</span><br><span class="hljs-comment"># 如果创建临时文件夹失败，就使用 exit 1 退出</span><br><span class="hljs-built_in">declare</span> -r tmpdir=<span class="hljs-string">&quot;<span class="hljs-subst">$(mktemp -d -t temp.XXXXXXXXXX)</span>&quot;</span> || <span class="hljs-built_in">exit</span> 1<br><span class="hljs-built_in">declare</span> -r path2image=<span class="hljs-string">&quot;<span class="hljs-variable">$tmpdir</span>/<span class="hljs-variable">$image_name</span>&quot;</span><br><span class="hljs-comment"># 通知持续时间为 3 秒</span><br><span class="hljs-built_in">declare</span> -r expire=3000<br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">main</span></span>() &#123;<br><br>  <span class="hljs-comment"># Notifies when there is not image in clipboard, and exits.</span><br>  xclip -sel clip -t image/png -o &gt; <span class="hljs-string">&quot;<span class="hljs-variable">$path2image</span>&quot;</span> || &#123;<br>    notify-send -t <span class="hljs-variable">$expire</span> -i <span class="hljs-string">&#x27;dialog-warning&#x27;</span> <span class="hljs-string">&#x27;WARNING&#x27;</span> <span class="hljs-string">&quot;There is not image exiting in clipboard.&quot;</span><br>    <span class="hljs-built_in">exit</span> 1<br>  &#125;<br>&#125;<br><br>main <span class="hljs-string">&quot;<span class="hljs-variable">$@</span>&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<p><code>||</code>表示前面的命令失败的话就执行后面的命令。其实这些在之前的文章都有讲到。<code>notify-send</code> 用于弹出通知，大概这样使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-comment">#             通知几秒后关闭？          图标是啥？              标题      内容</span><br>$ notify-send --expire-time milliseconds --icon <span class="hljs-string">&#x27;dialog-icon&#x27;</span> <span class="hljs-string">&#x27;Caption&#x27;</span> <span class="hljs-string">&#x27;Details&#x27;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>脚本中的意思是：从（selection）剪贴板（clipboard）获取（target）PNG格式的图片（image&#x2F;png），并输出（out &gt;）到 <code>path2image</code> 中。如果获取失败（||），以警告图标（icon dialog-warning）发送标题为”WARNING”，内容为”巴拉巴拉”的通知（notify-send），通知时间持续 3 秒。</p>
+<p>上传到 SM.MS 还是 GitHub 是不同的选择，所以待会写两个函数，一个传到 SM.MS，一个传到 GitHub。我们希望调用函数之后，函数返回上传成功后图片的地址，也就是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-built_in">local</span> image_url=<span class="hljs-string">&quot;<span class="hljs-subst">$(upload2github)</span>&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>获得的地址以 Markdown 格式传到剪贴板，这样就可以直接粘贴了，也就是</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;![](<span class="hljs-variable">$&#123;image_url&#125;</span>)&quot;</span> | xclip -sel clip<br></code></pre></div></td></tr></table></figure>
+
+<p>最后再发送(notify-send)一个通知(dialog-information)，说明（details）成功（caption）了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash">notify-send -t <span class="hljs-variable">$expire</span> -i <span class="hljs-string">&#x27;dialog-information&#x27;</span> <span class="hljs-string">&#x27;SUCCESS&#x27;</span> <span class="hljs-string">&#x27;$&#123;image_url&#125;&#x27;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>处理完之后，别忘了删除我们的临时文件夹，写一个 clean 函数，在 main 函数里面显式调用，或者当捕捉(trap)到退出(EXIT)信号时被动调用。现在来看看我们的脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">set</span> -euo pipefail<br><br><span class="hljs-built_in">trap</span> clean EXIT<br><br><span class="hljs-comment"># 按时间给图片命名，依次是 年 月 日 时 分 秒 星期</span><br><span class="hljs-comment"># [Y]ear [m]onth [d]ay [H]our [M]inute [S]econd  u --&gt; 鬼知道这是什么的缩写</span><br><span class="hljs-built_in">declare</span> -r image_name=<span class="hljs-string">&quot;<span class="hljs-subst">$(date +%Y%m%d%H%M%S%u)</span>.png&quot;</span><br><span class="hljs-built_in">declare</span> -r tmpdir=<span class="hljs-string">&quot;<span class="hljs-subst">$(mktemp -d -t temp.XXXXXXXXXX)</span>&quot;</span> || <span class="hljs-built_in">exit</span> 1<br><span class="hljs-built_in">declare</span> -r path2image=<span class="hljs-string">&quot;<span class="hljs-variable">$tmpdir</span>/<span class="hljs-variable">$image_name</span>&quot;</span><br><span class="hljs-comment"># 通知持续时间为 3 秒</span><br><span class="hljs-built_in">declare</span> -r expire=3000<br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">clean</span></span>() &#123;<br>  /bin/rm -rf <span class="hljs-variable">$tempdir</span><br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">main</span></span>() &#123;<br><br>  <span class="hljs-comment"># Notifies when there is not image in clipboard, and exits.</span><br>  xclip -sel clip -t image/png -o &gt; <span class="hljs-string">&quot;<span class="hljs-variable">$path2image</span>&quot;</span> || &#123;<br>    notify-send -t <span class="hljs-variable">$expire</span> -i <span class="hljs-string">&#x27;dialog-warning&#x27;</span> <span class="hljs-string">&#x27;WARNING&#x27;</span> <span class="hljs-string">&quot;There is not image exiting in clipboard.&quot;</span><br>    <span class="hljs-built_in">exit</span> 1<br>  &#125;<br>  <br>  <span class="hljs-comment"># 默认上传到 GitHub</span><br>  <span class="hljs-built_in">local</span> image_url=<span class="hljs-string">&quot;<span class="hljs-subst">$(upload2github)</span>&quot;</span><br>  <span class="hljs-comment"># 复制到剪贴板</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;![](<span class="hljs-variable">$&#123;image_url&#125;</span>)&quot;</span> | xclip -sel clip<br>  notify-send -t <span class="hljs-variable">$expire</span> -i <span class="hljs-string">&#x27;dialog-information&#x27;</span> <span class="hljs-string">&#x27;SUCCESS&#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;image_url&#125;</span>&quot;</span><br>  <br>  clean<br>&#125;<br><br>main <span class="hljs-string">&quot;<span class="hljs-variable">$@</span>&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>框架搭建完毕！后面如果有其他的图床，多写一个函数就完了。此外， PicGo 干的其实也不多就是这件事，只不过是人家是跨平台可视化的，而我写的这个仅限于 类Unix 系统。</p>
+<h2 id="编写-upload2github-函数"><a href="#编写-upload2github-函数" class="headerlink" title="编写 upload2github 函数"></a>编写 upload2github 函数</h2><p>具体实现上传函数。为了普适性，我拿 GitHub 图床做一个例子。首先要准备几样东西</p>
+<ol>
+<li>图床仓库</li>
+<li>私人令牌（Token）</li>
+</ol>
+<p>这里就不介绍如何申请 GitHub 仓库了，默认你建立了自己的仓库。这个仓库名一定要准确。例如我的仓库 <code>202203</code>：</p>
+<p><img src="http://101.200.84.36/images/2022/06/27/202206272146001.png" srcset="/img/loading.gif" lazyload alt="202203" title="202203"></p>
+<p>有了这个我们可以写函数了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">upload2github</span></span>() &#123;<br><br>  <span class="hljs-comment">#################设置####################</span><br>  <span class="hljs-built_in">local</span> repo=<span class="hljs-string">&#x27;202203&#x27;</span><br>  <span class="hljs-built_in">local</span> username=<span class="hljs-string">&#x27;chunshuyumao&#x27;</span><br>  <span class="hljs-built_in">local</span> token=<span class="hljs-string">&#x27;xxxxxxxxxxxxxxxxxxxxxx&#x27;</span><br>  <span class="hljs-comment">#################可选####################</span><br>  <span class="hljs-built_in">local</span> cdn=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/gh/<span class="hljs-variable">$username</span>/<span class="hljs-variable">$repo</span>@master&quot;</span><br>  <span class="hljs-comment">#################设置####################</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>私人令牌（token）需要到帐号设置里获取。CDN（Content Delivery Network，内容分发网络），用于加速 GitHub 图床的图片显示，毕竟国外的东西，访问难免慢，使用 CDN 加速就会快一点。除了设置网起来的配置，其他都不要动。</p>
+<p>参考 <a target="_blank" rel="noopener" href="https://docs.github.com/en/rest/repos/contents" title="GitHub API PUT">GitHub官方API使用说明</a> 上传图片。</p>
+<p><img src="http://101.200.84.36/images/2022/06/27/202206272200431.png" srcset="/img/loading.gif" lazyload alt="GitHub API" title="GitHub API"></p>
+<p>语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash">curl \<br>  -X <span class="hljs-string">&#x27;PUT&#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$github_url</span>&quot;</span> \<br>  -H <span class="hljs-string">&#x27;Accept: application/vnd.github.v3+json&#x27;</span> \<br>  -H <span class="hljs-string">&quot;Authorization: token <span class="hljs-variable">$token</span>&quot;</span> \<br>  -d <span class="hljs-string">&#x27;&#123; &quot;message&quot;: &quot;upload&quot;, &quot;content&quot;: &quot;&#x27;</span><span class="hljs-variable">$content</span><span class="hljs-string">&#x27;&quot; &#125;&#x27;</span><br></code></pre></div></td></tr></table></figure>
+
+<p><code>-X</code> 表示请求的方式，这里使用 <code>PUT</code>。<code>-H</code> 用于构建请求的头部，也就是 <code>header</code>。<code>-d</code> 是上传的数据，即网络请求的 <code>data</code>。</p>
+<p><code>$github_url</code> 是一个 API URL，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-built_in">local</span> github_url=<span class="hljs-string">&quot;https://api.github.com/repos/<span class="hljs-variable">$username</span>/<span class="hljs-variable">$repo</span>/contents/<span class="hljs-variable">$image_name</span>&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<p><code>token</code> 我们已经见过了。<code>$content</code> 呢？官网说的很清楚，是一个通过<br><code>base64</code> 编码的字符串。这样获取：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-built_in">local</span> content=<span class="hljs-string">&quot;<span class="hljs-subst">$(base64 -w 0 $path2image)</span>&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<p><code>-w 0</code> 表示不用换行（no wrap）。习惯上，文本文件一行限制 70 个字符，这称为 <code>wrap</code>。无缘无故添加换行符，后面难以处理，所以我们设置不换行。</p>
+<p>请求之后返回的结果是 JSON 格式，保存到一个变量，然后用 JQ 进行处理：</p>
+<p><img src="http://101.200.84.36/images/2022/06/27/202206272209181.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-built_in">local</span> message=<span class="hljs-string">&quot;<span class="hljs-subst">$(curl \</span></span><br><span class="hljs-subst"><span class="hljs-string">  -X &#x27;PUT&#x27; <span class="hljs-string">&quot;<span class="hljs-variable">$github_url</span>&quot;</span> \</span></span><br><span class="hljs-subst"><span class="hljs-string">  -H &#x27;Accept: application/vnd.github.v3+json&#x27; \</span></span><br><span class="hljs-subst"><span class="hljs-string">  -H <span class="hljs-string">&quot;Authorization: token <span class="hljs-variable">$token</span>&quot;</span> \</span></span><br><span class="hljs-subst"><span class="hljs-string">  -d &#x27;&#123; <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;upload&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>: <span class="hljs-string">&quot;&#x27;<span class="hljs-variable">$content</span>&#x27;&quot;</span> &#125;&#x27; \</span></span><br><span class="hljs-subst"><span class="hljs-string">  2&gt; /dev/null | jq &#x27;commit..message?&#x27; sed -r &#x27;s/\&quot;(.*)</span>\&quot;/\1/g&#x27;)&quot;</span><br><br><span class="hljs-keyword">if</span> [[ <span class="hljs-string">&quot;<span class="hljs-variable">$message</span>&quot;</span> != <span class="hljs-string">&quot;upload&quot;</span> ]]; <span class="hljs-keyword">then</span><br>  notify-send -t <span class="hljs-variable">$expire</span> -i <span class="hljs-string">&#x27;dialog-error&#x27;</span> <span class="hljs-string">&#x27;ERROR&#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$message</span>&quot;</span><br><span class="hljs-keyword">fi</span><br><span class="hljs-built_in">exit</span> 1<br></code></pre></div></td></tr></table></figure>
+
+<p>我们不需要使用返回的结果，只需要判断是否成功。文档说明，如果上传成功，返回的 message 是我们之前的 message 的内容，我们只需要判断两个 message 想不相同即可。如果不同，直接报错通知。</p>
+<p><code>2&gt; /dev/null</code> 表示把错误输出到 <code>/dev/null</code> 文件。<code>|</code> 叫做”管道符”，表示把左边的输出当作右边的输入。<code>jq &#39;.message?&#39;</code> 的意思是获取 JSON 格式第一层的 <code>message</code> 信息，问号表示如果没有这个信息，那就返回 <code>null</code> 代替，相当于:</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-keyword">if</span> message exists <span class="hljs-keyword">in</span> JSON, <span class="hljs-keyword">then</span> <span class="hljs-built_in">return</span> message <span class="hljs-keyword">else</span> <span class="hljs-built_in">return</span> null<br></code></pre></div></td></tr></table></figure>
+
+<p>上传成功之后，我们直接返回图片的链接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-built_in">echo</span> -n <span class="hljs-string">&quot;<span class="hljs-variable">$cdn</span>/<span class="hljs-variable">$image_name</span>&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>Shell 脚本的返回和其他语言的返回不大一样，其实这个是打印，而不是返回。最后我们的脚本是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-comment"># 函数描述:</span><br><span class="hljs-comment">#   上传图片到 GitHub 图床</span><br><span class="hljs-comment"># 参数: 无</span><br><span class="hljs-comment"># 返回值: 图片的链接，或者弹出失败后的信息</span><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">upload2github</span></span>() &#123;<br><br>  <span class="hljs-comment">####################设置#######################</span><br>  <span class="hljs-built_in">local</span> repo=<span class="hljs-string">&#x27;202203&#x27;</span>  <span class="hljs-comment"># 这是你的仓库名</span><br>  <span class="hljs-built_in">local</span> username=<span class="hljs-string">&#x27;chunshuyumao&#x27;</span> <span class="hljs-comment"># 这是你的帐号名，现在写的是我的</span><br>  <span class="hljs-built_in">local</span> token=<span class="hljs-string">&#x27;xxxxxxxxxxxxxxxxxxxxxx&#x27;</span> <span class="hljs-comment"># 你的私人令牌，token</span><br>  <span class="hljs-comment">################可选 CDN 加速###################</span><br>  <span class="hljs-built_in">local</span> cdn=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/gh/<span class="hljs-variable">$username</span>/<span class="hljs-variable">$repo</span>@master&quot;</span><br>  <span class="hljs-comment">####################设置########################</span><br><br>  <span class="hljs-built_in">local</span> content=<span class="hljs-string">&quot;<span class="hljs-subst">$(base64 -w 0 $path2image)</span>&quot;</span><br>  <span class="hljs-built_in">local</span> github_url=<span class="hljs-string">&quot;https://api.github.com/repos/<span class="hljs-variable">$username</span>/<span class="hljs-variable">$repo</span>/contents/<span class="hljs-variable">$image_name</span>&quot;</span><br>  <span class="hljs-built_in">local</span> message=<span class="hljs-string">&quot;<span class="hljs-subst">$(curl \</span></span><br><span class="hljs-subst"><span class="hljs-string">    -X &#x27;PUT&#x27; <span class="hljs-string">&quot;<span class="hljs-variable">$github_url</span>&quot;</span> \</span></span><br><span class="hljs-subst"><span class="hljs-string">    -H &#x27;Accept: application/vnd.github.v3+json&#x27; \</span></span><br><span class="hljs-subst"><span class="hljs-string">    -H <span class="hljs-string">&quot;Authorization: token <span class="hljs-variable">$token</span>&quot;</span> \</span></span><br><span class="hljs-subst"><span class="hljs-string">    -d &#x27;&#123; <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;upload&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>: <span class="hljs-string">&quot;&#x27;<span class="hljs-variable">$content</span>&#x27;&quot;</span> &#125;&#x27; 2&gt; /dev/null | jq &#x27;.message?&#x27;)</span>&quot;</span><br><br>  <span class="hljs-keyword">if</span> [[ <span class="hljs-string">&quot;<span class="hljs-variable">$message</span>&quot;</span> != <span class="hljs-string">&quot;upload&quot;</span> ]]; <span class="hljs-keyword">then</span><br>    notify-send -t <span class="hljs-variable">$expire</span> -i <span class="hljs-string">&#x27;dialog-error&#x27;</span> <span class="hljs-string">&#x27;ERROR&#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$message</span>&quot;</span><br>    <span class="hljs-built_in">exit</span> 1<br>  <span class="hljs-keyword">fi</span><br><br>  <span class="hljs-built_in">echo</span> -n <span class="hljs-string">&quot;<span class="hljs-variable">$cdn</span>/<span class="hljs-variable">$image_name</span>&quot;</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>GitHub 函数写完。后面来看看 SM.MS。</p>
+<h2 id="SM-MS-函数"><a href="#SM-MS-函数" class="headerlink" title="SM.MS 函数"></a>SM.MS 函数</h2><p>SM.MS 图床也需要准备一个 <code>token</code>，主要结构如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Bash"><span class="hljs-comment"># 函数描述:</span><br><span class="hljs-comment">#   上传图片到 SM.MS 图床</span><br><span class="hljs-comment"># 参数: 无</span><br><span class="hljs-comment"># 返回值: 图片的链接，或者返回失败后的信息</span><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">upload2smms</span></span>() &#123;<br><br>  <span class="hljs-comment">#################SETTINGS START#################</span><br>  <span class="hljs-built_in">local</span> smms_url=<span class="hljs-string">&quot;https://sm.ms/api/v2/upload&quot;</span><br>  <span class="hljs-built_in">local</span> token=<span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><br>  <span class="hljs-comment">#################SETTINGS END###################</span><br><br>  <span class="hljs-built_in">local</span> result=<span class="hljs-string">&quot;<span class="hljs-subst">$(curl \</span></span><br><span class="hljs-subst"><span class="hljs-string">    -X &#x27;POST&#x27; <span class="hljs-string">&quot;<span class="hljs-variable">$smms_url</span>&quot;</span> \</span></span><br><span class="hljs-subst"><span class="hljs-string">    -H &#x27;Content-Type: multipart/form-data&#x27; \</span></span><br><span class="hljs-subst"><span class="hljs-string">    -H <span class="hljs-string">&quot;Authorization: Basic <span class="hljs-variable">$token</span>&quot;</span> \</span></span><br><span class="hljs-subst"><span class="hljs-string">    -F <span class="hljs-string">&quot;smfile=@<span class="hljs-variable">$&#123;path2image&#125;</span>;type=image/png;filename=<span class="hljs-variable">$&#123;image_name&#125;</span>&quot;</span> 2&gt; /dev/null)</span>&quot;</span><br><br>  <span class="hljs-built_in">local</span> image_url=<span class="hljs-string">&quot;<span class="hljs-subst">$(echo -n <span class="hljs-string">&quot;<span class="hljs-variable">$result</span>&quot;</span> | jq &#x27;.data.url?&#x27; | sed -r &#x27;s/\&quot;(.*)</span>\&quot;/\1/g&#x27;)&quot;</span><br>  <span class="hljs-keyword">if</span> [[ <span class="hljs-string">&quot;<span class="hljs-variable">$image_url</span>&quot;</span> == <span class="hljs-string">&quot;null&quot;</span> ]]; <span class="hljs-keyword">then</span><br>    notify-send -t <span class="hljs-variable">$expire</span> -i <span class="hljs-string">&#x27;dialog-error&#x27;</span> <span class="hljs-string">&quot;ERROR&quot;</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(echo <span class="hljs-string">&quot;<span class="hljs-variable">$result</span>&quot;</span> | jq &#x27;.message?&#x27;)</span>&quot;</span><br>    <span class="hljs-built_in">exit</span> 1<br>  <span class="hljs-keyword">fi</span><br><br>  <span class="hljs-built_in">echo</span> -n <span class="hljs-string">&quot;<span class="hljs-variable">$image_url</span>&quot;</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>这个也很简单，参考<a target="_blank" rel="noopener" href="https://doc.sm.ms/" title="SM.MS API">官网</a>。<code>-F</code> 参数是 <code>cURL</code> 传递 <code>form-data</code> 的方式，因为官网说了上传的是文件。一般上传文件直接使用 <code>-F</code>。</p>
+<p><a target="_blank" rel="noopener" href="http://101.200.84.36/images/2022/06/27/202206272237441.png" title="SM.MS上传">SM.MS上传</a></p>
+<p><code>jq &#39;.data.url?&#39;</code> 表示从 JSON 中获取 data 下的 url 内容。大概是这样的布局：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">&#123;<br>    <span class="hljs-string">&quot;data&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;usr&quot;</span>: <span class="hljs-string">&quot;blabla&quot;</span><br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>问号仍然表示没有这东东的话返回 <code>null</code>，后面的 <code>message</code> 也一样。</p>
+<p><code>sed -r &#39;s/\&quot;(.*)\&quot;/\1/g&#39;</code> 用于删掉链接两边的双引号（””），因为链接两边不应该有双引号。</p>
+<p>最后判断获取的是不是链接，不是的话就通知错误，并退出。轻轻松松，脚本完成！</p>
+<h2 id="设置全局快捷键"><a href="#设置全局快捷键" class="headerlink" title="设置全局快捷键"></a>设置全局快捷键</h2><p>这里只说 GNOME 的全局快捷键。打开<code>gnome-center-control</code>，或者直接找设置（settings）</p>
+<p><img src="http://101.200.84.36/images/2022/06/27/202206272247001.png" srcset="/img/loading.gif" lazyload alt="设置" title="设置"></p>
+<p>选择<code>键盘（Keyboard）=&gt; 键盘快捷键（Keyboard Shortcuts）=&gt; 浏览与自定义快捷键（View and Custumize Shortcuts）=&gt; 自定义快捷键（Custom Shortcuts）</code>，点击<code>➕</code>：</p>
+<p><img src="http://101.200.84.36/images/2022/06/27/202206272250411.png" srcset="/img/loading.gif" lazyload alt="添加" title="添加"></p>
+<p><img src="http://101.200.84.36/images/2022/06/27/202206272251341.png" srcset="/img/loading.gif" lazyload alt="添加快捷键" title="添加快捷键"></p>
+<p><code>描述（Name）</code> 只是描述，随便写啥；<code>命令（comamnd）</code>写你的脚本所在的路径，最后点击 <code>快捷键（Shortcut）</code>进行快捷键设置。Over！</p>
+<h1 id="后语"><a href="#后语" class="headerlink" title="后语"></a>后语</h1><p>最后，把 PicGo 给卸了，毕竟，自己写的脚本才几K？开玩笑，其实 PicGo<br>除了简单，还有可视化、预览、删除图床图片等等的功能，自己的这个脚本只是阉割版罢了。不得不说，Linux<br>下真的可以自己动手丰衣足食。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Manjaro/">Manjaro</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Shell/">Shell</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/06/08/Shell%E8%84%9A%E6%9C%AC%E4%B8%8B%E8%BD%BDB%E7%AB%99%E8%A7%86%E9%A2%91/">
+                        <span class="hidden-mobile">Shell脚本下载B站视频</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
