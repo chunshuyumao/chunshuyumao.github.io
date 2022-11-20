@@ -60,7 +60,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042226386.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042227959.png">
 <meta property="article:published_time" content="2022-03-04T11:32:58.000Z">
-<meta property="article:modified_time" content="2022-06-07T07:08:13.000Z">
+<meta property="article:modified_time" content="2022-07-29T12:43:12.000Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="双系统">
 <meta name="twitter:card" content="summary_large_image">
@@ -108,7 +108,7 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 6.2.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -275,15 +275,15 @@
             <h1 style="display: none">Manjaro + Windows11双系统安装</h1>
             
             <div class="markdown-body">
-              <h1 id="为什么要用Linux系统"><a href="#为什么要用Linux系统" class="headerlink" title="为什么要用Linux系统"></a>为什么要用Linux系统</h1><p>实际上，使用哪一个系统是没有理由的，个人电脑上基本没有能和  Windows 过招的系统。然而对我来说，  Windows 太麻烦了：8G 内存跑  Windows 还只是勉强流畅，特别是当我微信和QQ一起打开的时候，内存占用到我都怀疑人生了。我确实尝试过重装系统，但是对我来说怎么重装，最后还是会走到讨厌它的那一步。</p>
-<p> Windows11 出来之后，  Windows 系统给我的印象就好了很多，特别是它的搜索功能，虽然它早就存在了，毕竟我不喜欢在桌面上放图标。使用它一阵子之后，我还是萌生了换系统的想法。可能这种想法一直存在脑海里，我才不喜欢  Windows 系统。</p>
+              <h1 id="为什么要用-Linux-系统"><a href="#为什么要用-Linux-系统" class="headerlink" title="为什么要用 Linux 系统"></a>为什么要用 Linux 系统</h1><p>实际上，使用哪一个系统是没有理由的，个人电脑上基本没有能和  Windows 过招的系统。然而对我来说，  Windows 太麻烦了：8G 内存跑  Windows 还只是勉强流畅，特别是当我微信和QQ一起打开的时候，内存占用到我都怀疑人生了。我确实尝试过重装系统，但是对我来说怎么重装，最后还是会走到讨厌它的那一步。</p>
+<p>Windows11 出来之后，  Windows 系统给我的印象就好了很多，特别是它的搜索功能，虽然它早就存在了，毕竟我不喜欢在桌面上放图标。使用它一阵子之后，我还是萌生了换系统的想法。可能这种想法一直存在脑海里，我才不喜欢  Windows 系统。</p>
 <p>既然要换系统，那我得找到一个令我满意的系统。我把目光放到了 Linux ，毕竟 MacOS 可望不可及。然而问题是，开源而且免费的 Linux 系统还是有很多分支，多到一只手根本数不过来。此外，这些系统虽然都叫做 Linux ，但是彼此之间差别还是不小。</p>
 <p>我最开始接触的 Linux 是 CentOS 。所以当时打算换到 CentOS8 ，虽然它似乎更合适做服务器。然而天有不测风云，谁知道 CentOS Linux 不再更新了。虽然 CentOS Stream 仍然被维护，但是我觉得 CentOS 已经等于被宣判了死刑，因此只能再找出路。</p>
 <p>在虚拟机里安装了各种版本的 Linux 之后，我对 Manjaro Linux 和 Arch Linux 有非常大的好感。 Arch Linux 自由度非常高，可定制性强，官方 wiki 也很丰富，是探索 Linux 极好的选择。我花了好一阵子重温命令行安装 Linux 的知识，还给它安装了各种桌面。然而 Arch 总给我一种怪怪的感觉，可能对我来说，它吸引人的方面是拿来把玩，而不是作为主力系统。</p>
 <p>但是我很喜欢 Arch ，于是各种搜罗有关 Arch 系统的信息，最后发现了 Manjaro 。 Manjaro 是 Arch 的衍生版，但是和 Arch 又有一定的区别。例如同样作为滚动发行的 Linux ， Manjaro官方包 相比而言比 Arch 更安全一点——因为它不是直接发布的，而是要经过一定的测试。 Manjaro 的另一特点是基本做到开箱即用，而 Arch 本身需要的配置很繁琐——这也是它吸引人的地方。</p>
-<p> Manjaro 满足了我懒得折腾的心愿，同时作为 Arch 的衍生品，它与 Arch 共享很多的包。众所周知， Arch 拥有非常强大的社区支持。</p>
-<p> Manjaro官网 <sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="https://manjaro.org/
-">[1]</span></a></sup>提供了三种版本的 Manjaro 桌面：</p>
+<p>Manjaro 满足了我懒得折腾的心愿，同时作为 Arch 的衍生品，它与 Arch 共享很多的包。众所周知， Arch 拥有非常强大的社区支持。</p>
+<p>Manjaro 官网 <sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="https://manjaro.org/
+">[1]</span></a></sup> 提供了三种版本的 Manjaro 桌面：</p>
 <ol>
 <li>XFCE ，轻量级桌面。</li>
 <li>KDE ，重量级桌面，实际上现在和 GNOME 也差不多，可定制性高，桌面漂亮。</li>
