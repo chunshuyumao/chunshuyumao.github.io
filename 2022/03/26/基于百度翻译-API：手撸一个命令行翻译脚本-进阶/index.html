@@ -23,21 +23,11 @@
 <meta property="og:site_name" content="椿树与猫">
 <meta property="og:description" content="Who care?">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203260911243.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261002830.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261006717.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261018479.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261021075.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261028368.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261030188.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261109882.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261129188.png">
 <meta property="article:published_time" content="2022-03-26T01:00:31.000Z">
 <meta property="article:modified_time" content="2022-07-29T12:43:12.000Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="翻译">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203260911243.png">
   
   
   <title>基于百度翻译 API：手撸一个命令行翻译脚本--进阶 - 椿树与猫</title>
@@ -248,176 +238,263 @@
             <h1 style="display: none">基于百度翻译 API：手撸一个命令行翻译脚本--进阶</h1>
             
             <div class="markdown-body">
-              <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>正事从 2. 开始，前言只是发牢骚。</p>
-<p>前面我们已经完成了翻译脚本的基本功能。所有的编程语言最大的问题一直是字符串，Shell 也一样。当我准备写下这一篇的时候还在想：要不要先出一篇介绍 Shell 编程的博客？Shell 语言和其他的编程语言也不太一样，我们更习惯叫它“脚本语言”，可惜这也不够准确。我觉得要真的做比较，可以看出做是高级的批处理语言。</p>
+              <h1 id="前言">前言</h1>
+<p>正事从 2. 开始，前言只是发牢骚。</p>
+<p>前面我们已经完成了翻译脚本的基本功能。所有的编程语言最大的问题一直是字符串，Shell
+也一样。当我准备写下这一篇的时候还在想：要不要先出一篇介绍 Shell
+编程的博客？Shell
+语言和其他的编程语言也不太一样，我们更习惯叫它“脚本语言”，可惜这也不够准确。我觉得要真的做比较，可以看出做是高级的批处理语言。</p>
 <p>前一阵子的翻译脚本，实际看来不复杂。原本打算一篇写完，结果还没写多少就突破三千字。不得不说，现在市面上各种叫嚣几分钟学会某种东西的声音太多，能有人抽出时间看完三千字不大可能，所以我直接断笔，把剩下的部分独立出来。这次尽量一篇写完。</p>
-<h1 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h1><p>前一篇我们让脚本后面的参数直接充当 query 参数的值，也就是说我们只能这样使用我们的翻译脚本 <code>./mt.sh 翻译的文本</code>。可是看到 Linux 上的命令通常都有很多的命令参数，怎么看自己的脚本都太简单了。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203260911243.png" srcset="/img/loading.gif" lazyload alt="简单脚本"></p>
+<h1 id="参数">参数</h1>
+<p>前一篇我们让脚本后面的参数直接充当 query
+参数的值，也就是说我们只能这样使用我们的翻译脚本
+<code>./mt.sh 翻译的文本</code>。可是看到 Linux
+上的命令通常都有很多的命令参数，怎么看自己的脚本都太简单了。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203260911243.png" srcset="/img/loading.gif" lazyload
+alt="简单脚本" /></p>
 <p>此外，我们的脚本如果被其他人使用，别人不知道怎么使用怎么办？我们还希望自己的脚本可配置翻译语言和目的语言。鉴于这些要求，我们需要扩展之前的命令行参数。</p>
-<p>这里复习一下：所谓命令行参数，指的是脚本之后跟着的字符。举个例子：<code>./mt.sh chun shu yu mao</code> 的命令行参数是 <code>./mt.sh</code>、<code>chun</code>、<code>shu</code>、<code>yu</code>和 <code>mao</code>，其中参数使用<code>$n</code>表示，n 是阿拉伯数字，不能超过 9 。</p>
-<p>先确定我们需要什么参数。根据之前的分析，我们知道：from 表示源语言，to 表示目的语言，q 表示翻译文本。那好，我们就设置这些参数。我们习惯在参数前面加 <code>-</code> 表示参数，其中长参数使用两个短杆，短参数用一个。所以我们的目标是这样：</p>
+<p>这里复习一下：所谓命令行参数，指的是脚本之后跟着的字符。举个例子：<code>./mt.sh chun shu yu mao</code>
+的命令行参数是
+<code>./mt.sh</code>、<code>chun</code>、<code>shu</code>、<code>yu</code>和
+<code>mao</code>，其中参数使用<code>$n</code>表示，n
+是阿拉伯数字，不能超过 9 。</p>
+<p>先确定我们需要什么参数。根据之前的分析，我们知道：from 表示源语言，to
+表示目的语言，q
+表示翻译文本。那好，我们就设置这些参数。我们习惯在参数前面加
+<code>-</code>
+表示参数，其中长参数使用两个短杆，短参数用一个。所以我们的目标是这样：</p>
 <table>
 <thead>
-<tr>
-<th align="center">参数值</th>
-<th align="center">短参数</th>
-<th align="center">长参数</th>
+<tr class="header">
+<th style="text-align: center;">参数值</th>
+<th style="text-align: center;">短参数</th>
+<th style="text-align: center;">长参数</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">from</td>
-<td align="center">-f</td>
-<td align="center">–from</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">from</td>
+<td style="text-align: center;">-f</td>
+<td style="text-align: center;">--from</td>
 </tr>
-<tr>
-<td align="center">to</td>
-<td align="center">-t</td>
-<td align="center">–to</td>
+<tr class="even">
+<td style="text-align: center;">to</td>
+<td style="text-align: center;">-t</td>
+<td style="text-align: center;">--to</td>
 </tr>
-<tr>
-<td align="center">q</td>
-<td align="center">-q</td>
-<td align="center">–query</td>
+<tr class="odd">
+<td style="text-align: center;">q</td>
+<td style="text-align: center;">-q</td>
+<td style="text-align: center;">--query</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>以后我们希望这样调用脚本：<code>./mt.sh -f en -t zh -q Yeah</code>，这样写的好处是可以随意调换参数位置，例如可以这样写：<code>./mt.sh -q Yeah -t zh -f en</code></p>
-<h1 id="解析参数"><a href="#解析参数" class="headerlink" title="解析参数"></a>解析参数</h1><p>要读取参数，我们需要一个循环。Shell 中的循环可以使用 while 。然后我们需要获取参数的个数，这样我们才能确定循环的次数。在 Shell 使用 <code>$#</code> 获取参数个数，所以我们的脚本框架是这样的：</p>
+<h1 id="解析参数">解析参数</h1>
+<p>要读取参数，我们需要一个循环。Shell 中的循环可以使用 while
+。然后我们需要获取参数的个数，这样我们才能确定循环的次数。在 Shell 使用
+<code>$#</code> 获取参数个数，所以我们的脚本框架是这样的：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">while [ $# -gt 0 ]; do<br>   <br>    echo $1<br>    <br>    shift<br>done<br></code></pre></div></td></tr></table></figure>
-
-<p>在 Shell 中使用比较需要放到一个方括号<code>[]</code>里边，而且数值比较不能使用 <code>&lt;</code> 等符号，而是英语简写。</p>
+<p>在 Shell
+中使用比较需要放到一个方括号<code>[]</code>里边，而且数值比较不能使用
+<code>&lt;</code> 等符号，而是英语简写。</p>
 <table>
 <thead>
-<tr>
-<th align="center">中文</th>
-<th align="center">简写</th>
-<th align="center">英文</th>
+<tr class="header">
+<th style="text-align: center;">中文</th>
+<th style="text-align: center;">简写</th>
+<th style="text-align: center;">英文</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">小于</td>
-<td align="center">-lt</td>
-<td align="center">less than</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">小于</td>
+<td style="text-align: center;">-lt</td>
+<td style="text-align: center;">less than</td>
 </tr>
-<tr>
-<td align="center">大于</td>
-<td align="center">-gt</td>
-<td align="center">greater than</td>
+<tr class="even">
+<td style="text-align: center;">大于</td>
+<td style="text-align: center;">-gt</td>
+<td style="text-align: center;">greater than</td>
 </tr>
-<tr>
-<td align="center">等于</td>
-<td align="center">-eq</td>
-<td align="center">equal</td>
+<tr class="odd">
+<td style="text-align: center;">等于</td>
+<td style="text-align: center;">-eq</td>
+<td style="text-align: center;">equal</td>
 </tr>
-<tr>
-<td align="center">小于等于</td>
-<td align="center">-le</td>
-<td align="center">less than or equal</td>
+<tr class="even">
+<td style="text-align: center;">小于等于</td>
+<td style="text-align: center;">-le</td>
+<td style="text-align: center;">less than or equal</td>
 </tr>
-<tr>
-<td align="center">大于等于</td>
-<td align="center">-ge</td>
-<td align="center">greater than or equal</td>
+<tr class="odd">
+<td style="text-align: center;">大于等于</td>
+<td style="text-align: center;">-ge</td>
+<td style="text-align: center;">greater than or equal</td>
 </tr>
-<tr>
-<td align="center">不等于</td>
-<td align="center">-ne</td>
-<td align="center">not equal</td>
+<tr class="even">
+<td style="text-align: center;">不等于</td>
+<td style="text-align: center;">-ne</td>
+<td style="text-align: center;">not equal</td>
 </tr>
-</tbody></table>
-<p>我们的 while 循环就是表示：当参数个数大于 0 个的时候开始是循环。要注意，因为 <code>$0</code> 默认表示脚本的名字，<code>$#</code> 不把它算上。也就说，<code>./mt.sh chun shu yu mao</code> 的参数总数是 4 而不是 5.</p>
-<p><code>shift</code> 表示偏移。这个有点难理解：还是拿 <code>./mt.sh chun shu yu mao</code> 来说，原本 <code>$1</code> 表示 <code>chun</code>，使用一个 <code>shift</code> 之后 <code>$1</code> 变成了 <code>shu</code>，再使用就是 <code>yu</code> 。<code>shift</code> 偏移之后参数个数就少了，所以我们处理完一个参数就用 <code>shift</code> 扔掉这个参数，直到所有参数都被处理完。</p>
-<p>想要判断这个参数是 <code>-t</code> 还是 <code>-f</code> ，大家的想法可能是 <code>if</code> 语句。但是在这里， <code>if</code> 语句不好处理，推荐使用 <code>case</code> 语句。<code>case</code> 就像 C&#x2F;C++ 语言中的 <code>switch</code>，Python3.10 之后的 <code>match</code> 。<code>case</code> 还可以用 <code>|</code> 表示或者，例如 <code>ab|bc</code> 表示匹配 <code>ab</code> 或者 <code>bc</code> ，语法是：</p>
+</tbody>
+</table>
+<p>我们的 while 循环就是表示：当参数个数大于 0
+个的时候开始是循环。要注意，因为 <code>$0</code>
+默认表示脚本的名字，<code>$#</code>
+不把它算上。也就说，<code>./mt.sh chun shu yu mao</code> 的参数总数是 4
+而不是 5.</p>
+<p><code>shift</code> 表示偏移。这个有点难理解：还是拿
+<code>./mt.sh chun shu yu mao</code> 来说，原本 <code>$1</code> 表示
+<code>chun</code>，使用一个 <code>shift</code> 之后 <code>$1</code>
+变成了 <code>shu</code>，再使用就是 <code>yu</code> 。<code>shift</code>
+偏移之后参数个数就少了，所以我们处理完一个参数就用 <code>shift</code>
+扔掉这个参数，直到所有参数都被处理完。</p>
+<p>想要判断这个参数是 <code>-t</code> 还是 <code>-f</code>
+，大家的想法可能是 <code>if</code> 语句。但是在这里， <code>if</code>
+语句不好处理，推荐使用 <code>case</code> 语句。<code>case</code> 就像
+C/C++ 语言中的 <code>switch</code>，Python3.10 之后的 <code>match</code>
+。<code>case</code> 还可以用 <code>|</code> 表示或者，例如
+<code>ab|bc</code> 表示匹配 <code>ab</code> 或者 <code>bc</code>
+，语法是：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">case 参数 in<br>	匹配1) 处理<br>	;;<br>	匹配2) 处理<br>	;;<br>	匹配3|匹配4) 处理<br>	;;<br>esac<br></code></pre></div></td></tr></table></figure>
-
-<p>​	既然如此，我们的脚本应该这样</p>
+<p>​ 既然如此，我们的脚本应该这样</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-keyword">while</span> [ <span class="hljs-variable">$#</span> -gt 0 ]; <span class="hljs-keyword">do</span><br><br>  <span class="hljs-keyword">case</span> <span class="hljs-variable">$1</span> <span class="hljs-keyword">in</span><br>    <span class="hljs-string">&#x27;-t&#x27;</span>|<span class="hljs-string">&#x27;--to&#x27;</span>) <br>    to=<span class="hljs-variable">$2</span><br>    <span class="hljs-built_in">shift</span><br>    ;;<br>    <span class="hljs-string">&#x27;-f&#x27;</span>|<span class="hljs-string">&#x27;--from&#x27;</span>)<br>    from=<span class="hljs-variable">$2</span><br>    <span class="hljs-built_in">shift</span><br>    ;;<br>    <span class="hljs-string">&#x27;-q&#x27;</span>|<span class="hljs-string">&#x27;--query&#x27;</span>)<br>    query=<span class="hljs-variable">$2</span><br>    <span class="hljs-built_in">shift</span><br>    ;;<br>  <span class="hljs-keyword">esac</span><br>  <span class="hljs-built_in">shift</span><br><span class="hljs-keyword">done</span><br></code></pre></div></td></tr></table></figure>
-
-<p>我们判断了 <code>$1</code> 表示某个符号之后，直接读取它后边的参数，所以读取 <code>$2</code>，过程如下：</p>
-<ol>
+<p>我们判断了 <code>$1</code>
+表示某个符号之后，直接读取它后边的参数，所以读取
+<code>$2</code>，过程如下：</p>
+<ol type="1">
 <li>执行脚本 <code>./mt.sh -f en -t zh -q text</code></li>
-<li>进入 <code>case</code> ，判断 <code>$1</code> 是 <code>-f</code>，所以读取 <code>$2</code> 也就是 <code>en</code>。执行一次偏移，现在 <code>$1</code> 变成了 <code>en</code>.</li>
-<li>跳出 <code>case</code>，执行一次 <code>shift</code> ，现在 <code>$1</code> 是 <code>-t</code> .</li>
+<li>进入 <code>case</code> ，判断 <code>$1</code> 是
+<code>-f</code>，所以读取 <code>$2</code> 也就是
+<code>en</code>。执行一次偏移，现在 <code>$1</code> 变成了
+<code>en</code>.</li>
+<li>跳出 <code>case</code>，执行一次 <code>shift</code> ，现在
+<code>$1</code> 是 <code>-t</code> .</li>
 <li>下一次循环，又回到第 2 步</li>
 </ol>
-<p>在 Shell 中，我们有一个简写：如果前一步执行成功，我们可以用 <code>&amp;&amp;</code> 执行下一步，所以上面可以写成这样：</p>
+<p>在 Shell 中，我们有一个简写：如果前一步执行成功，我们可以用
+<code>&amp;&amp;</code> 执行下一步，所以上面可以写成这样：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">while [ $# -gt 0 ]; do<br><br>	case $1 in<br>		&#x27;-t&#x27;|&#x27;--to&#x27;) to=$2 &amp;&amp; shift ;;<br>		&#x27;-f&#x27;|&#x27;--from&#x27;) from=$2 &amp;&amp; shift ;;<br>		&#x27;-q&#x27;|&#x27;--query&#x27;) query=$2 &amp;&amp; shift ;;<br>	esac<br>	shift<br>done<br></code></pre></div></td></tr></table></figure>
-
 <p>现在我们的脚本如下，顺便测试一下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">encoding:utf-8</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">翻译 HTTPS 地址</span><br>declare -r basic_url=&quot;https://api.fanyi.baidu.com/api/trans/vip/translate&quot;<br><span class="hljs-meta prompt_"># </span><span class="language-bash">APPID</span><br>declare -r appid=&quot;xxxxxxxxxxxxxxxxxxxx&quot;<br><span class="hljs-meta prompt_"># </span><span class="language-bash">密钥</span><br>declare -r token=&quot;xxxxxxxxxxxxxxxxxxxx&quot;<br><span class="hljs-meta prompt_"># </span><span class="language-bash">random code</span> <br>declare salt=$(openssl rand -base64 18|cut -c 1-10)<br><br>decalre from<br>declare to<br>declare query<br><br>while [ $# -gt 0 ]; do<br>  case $1 in<br>    &#x27;-t&#x27;|&#x27;--to&#x27;) to=$2 &amp;&amp; shift ;;<br>    &#x27;-f&#x27;|&#x27;--from&#x27;) from=$2 &amp;&amp; shift ;;<br>    &#x27;-q&#x27;|&#x27;--query&#x27;) query=$2 &amp;&amp; shift ;;<br>  esac<br>  shift<br>done<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">翻译</span><br>sign=$(echo -n &quot;$appid$query$salt$token&quot; | md5sum | cut -c 1-32)<br><br>query=$(echo &quot;$query&quot; | tr -d &#x27;\n&#x27; | xxd -plain | sed &#x27;s/\(..\)/%\1/g&#x27;)<br>query=$(echo $query | sed &#x27;s/ //g&#x27; )<br><br>result=$(curl &quot;$basic_url?q=$query&amp;from=$from&amp;to=$to&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot; 2&gt;/dev/null)<br>result=&quot;$&#123;result##*dst\&quot;:\&quot;&#125;&quot;<br>echo -e $&#123;result%\&quot;\&#125;\]\&#125;&#125;<br></code></pre></div></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261002830.png" srcset="/img/loading.gif" lazyload alt="中英互译"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261006717.png" srcset="/img/loading.gif" lazyload alt="中英互译"></p>
-<p>大多数时候，我们都是从英文翻译到中文，每次都写这么多的参数实在麻烦，所以我们在 <code>while</code> 之后写参数默认值：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261002830.png" srcset="/img/loading.gif" lazyload
+alt="中英互译" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261006717.png" srcset="/img/loading.gif" lazyload
+alt="中英互译" /></p>
+<p>大多数时候，我们都是从英文翻译到中文，每次都写这么多的参数实在麻烦，所以我们在
+<code>while</code> 之后写参数默认值：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">while [ $# -gt 0 ]; do<br>  case $1 in<br>    &#x27;-t&#x27;|&#x27;--to&#x27;) to=$2 &amp;&amp; shift ;;<br>    &#x27;-f&#x27;|&#x27;--from&#x27;) from=$2 &amp;&amp; shift ;;<br>    &#x27;-q&#x27;|&#x27;--query&#x27;) query=$2 &amp;&amp; shift ;;<br>  esac<br>  shift<br>done<br><br>if [ -z $from ]; then <br>  from=&#x27;auto&#x27;<br>fi<br><br>if [ -z $to ]; then<br>  to=&#x27;zh&#x27;<br>fi<br><br>sign=$(echo -n &quot;$appid$query$salt$token&quot; | md5sum | cut -c 1-32)<br></code></pre></div></td></tr></table></figure>
-
-<p><code>[ -z $from ]</code> 表示，如果 <code>$from</code> 是空( zero )的字符串，就执行 <code>if</code> 里边的语句。这样看起来有点不舒服，我们可以用上面学到的知识修改成下面的语句：</p>
+<p><code>[ -z $from ]</code> 表示，如果 <code>$from</code> 是空( zero
+)的字符串，就执行 <code>if</code>
+里边的语句。这样看起来有点不舒服，我们可以用上面学到的知识修改成下面的语句：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">[ -z $from ] &amp;&amp; from=&#x27;auto&#x27;<br>[ -z $to ] &amp;&amp; to=&#x27;zh&#x27;<br></code></pre></div></td></tr></table></figure>
-
-<p>上面两种形式是等价的，大抵意思是说：源语言自动判断——百度翻译有这个功能，目标语言默认是中文。这样，如果我们可以简单使用 <code>./mt.sh -q 文本</code> 进行翻译。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261018479.png" srcset="/img/loading.gif" lazyload alt="测试"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261021075.png" srcset="/img/loading.gif" lazyload alt="阿拉伯语"></p>
+<p>上面两种形式是等价的，大抵意思是说：源语言自动判断——百度翻译有这个功能，目标语言默认是中文。这样，如果我们可以简单使用
+<code>./mt.sh -q 文本</code> 进行翻译。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261018479.png" srcset="/img/loading.gif" lazyload
+alt="测试" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261021075.png" srcset="/img/loading.gif" lazyload
+alt="阿拉伯语" /></p>
 <p>到这里，翻译部分基本讲完了。</p>
-<h1 id="拓展功能"><a href="#拓展功能" class="headerlink" title="拓展功能"></a>拓展功能</h1><p>大多数的命令行工具都可以使用 <code>命令 --help</code> 查看帮助，所以我们也假模假样搞一个帮助的文本。我的文本如下：</p>
+<h1 id="拓展功能">拓展功能</h1>
+<p>大多数的命令行工具都可以使用 <code>命令 --help</code>
+查看帮助，所以我们也假模假样搞一个帮助的文本。我的文本如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">&#x27;-h&#x27;|&#x27;--help&#x27;)<br>  echo &quot;Usage: $0 [OPTION]&quot; <br>  echo &quot;Valid options are:&quot;<br>  echo -e &quot; -q, --query\t\ttext want to translate&quot;<br>  echo -e &quot; -f, --from\t\tsource language. auto detect default&quot;<br>  echo -e &quot; -t, --to\t\tdestinate language, Chinese default&quot;<br>  echo -e &quot; -l, --list\t\tlist all support languages&quot;<br>  echo -e &quot; -i, --interact\t\tenter interact mode&quot;<br>  echo -e &quot; -c, --clear\t\tclear the screen&quot;<br>  echo -e &quot; cmd\t\t\tonly on interact mode. use to set settings, same as above.&quot;<br>  echo &quot;&quot;<br>  echo &quot;example:&quot;<br>  echo &quot;$0 -f en -t zh -q &#x27;I like it.&#x27;&quot;<br>  echo &quot;$0 &#x27;I like it&#x27;&quot;<br>  echo &quot;&quot;<br>  echo &quot;when use &#x27;$0 -i&#x27; you can type such command to change settings&quot;<br>  echo &quot;    &gt;cmd -f zh -t en&quot;<br>  ;;<br></code></pre></div></td></tr></table></figure>
-
-<p>把上面的文本放到 <code>while</code> 循环的  <code>case</code> 中。这里我还写了一些拓展，例如交互模式(interact mode)。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261028368.png" srcset="/img/loading.gif" lazyload alt="帮助"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261030188.png" srcset="/img/loading.gif" lazyload alt="使用帮助"></p>
-<p>可以看到，列出帮助之后脚本仍旧执行翻译，所以后面出现报错。我们需要设置列出帮助之后直接退出脚本，在脚本中写下 <code>exit 0</code>。</p>
+<p>把上面的文本放到 <code>while</code> 循环的 <code>case</code>
+中。这里我还写了一些拓展，例如交互模式(interact mode)。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261028368.png" srcset="/img/loading.gif" lazyload
+alt="帮助" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261030188.png" srcset="/img/loading.gif" lazyload
+alt="使用帮助" /></p>
+<p>可以看到，列出帮助之后脚本仍旧执行翻译，所以后面出现报错。我们需要设置列出帮助之后直接退出脚本，在脚本中写下
+<code>exit 0</code>。</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">echo &quot;    &gt;cmd -f zh -t en&quot;<br>exit 0<br>;;<br></code></pre></div></td></tr></table></figure>
-
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p><code>case</code> 分支 <code>--help</code>  看起来占位置，还不好看。我们可以写一个函数，把里边的语句单独提出来，然后调用脚本，这样脚本就可以写成：</p>
+<h2 id="函数">函数</h2>
+<p><code>case</code> 分支 <code>--help</code>
+看起来占位置，还不好看。我们可以写一个函数，把里边的语句单独提出来，然后调用脚本，这样脚本就可以写成：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">function uasge()&#123;<br><span class="hljs-meta prompt_">   # </span><span class="language-bash">这里写 <span class="hljs-built_in">echo</span> ...</span><br>&#125;<br><br>while [ $# -gt 0 ]; do<br>  case $1 in<br>    &#x27;-t&#x27;|&#x27;--to&#x27;) to=$2 &amp;&amp; shift ;;<br>    &#x27;-f&#x27;|&#x27;--from&#x27;) from=$2 &amp;&amp; shift ;;<br>    &#x27;-q&#x27;|&#x27;--query&#x27;) query=$2 &amp;&amp; shift ;;<br>    &#x27;-h&#x27;|&#x27;--help&#x27;) usage &amp;&amp; exit 0 ;;<br>  esac<br>  shift<br>done<br></code></pre></div></td></tr></table></figure>
-
-<p>Shell 中的脚本调用不用括号，直接列出函数名，如果有参数就直接放后面：<code>func para1 para2 para3</code>.</p>
+<p>Shell
+中的脚本调用不用括号，直接列出函数名，如果有参数就直接放后面：<code>func para1 para2 para3</code>.</p>
 <p>同理，完善 <code>--list</code> 列出支持的语言翻译的时候可以写成</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">function uasge()&#123;<br><span class="hljs-meta prompt_">   # </span><span class="language-bash">这里写 <span class="hljs-built_in">echo</span> ...</span><br>&#125;<br><br>function language_support()&#123;<br><br>  echo -e &quot;name\t\tid&quot;<br>  echo -e &quot;Chinese\t\tzh&quot;<br>  echo -e &quot;  --Traditional\tcht&quot;<br>  echo -e &quot;  --Classical\twyw&quot;<br>  echo -e &quot;  --Cantonese\tyue&quot;<br>  echo -e &quot;English\t\ten&quot;<br>  echo -e &quot;Japanese\tjp&quot;<br>  echo -e &quot;Spanish\t\tspa&quot;<br>  echo -e &quot;Russian\t\tru&quot;<br>  echo -e &quot;Italic\t\tit&quot;<br>  echo -e &quot;Polish\t\tpl&quot;<br>  echo -e &quot;Danish\t\tdan&quot;<br>  echo -e &quot;Romanian\trom&quot;<br>  echo -e &quot;Hugarian\thu&quot;<br>  echo -e &quot;Korean\t\tkor&quot;<br>  echo -e &quot;Thai\t\tth&quot;<br>  echo -e &quot;Portuguese\tpt&quot;<br>  echo -e &quot;Greek\t\tel&quot;<br>  echo -e &quot;Bulgarian\tbul&quot;<br>  echo -e &quot;Finnish\t\tfin&quot;<br>  echo -e &quot;Slovene\t\tslo&quot;<br>  echo -e &quot;French\t\tfra&quot;<br>  echo -e &quot;Arabic\t\tara&quot;<br>  echo -e &quot;German\t\tde&quot;<br>  echo -e &quot;Dutch\t\tnl&quot;<br>  echo -e &quot;Estonia\t\test&quot;<br>  echo -e &quot;Czech\t\tcs&quot;<br>  echo -e &quot;Swedish\t\tswe&quot;<br>  echo -e &quot;Vietnamese\tvie&quot;<br>  echo -e &quot;and so on&quot;<br>&#125;<br><br>while [ $# -gt 0 ]; do<br>  case $1 in<br>    &#x27;-t&#x27;|&#x27;--to&#x27;) to=$2 &amp;&amp; shift ;;<br>    &#x27;-f&#x27;|&#x27;--from&#x27;) from=$2 &amp;&amp; shift ;;<br>    &#x27;-q&#x27;|&#x27;--query&#x27;) query=$2 &amp;&amp; shift ;;<br>    &#x27;-h&#x27;|&#x27;--help&#x27;) usage &amp;&amp; exit 0 ;;<br>    &#x27;-l&#x27;|&#x27;--list&#x27;) language_support &amp;&amp; exit 0 ;;<br>  esac<br>  shift<br>done<br></code></pre></div></td></tr></table></figure>
-
 <p>到这里，我们的脚本基本完善了，就差一个交互模式了。</p>
-<h2 id="交互模式"><a href="#交互模式" class="headerlink" title="交互模式"></a>交互模式</h2><p>每次翻译我们都需要执行一次脚本太麻烦了，我们希望可以做到执行一次脚本后保留之前的设置继续翻译。此外，如果我们突然想改变翻译的一些设置，也可通过交互模式直接改变，而不用退出重新设置。这基本是交互模式的工作。</p>
-<p>交互模式，顾名思义，我们就用 <code>-i</code> 和 <code>--interact</code> 代替。在你的 <code>case</code> 给交互模式赏一个分支：</p>
+<h2 id="交互模式">交互模式</h2>
+<p>每次翻译我们都需要执行一次脚本太麻烦了，我们希望可以做到执行一次脚本后保留之前的设置继续翻译。此外，如果我们突然想改变翻译的一些设置，也可通过交互模式直接改变，而不用退出重新设置。这基本是交互模式的工作。</p>
+<p>交互模式，顾名思义，我们就用 <code>-i</code> 和
+<code>--interact</code> 代替。在你的 <code>case</code>
+给交互模式赏一个分支：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">&#x27;-i&#x27;|&#x27;--interact&#x27;)<br>;;<br></code></pre></div></td></tr></table></figure>
-
-<p>如果调用交互模式的指令是：<code>./mt.sh -i -f en -t zh</code>，我们希望脚本先分析完参数再执行交互模式。这样一来，<code>case</code> 的交互模式分支就不能用函数了。我们设置一个标志符，确认是不是交互模式。大概如下：</p>
+<p>如果调用交互模式的指令是：<code>./mt.sh -i -f en -t zh</code>，我们希望脚本先分析完参数再执行交互模式。这样一来，<code>case</code>
+的交互模式分支就不能用函数了。我们设置一个标志符，确认是不是交互模式。大概如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell"><br>declare -i interaction=0<br>while [ $# -gt 0 ]; do<br><span class="hljs-meta prompt_">  # </span><span class="language-bash">...</span><br>    &#x27;-i&#x27;|&#x27;--interact&#x27;) interaction=1 ;;<br><span class="hljs-meta prompt_">  # </span><span class="language-bash">...</span><br>done<br></code></pre></div></td></tr></table></figure>
-
 <p>后面我们再判断是不是交互模式。</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">[ -z $from ] &amp;&amp; from=&#x27;auto&#x27;<br>[ -z $to ] &amp;&amp; to=&#x27;zh&#x27;<br><br>[ $interaction -eq 1 ] &amp;&amp; interact &amp;&amp; exit 0<br></code></pre></div></td></tr></table></figure>
-
-<p>这次就需要写一个 interact 函数了。可以把函数放到 <code>while</code> 循环之前。</p>
+<p>这次就需要写一个 interact 函数了。可以把函数放到 <code>while</code>
+循环之前。</p>
 <p>我们的想法是，交互模式一行一行读取我们的输入，就像这样：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261109882.png" srcset="/img/loading.gif" lazyload alt="交互模式"></p>
-<p>上面我设置了 <code>cmd</code> 作为交互模式修改设置的关键字，也就是而已使用 <code>cmd + 参数</code> 修改语言翻译的设置。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261109882.png" srcset="/img/loading.gif" lazyload
+alt="交互模式" /></p>
+<p>上面我设置了 <code>cmd</code>
+作为交互模式修改设置的关键字，也就是而已使用 <code>cmd + 参数</code>
+修改语言翻译的设置。</p>
 <p>交互模式的函数如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">function interact()&#123;<br><br>  while read -p &quot;&gt;&quot; query; do<br>    [[ -z &quot;$query&quot; ]] &amp;&amp; continue<br>    [[ &quot;$query&quot; =~ &quot;cmd &quot; ]] &amp;&amp; commands &amp;&amp; continue<br>    <br>    # translate<br>  done<br>&#125;<br></code></pre></div></td></tr></table></figure>
-
-<p>一行一行解释，<code>read</code> 是 Shell 读取输入的方式，就像 Python 的 input()、C++ 的 std::cin 、C 语言的 scanf() 等。<code>-p</code> 表示不换行，后面跟着提示符 <code>&gt;</code> ，然后就是读取的字符。我们使用 <code>while</code> 读取循环，也就说，只有存在输入的时候才执行下面的语句，避免一直循环占用内存。</p>
+<p>一行一行解释，<code>read</code> 是 Shell 读取输入的方式，就像 Python
+的 input()、C++ 的 std::cin 、C 语言的 scanf() 等。<code>-p</code>
+表示不换行，后面跟着提示符 <code>&gt;</code>
+，然后就是读取的字符。我们使用 <code>while</code>
+读取循环，也就说，只有存在输入的时候才执行下面的语句，避免一直循环占用内存。</p>
 <p>下一行表示，如果没有输入——例如我们直接回车——那继续循环，不执行命令。</p>
-<p>再下一行表示，如果 <code>query</code> 包含 <code>cmd</code> 字符串，那就执行 commands 函数，然后继续循环，不执行后面的语句。</p>
+<p>再下一行表示，如果 <code>query</code> 包含 <code>cmd</code>
+字符串，那就执行 commands 函数，然后继续循环，不执行后面的语句。</p>
 <blockquote>
-<p>Shell 中判断是否包含某一字符串使用 <code>=~</code> ，例如  A 字符串是否包含 B 字符串</p>
+<p>Shell 中判断是否包含某一字符串使用 <code>=~</code> ，例如 A
+字符串是否包含 B 字符串</p>
 <blockquote>
-<p>[[ A &#x3D;~ B ]]</p>
+<p>[[ A =~ B ]]</p>
 </blockquote>
 </blockquote>
 <p>再后面就是我们的翻译语句了。</p>
-<p><strong>拷贝</strong>我们的翻译语句，放到 <code>#translate</code> 的位置，就像这样：</p>
+<p><strong>拷贝</strong>我们的翻译语句，放到 <code>#translate</code>
+的位置，就像这样：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">function interact()&#123;<br><br>  while read -p &quot;&gt;&quot; query; do<br>    [[ -z &quot;$query&quot; ]] &amp;&amp; continue<br>    [[ &quot;$query&quot; =~ &quot;cmd &quot; ]] &amp;&amp; commands &amp;&amp; continue<br>    <br>    sign=$(echo -n &quot;$appid$query$salt$token&quot; | md5sum | cut -c 1-32)<br><br>    query=$(echo &quot;$query&quot; | tr -d &#x27;\n&#x27; | xxd -plain | sed &#x27;s/\(..\)/%\1/g&#x27;)<br>    query=$(echo $query | sed &#x27;s/ //g&#x27; )<br><br>    result=$(curl &quot;$basic_url?q=$query&amp;from=$from&amp;to=$to&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot; 2&gt;/dev/null)<br>    result=&quot;$&#123;result##*dst\&quot;:\&quot;&#125;&quot;<br>    echo -e $&#123;result%\&quot;\&#125;\]\&#125;&#125;<br>  done<br>&#125;<br><br>declare -i interaction=0<br>while [ $# -gt 0 ]; do<br>  case $1 in<br>    &#x27;-t&#x27;|&#x27;--to&#x27;) to=$2 &amp;&amp; shift ;;<br>    &#x27;-f&#x27;|&#x27;--from&#x27;) from=$2 &amp;&amp; shift ;;<br>    &#x27;-q&#x27;|&#x27;--query&#x27;) query=$2 &amp;&amp; shift ;;<br>    &#x27;-h&#x27;|&#x27;--help&#x27;) usage &amp;&amp; exit 0 ;;<br>    &#x27;-l&#x27;|&#x27;--list&#x27;) language_support &amp;&amp; exit 0 ;;<br>    &#x27;-i&#x27;|&#x27;--interact&#x27;) interaction=1 ;;<br>  esac<br>  shift<br>done<br><br>[ -z $from ] &amp;&amp; from=&#x27;auto&#x27;<br>[ -z $to ] &amp;&amp; to=&#x27;zh&#x27;<br><br>[ $interaction -eq 1 ] &amp;&amp; interact &amp;&amp; exit 0<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">翻译</span><br>sign=$(echo -n &quot;$appid$query$salt$token&quot; | md5sum | cut -c 1-32)<br><br>query=$(echo &quot;$query&quot; | tr -d &#x27;\n&#x27; | xxd -plain | sed &#x27;s/\(..\)/%\1/g&#x27;)<br>query=$(echo $query | sed &#x27;s/ //g&#x27; )<br><br>result=$(curl &quot;$basic_url?q=$query&amp;from=$from&amp;to=$to&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot; 2&gt;/dev/null)<br>result=&quot;$&#123;result##*dst\&quot;:\&quot;&#125;&quot;<br>echo -e $&#123;result%\&quot;\&#125;\]\&#125;&#125;<br></code></pre></div></td></tr></table></figure>
-
 <p>可以看到，有好多重复的语句，特别是翻译的部分，所以我们写一个翻译的函数，直接调用：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">function translate()&#123;<br><br>  sign=$(echo -n &quot;$appid$query$salt$token&quot; | md5sum | cut -c 1-32)<br><br>  query=$(echo &quot;$query&quot; | tr -d &#x27;\n&#x27; | xxd -plain | sed &#x27;s/\(..\)/%\1/g&#x27;)<br>  query=$(echo $query | sed &#x27;s/ //g&#x27; )<br><br>  result=$(curl &quot;$basic_url?q=$query&amp;from=$from&amp;to=$to&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot; 2&gt;/dev/null)<br>  result=&quot;$&#123;result##*dst\&quot;:\&quot;&#125;&quot;<br>  echo -e $&#123;result%\&quot;\&#125;\]\&#125;&#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
-
 <p>然后脚本变成</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">function interact()&#123;<br><br>  while read -p &quot;&gt;&quot; query; do<br>    [[ -z &quot;$query&quot; ]] &amp;&amp; continue<br>    [[ &quot;$query&quot; =~ &quot;cmd &quot; ]] &amp;&amp; commands &amp;&amp; continue<br>    <br>    translate<br>  done<br>&#125;<br><br>declare -i interaction=0<br>while [ $# -gt 0 ]; do<br>  case $1 in<br>    &#x27;-t&#x27;|&#x27;--to&#x27;) to=$2 &amp;&amp; shift ;;<br>    &#x27;-f&#x27;|&#x27;--from&#x27;) from=$2 &amp;&amp; shift ;;<br>    &#x27;-q&#x27;|&#x27;--query&#x27;) query=$2 &amp;&amp; shift ;;<br>    &#x27;-h&#x27;|&#x27;--help&#x27;) usage &amp;&amp; exit 0 ;;<br>    &#x27;-l&#x27;|&#x27;--list&#x27;) language_support &amp;&amp; exit 0 ;;<br>    &#x27;-i&#x27;|&#x27;--interact&#x27;) interaction=1 ;;<br>  esac<br>  shift<br>done<br><br>[ -z $from ] &amp;&amp; from=&#x27;auto&#x27;<br>[ -z $to ] &amp;&amp; to=&#x27;zh&#x27;<br><br>[ $interaction -eq 1 ] &amp;&amp; interact &amp;&amp; exit 0<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">翻译</span><br>translate<br></code></pre></div></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261129188.png" srcset="/img/loading.gif" lazyload alt="交互"></p>
-<p>接下来写 <code>commands</code>. 编写 <code>commands</code> 函数之前我们知道，其内部的解析实际上和解析脚本参数基本一样，所以我们要做的就是去除 <code>cmd </code> 字符串，然后把后面的参数发给原本的参数解析函数——原本只是普通语句，我们也需要把它封装起来，所以就变成下面这样：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203261129188.png" srcset="/img/loading.gif" lazyload
+alt="交互" /></p>
+<p>接下来写 <code>commands</code>. 编写 <code>commands</code>
+函数之前我们知道，其内部的解析实际上和解析脚本参数基本一样，所以我们要做的就是去除
+<code>cmd</code>
+字符串，然后把后面的参数发给原本的参数解析函数——原本只是普通语句，我们也需要把它封装起来，所以就变成下面这样：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">...</span><br><br>function commands()&#123;<br><br>  local args=$(echo &quot;$query&quot; | sed &#x27;s/cmd\ //g&#x27;)<br>  query=&#x27;&#x27;<br>  settings $args<br>&#125;<br><br>function interact()&#123;<br><span class="hljs-meta prompt_">	# </span><span class="language-bash">...</span><br>&#125;<br><br>declare -i interaction=0<br><br>function settings()&#123;<br><br>  while [ $# -gt 0 ]; do<br>    case $1 in<br>      &#x27;-t&#x27;|&#x27;--to&#x27;) to=$2 &amp;&amp; shift ;;<br>      &#x27;-f&#x27;|&#x27;--from&#x27;) from=$2 &amp;&amp; shift ;;<br>      &#x27;-q&#x27;|&#x27;--query&#x27;) query=$2 &amp;&amp; shift ;;<br>      &#x27;-h&#x27;|&#x27;--help&#x27;) usage &amp;&amp; return 0 ;;<br>      &#x27;-l&#x27;|&#x27;--list&#x27;) language_support &amp;&amp; return 0 ;;<br>      &#x27;-i&#x27;|&#x27;--interact&#x27;) interaction=1 ;;<br>      *） query=$1 ;;<br>    esac<br>    shift<br>  done<br>&#125;<br><br>settings $@<br><br>[ -z $from ] &amp;&amp; from=&#x27;auto&#x27;<br>[ -z $to ] &amp;&amp; to=&#x27;zh&#x27;<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">...</span><br></code></pre></div></td></tr></table></figure>
-
-<p>鉴于放到了函数里，我们就不使用 <code>exit 0</code> 了，而是改成 <code>return 0</code> . 而且，我们的 <code>while</code>循环多了一个分支 <code>*</code> ，这个表示，如果没有任何标志的话，默认直接翻译无法解析的参数。其实就是一句话：脚本之前必须用 <code>-q</code> 指明翻译的文本，现在不用了，可以这样用 <code>./mt.sh text</code>。</p>
-<p>至此，我们的脚本写完了。当然，眼尖的同志看到，我还没有实现 <code>clear</code> 指令呢！没事，这让你们自己探索。</p>
-<h1 id="后语"><a href="#后语" class="headerlink" title="后语"></a>后语</h1><p>又超过三千字了，这使我不得不结束这篇文章。脚本可拓展的其实还很多，有兴趣可以试试。我附上两个脚本——mt1.sh 和 mt.sh. 前者是写这篇文章使用的脚本，后者是我之前写的完整的脚本。因为蓝奏云不支持 <code>sh</code> 格式，所以我重命名为 <code>mt1.sh.txt</code>  和 <code>mt.sh.txt</code>。下载之后只需要把扩展名中的 <code>.txt</code> 删掉就可以了。</p>
-<h1 id="相关脚本"><a href="#相关脚本" class="headerlink" title="相关脚本"></a>相关脚本</h1><p>脚本: <a target="_blank" rel="noopener" href="https://wwb.lanzoub.com/b017dhqaf">https://wwb.lanzoub.com/b017dhqaf</a><br>密码: chunshuyumao</p>
+<p>鉴于放到了函数里，我们就不使用 <code>exit 0</code> 了，而是改成
+<code>return 0</code> . 而且，我们的 <code>while</code>循环多了一个分支
+<code>*</code>
+，这个表示，如果没有任何标志的话，默认直接翻译无法解析的参数。其实就是一句话：脚本之前必须用
+<code>-q</code> 指明翻译的文本，现在不用了，可以这样用
+<code>./mt.sh text</code>。</p>
+<p>至此，我们的脚本写完了。当然，眼尖的同志看到，我还没有实现
+<code>clear</code> 指令呢！没事，这让你们自己探索。</p>
+<h1 id="后语">后语</h1>
+<p>又超过三千字了，这使我不得不结束这篇文章。脚本可拓展的其实还很多，有兴趣可以试试。我附上两个脚本——mt1.sh
+和 mt.sh.
+前者是写这篇文章使用的脚本，后者是我之前写的完整的脚本。因为蓝奏云不支持
+<code>sh</code> 格式，所以我重命名为 <code>mt1.sh.txt</code> 和
+<code>mt.sh.txt</code>。下载之后只需要把扩展名中的 <code>.txt</code>
+删掉就可以了。</p>
+<h1 id="相关脚本">相关脚本</h1>
+<p>脚本: https://wwb.lanzoub.com/b017dhqaf 密码: chunshuyumao</p>
 
             </div>
             <hr>

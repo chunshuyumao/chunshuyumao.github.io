@@ -23,33 +23,12 @@
 <meta property="og:site_name" content="椿树与猫">
 <meta property="og:description" content="Typora写作通常会插入图片，一个简单的方式是准备单独的图片文件夹，这是特异性的解决方式，治标不治本。如何做到文章只写一遍，图片只保留一份？这时候我们就需要图床了。接下来我会介绍Typora与图床的一条龙写作服务。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051328651.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051335431.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051337609.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051338760.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051339134.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051756804.gif">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051755069.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051344742.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051319152.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051350833.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051352300.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051354452.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051359935.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051401471.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051401541.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051402140.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051405605.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051410924.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051415186.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201031746951.gif">
 <meta property="article:published_time" content="2022-01-03T04:57:03.000Z">
 <meta property="article:modified_time" content="2022-07-29T12:43:12.000Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="图床">
 <meta property="article:tag" content="Makrdown">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051328651.png">
   
   
   <title>Typora+PicGo写作平台的搭建 - 椿树与猫</title>
@@ -263,78 +242,179 @@
               <blockquote>
 <p>前前言：</p>
 <p>2022 年 03 月 24 日</p>
-<p>这天我的  Gitee 图床被屏蔽了，所以后面的这些教程，把它看作  GitHub 就行了。如果真个想使用  Gitee ，建议自己的图片做个备份，经常换仓库。不然要死直接全死。这里也要说明一下，写了封邮件之后，16 个小时左右仓库就解封了。不过解封归解封， Gitee 再见！</p>
+<p>这天我的 Gitee 图床被屏蔽了，所以后面的这些教程，把它看作 GitHub
+就行了。如果真个想使用 Gitee
+，建议自己的图片做个备份，经常换仓库。不然要死直接全死。这里也要说明一下，写了封邮件之后，16
+个小时左右仓库就解封了。不过解封归解封， Gitee 再见！</p>
 <p>子曰：资本家的羊毛不可薅。</p>
 </blockquote>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p> Typora 是优秀的本地写作软件，但是我们的文章可能不仅仅是保留在本地。有些时候我们会进行数据迁移，例如换一台电脑，或者发表到网上，我们会希望自己的图片只有一份，因为这样迁移的麻烦少了一个。图床是解决图片问题的最好方式。</p>
+<h1 id="前言">前言</h1>
+<p>Typora
+是优秀的本地写作软件，但是我们的文章可能不仅仅是保留在本地。有些时候我们会进行数据迁移，例如换一台电脑，或者发表到网上，我们会希望自己的图片只有一份，因为这样迁移的麻烦少了一个。图床是解决图片问题的最好方式。</p>
 <blockquote>
-<p>所谓 图床 ，就是把你的图片放到一个固定的地方(常指网络)，然后通过连接访问，这样要使用图片的时候，只需要知道图片的链接就行，不需要再保留一份。在   Markdown 写作中我们知道，使用图片的方式是<code>[图注](链接)</code>。因此，当用 Markdown 进行写作的时候，我建议配合图床使用——把图片保留在网络上而不是本地。</p>
+<p>所谓 图床
+，就是把你的图片放到一个固定的地方(常指网络)，然后通过连接访问，这样要使用图片的时候，只需要知道图片的链接就行，不需要再保留一份。在
+Markdown
+写作中我们知道，使用图片的方式是<code>[图注](链接)</code>。因此，当用
+Markdown
+进行写作的时候，我建议配合图床使用——把图片保留在网络上而不是本地。</p>
 </blockquote>
-<p>现在可选的的图床很多，免费的、不免费的、国内的、国外的，但稳定的、普适的图床却很少。我用过的有 sm.ms 图床和  Gitee 。鉴于例如公众号这类平台有屏蔽外链的风险，我选择长期使用  Gitee 作为图床。  Gitee 是国内最大的代码托管平台，内部提供仓库 2g (2021年)。这存储空间够用了。当然，  GitHub 也可以作为选择，但是访问可能慢一点，而且空间也少一点。</p>
+<p>现在可选的的图床很多，免费的、不免费的、国内的、国外的，但稳定的、普适的图床却很少。我用过的有
+sm.ms 图床和 Gitee
+。鉴于例如公众号这类平台有屏蔽外链的风险，我选择长期使用 Gitee
+作为图床。 Gitee 是国内最大的代码托管平台，内部提供仓库 2g
+(2021年)。这存储空间够用了。当然， GitHub
+也可以作为选择，但是访问可能慢一点，而且空间也少一点。</p>
 <p>闲话少叙，准备好工具：</p>
 <ul>
-<li>Gitee <sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="https://Gitee.com/
+<li>Gitee
+<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span
+class="hint--top hint--rounded" aria-label="https://Gitee.com/
 ">[1]</span></a></sup>账号</li>
-<li>Typora <sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" aria-label="https://Typora.io/
+<li>Typora
+<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span
+class="hint--top hint--rounded" aria-label="https://Typora.io/
 ">[2]</span></a></sup>编辑器，Markdown 写作</li>
-<li>GicGo <sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" aria-label="https://PicGo.GitHub.io/PicGo-Doc/zh/
+<li>GicGo
+<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://PicGo.GitHub.io/PicGo-Doc/zh/
 ">[3]</span></a></sup>图床配置工具</li>
 </ul>
 <p>以上所需的工具都是免费的。</p>
-<hr>
-<h1 id="PicGo准备"><a href="#PicGo准备" class="headerlink" title="PicGo准备"></a>PicGo准备</h1><p> PicGo 是开源免费的图床配置工具，我一直在用。官网的介绍很清楚，如果有不清楚的可以看官网的文档。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051328651.png" srcset="/img/loading.gif" lazyload alt="下载PicGo"></p>
+<hr />
+<h1 id="picgo准备">PicGo准备</h1>
+<p>PicGo
+是开源免费的图床配置工具，我一直在用。官网的介绍很清楚，如果有不清楚的可以看官网的文档。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051328651.png" srcset="/img/loading.gif" lazyload
+alt="下载PicGo" /></p>
 <p>点击下载之后一直往下拉，找到最新版的下载软件，</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051335431.png" srcset="/img/loading.gif" lazyload alt="找到最新版(就是最上面的一版)"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051337609.png" srcset="/img/loading.gif" lazyload alt="下载指定版本"></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051335431.png" srcset="/img/loading.gif" lazyload
+alt="找到最新版(就是最上面的一版)" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051337609.png" srcset="/img/loading.gif" lazyload
+alt="下载指定版本" /></p>
 <p>下载之后就是简单的安装，安装完之后打开。</p>
 <blockquote>
-<p> 注意： </p>
-<p> PicGo 打开的时候只在任务栏出现，所以去任务栏点击打开。</p>
+<p>注意：</p>
+<p>PicGo 打开的时候只在任务栏出现，所以去任务栏点击打开。</p>
 </blockquote>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051338760.png" srcset="/img/loading.gif" lazyload alt="打开PicGo"></p>
-<p>因为 PicGo 没有内置  Gitee ，所以去插件设置查找  Gitee 的插件安装。这三种都差不多，选择第一个就像我这样。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051339134.png" srcset="/img/loading.gif" lazyload alt="查找插件并下载"></p>
-<p>插件安装的时候，系统会提示你安装 Node.js ，同意安装就行了。安装之后效果如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051756804.gif" srcset="/img/loading.gif" lazyload alt="安装"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051755069.png" srcset="/img/loading.gif" lazyload alt="安装node.js"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051344742.png" srcset="/img/loading.gif" lazyload alt="安装插件效果"></p>
-<p>好了， PicGo 准备好了，接下来准备白嫖  Gitee 的 2G 空间。</p>
-<hr>
-<h1 id="Gitee账号"><a href="#Gitee账号" class="headerlink" title="Gitee账号"></a>Gitee账号</h1><p>以下为申请  Gitee 账号，如已有，请跳至 仓库配置 。</p>
-<h2 id="申请账号"><a href="#申请账号" class="headerlink" title="申请账号"></a>申请账号</h2><p>首先去  Gitee 官方网站，点击注册。注册使用的是邮箱，可以临时申请一个邮箱——但是必须可以接受消息，因为后面需要验证。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051319152.png" srcset="/img/loading.gif" lazyload alt="官网注册"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051350833.png" srcset="/img/loading.gif" lazyload alt="注册"></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051338760.png" srcset="/img/loading.gif" lazyload
+alt="打开PicGo" /></p>
+<p>因为 PicGo 没有内置 Gitee ，所以去插件设置查找 Gitee
+的插件安装。这三种都差不多，选择第一个就像我这样。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051339134.png" srcset="/img/loading.gif" lazyload
+alt="查找插件并下载" /></p>
+<p>插件安装的时候，系统会提示你安装 Node.js
+，同意安装就行了。安装之后效果如下：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051756804.gif" srcset="/img/loading.gif" lazyload
+alt="安装" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051755069.png" srcset="/img/loading.gif" lazyload
+alt="安装node.js" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051344742.png" srcset="/img/loading.gif" lazyload
+alt="安装插件效果" /></p>
+<p>好了， PicGo 准备好了，接下来准备白嫖 Gitee 的 2G 空间。</p>
+<hr />
+<h1 id="gitee账号">Gitee账号</h1>
+<p>以下为申请 Gitee 账号，如已有，请跳至 仓库配置 。</p>
+<h2 id="申请账号">申请账号</h2>
+<p>首先去 Gitee
+官方网站，点击注册。注册使用的是邮箱，可以临时申请一个邮箱——但是必须可以接受消息，因为后面需要验证。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051319152.png" srcset="/img/loading.gif" lazyload
+alt="官网注册" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051350833.png" srcset="/img/loading.gif" lazyload
+alt="注册" /></p>
 <p>注册时需要用邮箱接收验证码，完成之后，登录进入主界面，创建新仓库：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051352300.png" srcset="/img/loading.gif" lazyload alt="创建仓库"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051354452.png" srcset="/img/loading.gif" lazyload alt="创建仓库"></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051352300.png" srcset="/img/loading.gif" lazyload
+alt="创建仓库" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051354452.png" srcset="/img/loading.gif" lazyload
+alt="创建仓库" /></p>
 <p>创建完成。</p>
-<hr>
-<h2 id="仓库配置"><a href="#仓库配置" class="headerlink" title="仓库配置"></a>仓库配置</h2><p>为了让 PicGo 行使生杀大权，我们需要给它一个令牌( token )，大概类似于一种权限。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051359935.png" srcset="/img/loading.gif" lazyload alt="打开设置"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051401471.png" srcset="/img/loading.gif" lazyload alt="私人令牌"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051401541.png" srcset="/img/loading.gif" lazyload alt="生成新的令牌"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051402140.png" srcset="/img/loading.gif" lazyload alt="描述可以写上一些信息"></p>
-<p>注意，令牌生成的时候复制下来保管好，因为它只生成一次，忘了就得重新申请。这里我就不重新申请了。把令牌粘贴到 PicGo 的  Gitee 图床的 token 框。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051405605.png" srcset="/img/loading.gif" lazyload alt="粘贴令牌"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051410924.png" srcset="/img/loading.gif" lazyload alt="看图写话"></p>
+<hr />
+<h2 id="仓库配置">仓库配置</h2>
+<p>为了让 PicGo 行使生杀大权，我们需要给它一个令牌( token
+)，大概类似于一种权限。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051359935.png" srcset="/img/loading.gif" lazyload
+alt="打开设置" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051401471.png" srcset="/img/loading.gif" lazyload
+alt="私人令牌" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051401541.png" srcset="/img/loading.gif" lazyload
+alt="生成新的令牌" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051402140.png" srcset="/img/loading.gif" lazyload
+alt="描述可以写上一些信息" /></p>
+<p>注意，令牌生成的时候复制下来保管好，因为它只生成一次，忘了就得重新申请。这里我就不重新申请了。把令牌粘贴到
+PicGo 的 Gitee 图床的 token 框。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051405605.png" srcset="/img/loading.gif" lazyload
+alt="粘贴令牌" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051410924.png" srcset="/img/loading.gif" lazyload
+alt="看图写话" /></p>
 <p>然后设置为默认图床，确定，万事大吉！！</p>
-<hr>
-<h3 id="配置Typora"><a href="#配置Typora" class="headerlink" title="配置Typora"></a>配置Typora</h3><p>默认已经安装了 Typora 了。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051415186.png" srcset="/img/loading.gif" lazyload alt="配置Typora"></p>
-<p>至此，你完成了所有的配置。点击 验证图片上传选项 验证是否成功。如果出现问题，最好检查你的 PicGo 中的 repo 写对没有。</p>
-<h1 id="验证写作"><a href="#验证写作" class="headerlink" title="验证写作"></a>验证写作</h1><p>我们验证一下效果：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201031746951.gif" srcset="/img/loading.gif" lazyload alt="上传图片" title="上传图片"></p>
+<hr />
+<h3 id="配置typora">配置Typora</h3>
+<p>默认已经安装了 Typora 了。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201051415186.png" srcset="/img/loading.gif" lazyload
+alt="配置Typora" /></p>
+<p>至此，你完成了所有的配置。点击 验证图片上传选项
+验证是否成功。如果出现问题，最好检查你的 PicGo 中的 repo 写对没有。</p>
+<h1 id="验证写作">验证写作</h1>
+<p>我们验证一下效果：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202201031746951.gif" srcset="/img/loading.gif" lazyload
+title="上传图片" alt="上传图片" /></p>
 <p>完成！</p>
-<hr>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>借助图床，   Markdown 式的写作更加轻松，也节约了图片管理的时间。然而需要注意的是， PicGo 上传的图片大小最好不要超过 1M ，因为这会影响加载的速度。而且有些时候，你的图片可能会被  Gitee 吞掉，原因不明，也许是版权问题。</p>
+<hr />
+<h1 id="后记">后记</h1>
+<p>借助图床， Markdown
+式的写作更加轻松，也节约了图片管理的时间。然而需要注意的是， PicGo
+上传的图片大小最好不要超过 1M
+，因为这会影响加载的速度。而且有些时候，你的图片可能会被 Gitee
+吞掉，原因不明，也许是版权问题。</p>
 <blockquote>
-<p>PicGo 和 Typora 的安装包提供(无需登录，直接复制链接输入提取码即可):<br>链接: <a target="_blank" rel="noopener" href="https://www.123pan.com/s/gqA9-llYB">https://www.123pan.com/s/gqA9-llYB</a>	提取码:csym</p>
+<p>PicGo 和 Typora 的安装包提供(无需登录，直接复制链接输入提取码即可):
+链接: https://www.123pan.com/s/gqA9-llYB 提取码:csym</p>
 </blockquote>
-<h1 id="相关网址"><a href="#相关网址" class="headerlink" title="相关网址"></a>相关网址</h1><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://gitee.com/">https://Gitee.com/</a>
-<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://typora.io/">https://Typora.io/</a>
-<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://picgo.github.io/PicGo-Doc/zh/">https://PicGo.GitHub.io/PicGo-Doc/zh/</a>
-<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+<h1 id="相关网址">相关网址</h1>
+<section class="footnotes">
+<div class="footnote-list">
+<ol>
+<li>
+<span id="fn:1" class="footnote-text"><span>https://Gitee.com/
+<a href="#fnref:1" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:2" class="footnote-text"><span>https://Typora.io/
+<a href="#fnref:2" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:3"
+class="footnote-text"><span>https://PicGo.GitHub.io/PicGo-Doc/zh/
+<a href="#fnref:3" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+</ol>
+</div>
+</section>
+
             </div>
             <hr>
             <div>
