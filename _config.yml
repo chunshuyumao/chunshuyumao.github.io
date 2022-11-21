@@ -116,7 +116,7 @@ pandoc:
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   - type: git
-    repo: https://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@github.com/chunshuyumao/chunshuyumao.github.io 
+    repo: git@github.com:chunshuyumao/chunshuyumao.github.io 
     branch: main
   - type: git
     repo: ssh://chunshuyumao@101.200.84.36:45239/~/NotePages/blog.git
