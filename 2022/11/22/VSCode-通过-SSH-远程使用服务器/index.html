@@ -1,0 +1,597 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言 统计计算和机器学习常常需要借助计算力更强的计算机，也就是服务器。然而服务器一般只能通过 SSH(Secure Shell) 登陆，没有界面。SSH 可以在自己的电脑和服务器之间建立安全的链接，使用自己的服务器。没有界面只有控制台，对于浸淫命令行操作的人来说不是什么大问题；然而很多的科研人员并不是专业开发人员，并不一定对计算机很了解，只有一个终端就成了障碍。 VS Code(Visual St">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSCode 通过 SSH 远程使用服务器">
+<meta property="og:url" content="https://chunshuyumao.github.io/2022/11/22/VSCode-%E9%80%9A%E8%BF%87-SSH-%E8%BF%9C%E7%A8%8B%E4%BD%BF%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="前言 统计计算和机器学习常常需要借助计算力更强的计算机，也就是服务器。然而服务器一般只能通过 SSH(Secure Shell) 登陆，没有界面。SSH 可以在自己的电脑和服务器之间建立安全的链接，使用自己的服务器。没有界面只有控制台，对于浸淫命令行操作的人来说不是什么大问题；然而很多的科研人员并不是专业开发人员，并不一定对计算机很了解，只有一个终端就成了障碍。 VS Code(Visual St">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-22T02:31:21.000Z">
+<meta property="article:modified_time" content="2022-11-22T05:07:16.834Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="SSH">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>VSCode 通过 SSH 远程使用服务器 - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="VSCode 通过 SSH 远程使用服务器">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-11-22 10:31" pubdate>
+        2022年11月22日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">VSCode 通过 SSH 远程使用服务器</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言">前言</h1>
+<p>统计计算和机器学习常常需要借助计算力更强的计算机，也就是服务器。然而服务器一般只能通过
+SSH(Secure Shell) 登陆，没有界面。SSH
+可以在自己的电脑和服务器之间建立安全的链接，使用自己的服务器。没有界面只有控制台，对于浸淫命令行操作的人来说不是什么大问题；然而很多的科研人员并不是专业开发人员，并不一定对计算机很了解，只有一个终端就成了障碍。</p>
+<p><a target="_blank" rel="noopener" href="https://code.visualstudio.com/">VS Code(Visual Studio
+Code)</a>
+是微软推出的一款跨平台编辑器。因其强大的扩展能力和微软雄厚的资金支持，VS
+Code 得到快速发展，现在基本成一个可以配置成任何一门语言 IDE(Integrated
+Development Environment，集成开发环境)
+的编辑器。鉴于此，本篇将通过简单的配置，在 VS Code
+上使用自己的远程服务器。</p>
+<h1 id="预备">预备</h1>
+<p>想使用 SSH 需要自己的电脑安装 SSH。Windows、Linux 和 MacOS
+系统一般都自带了 SSH 的关键。Windows10
+以下则需要手动配置。验证自己电脑是否有 SSH，可以打开控制台，输入
+<code>ssh --version</code>. 如果出现类似的提示则表明本机的 SSH
+可以使用。如果不可以用，Windows 系统到 <a
+target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows-server/administration/openssh/openssh_install_firstuse?tabs=gui">微软教程</a>
+查看如何安装；MacOS 使用 <code>brew install openssl</code>
+进行安装，一般预装；Linux
+系统没有安装就使用自己的包管理器或到软件应用商店安装。</p>
+<blockquote>
+<p>Linux 系统的包管理器太复杂了，一般来说</p>
+<p>Arch Linux 系列: <code>sudo pacman -Syu openssl</code></p>
+<p>Ubuntu/Debian 系列: <code>sudo apt install openssl</code></p>
+<p>RHEL 系列: <code>dnf install openssl</code> 或者
+<code>yum install openssl</code></p>
+<p>这是 Linux 最常见的三个分发版。</p>
+</blockquote>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122110635.png" srcset="/img/loading.gif" lazyload
+alt="检查 SSH 是否安装成功" /></p>
+<p>SSH 准备好就可以安装 VS Code 了。</p>
+<h1 id="配置-vs-code">配置 VS Code</h1>
+<p>到 <a target="_blank" rel="noopener" href="https://code.visualstudio.com/">VS Code(Visual Studio
+Code)</a>
+官网去下载对应的版本然后安装。安装步骤比较简单，此处不再赘述。安装打开
+VS Code
+并按照提示安装中文插件，不愿使用中文本地化插件可以不安装。安装完毕之后选择左上角的四个方框的图标，那是插件商店。搜索
+SSH，安装 Remote SSH 和 Remote
+X11，前者用于远程登录，后者用于端口转发。当然，也可以不安装后者。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122091008.png" srcset="/img/loading.gif" lazyload
+alt="安装 SSH 插件" /></p>
+<p>插件安装完毕按 <code>CTRL+SHIFT+P</code> 快捷键调出命令面板，输入 ssh
+添加主机——也就是服务器。输入 <code>ssh username@hostip</code>
+添加主机，然后保存。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122091126.png" srcset="/img/loading.gif" lazyload
+alt="调出命令面板" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122091302.png" srcset="/img/loading.gif" lazyload
+alt="添加主机" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122091340.png" srcset="/img/loading.gif" lazyload
+alt="选择保存的文件" /></p>
+<p>添加完毕，VS Code
+会提示是否连接，这时候可以选择连接。下次想要再使用不需要添加主机，而是直接呼出命令面板，然后输入
+ssh connect 即可：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122091358.png" srcset="/img/loading.gif" lazyload
+alt="是否连接" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122091506.png" srcset="/img/loading.gif" lazyload
+alt="再次连接" /></p>
+<p>第一次连接，VS Code 会询问主机是什么系统，一般服务器都是
+Linux，这里演示的主机服务器是 Linux，所以选择 Linux
+系统。连接速度因人而异，期间可能需要输入密码。这里的演示不需要，因为后面可以设置不需要密码登录。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122091532.png" srcset="/img/loading.gif" lazyload
+alt="Linux 主机" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122091546.png" srcset="/img/loading.gif" lazyload
+alt="正在连接" /></p>
+<p>连接成功后会弹出一个提示，告诉你对主机的配置放在何处，不用担心。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122091629.png" srcset="/img/loading.gif" lazyload
+alt="弹出的提示" /></p>
+<p>按照 <code>终端-&gt;新建终端</code>
+或者快捷键打开终端。这是可以看到服务器的终端。</p>
+<h1 id="使用-vs-code">使用 VS Code</h1>
+<p>在连接 SSH
+的前提下看到左边启动界面有一个打开文件夹的操作，可以选择打开服务器的目录。打开目录时，VS
+Code 会询问是否信任该目录。勾选信任，不然无法操作。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122092128.png" srcset="/img/loading.gif" lazyload
+alt="打开目录" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122092204.png" srcset="/img/loading.gif" lazyload
+alt="信任" /></p>
+<p>信任之后可以打开目录下的文件。打开文件时 VS Code
+会提示是否安装某些插件，建议直接选择安装这类插件。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122092305.png" srcset="/img/loading.gif" lazyload
+alt="打开文件" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122092330.png" srcset="/img/loading.gif" lazyload
+alt="安装插件" /></p>
+<p>VS Code 功能是非强大，可以在左边 Git 侧边栏查看修改的文件有哪些。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122092420.png" srcset="/img/loading.gif" lazyload
+alt="Git 侧边栏" /></p>
+<p>插件安装完毕可以进行其他操作，比如看到 VS Code 提示找不到这些 Python
+包。这是因为我们没有激活合适的服务器环境。这里的服务器使用 conda/mamba
+进行环境管理，可以手动选择合适的环境。呼出命令面板，输入
+<code>python interpreter</code> 寻找合适的 Python
+环境。我的服务器工作环境是 Pytoch2，因此选择该环境。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122092553.png" srcset="/img/loading.gif" lazyload
+alt="没有找到合适的包" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122092814.png" srcset="/img/loading.gif" lazyload
+alt="呼出命令面板" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122092835.png" srcset="/img/loading.gif" lazyload
+alt="选择环境" /></p>
+<p>选择合适的环境后，VS Code 可以找到 Python 包了。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122092915.png" srcset="/img/loading.gif" lazyload
+alt="找到软件包" /></p>
+<h1 id="运行">运行</h1>
+<p>打开好环境，我们可以尝试运行。选择 VS Code
+右上角的运行，点击即可。运行的输出会出现在终端。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122093014.png" srcset="/img/loading.gif" lazyload
+alt="运行" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122093042.png" srcset="/img/loading.gif" lazyload
+alt="终端输入" /></p>
+<p>运行结果如何先不管。但是如果输入有图片，VS Code 也可以查看。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122093554.png" srcset="/img/loading.gif" lazyload
+alt="查看图片" /></p>
+<h1 id="关闭">关闭</h1>
+<p>当运行完毕，没有其他工作了，可以选择关闭 SSH 连接。呼出命令面板，输入
+<code>close remote connection</code> ，确认即可。</p>
+<h1 id="后语">后语</h1>
+<p>简单记录一下罢了。除了 VS Code，其实还可以使用
+Jupyter。不过自己的工作环境安装 Jupyter
+有问题，除非新建环境。既然如此，那又何必折腾？虽然 Jupyter
+看起来确实漂亮。</p>
+<h1 id="补充">补充</h1>
+<p>如何使用 SSH 密钥直接登陆服务器，不用每次都输入密码？</p>
+<p>在自己的终端输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ ssh-kengen -r rsa<br></code></pre></div></td></tr></table></figure>
+<p>回车三次。不需要输入啥。这一步会在自己家目录 <code>.ssh</code>
+下生成两个密钥文件: id_rsa 和
+id_rsa.pub，前者是私钥后者是公钥。公钥可以部署到服务器用于配对，私钥用于确认身份。私钥不可公开，否则就没有意义了。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122124637.gif" srcset="/img/loading.gif" lazyload
+alt="生成密钥对" /></p>
+<p>生成密钥对之后在命令行输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ ssh-copy-id user@host<br></code></pre></div></td></tr></table></figure>
+<p><code>user</code> 是用户名，<code>host</code> 是服务器
+IP。这会默认复制你的公钥到服务器 <code>~/.ssh/authorized_keys</code>
+文件中。做完这些，以后登录服务器就不必输入密码了。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Linux/">Linux</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/SSH/">SSH</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/21/Pandoc-%E7%94%9F%E6%88%90%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%E7%9A%84-etal-%E9%97%AE%E9%A2%98/">
+                        <span class="hidden-mobile">Pandoc 生成参考文献的 etal 问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
