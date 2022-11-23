@@ -81,7 +81,7 @@ SSH 准备好就可以安装 VS Code 了。
 
 ![安装插件](https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122092330.png)
 
-VS Code 功能是非强大，可以在左边 Git 侧边栏查看修改的文件有哪些。
+VS Code 功能非常强大，可以在左边 Git 侧边栏查看修改的文件有哪些。
 
 ![Git 侧边栏](https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221122092420.png)
 
@@ -124,7 +124,7 @@ VS Code 功能是非强大，可以在左边 Git 侧边栏查看修改的文件�
 在自己的终端输入
 
 ```bash
-$ ssh-kengen -r rsa
+$ ssh-keygen -r rsa
 ```
 
 回车三次。不需要输入啥。这一步会在自己家目录 `.ssh` 下生成两个密钥文件: id_rsa 和 id_rsa.pub，前者是私钥后者是公钥。公钥可以部署到服务器用于配对，私钥用于确认身份。私钥不可公开，否则就没有意义了。

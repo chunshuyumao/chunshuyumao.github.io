@@ -781,7 +781,7 @@ csl: cls/chinese-gb7714-2005-numeric.csl
 $ pandoc -d ~/Documents/Pandoc/defaults/docx.yaml test.md -o test.docx
 ```
 
-即可。这便是为啥建议所有东西放一个文件夹，多简单呀。至此，基本配置已经做完。但问题远远没有结束，虽然展示时没有这个毛病，但是写论文一定会碰到，那就是 CSL 文件导出的文献其实是有毛病的。举个例子：
+即可。这便是为啥建议所有东西放一个文件夹，多简单呀。至此，基本配置已经做完。但问题远远没有结束，虽然展示时没有这个毛病，但是写论文一定会碰到，那就是 CSL 文件导出的文献其实是有问题的。举个例子：
 
 ![这就是毛病](https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221120172424.png)
 

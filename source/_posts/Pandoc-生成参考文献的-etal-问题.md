@@ -37,11 +37,11 @@ WPS 可以替换但有点不大合适，如果参考文献的数字标号是括�
 
 ![WPS Word 正则替换 国标2005 的参考文献](https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121135756.gif)
 
- `\[` 和 `\]` 包起来的是参考文献的标号，标号是数字所以用 `[0-9]` 代替数字，`{1,}` 表示数字至少有一个。`[ ]*` 表示任意多个(0 个以上)空白符。空白符可以直接使用 ` ` 替代，但是无法保证只有一个空白符，所以应该选择任意多个。WPS 不支持 ` *` 这种写法，所以使用 `[]` 包住空白符，然后用 `*` 限定。`[]` 表示方框中任何一个符号，比如 `[34]` 表示可以是 `3` 或 `4`。`^t` 是制表符，就是 `Tab` 键，起码一个。`[a-zA-Z, ]` 表示任何英文字母、空白符和逗号。括号括起来表示捕捉这个字符串，后面的“等”表明这个字符串后面必须跟一个中文“等”。“替换”的 `\1` 代表查找到的字符串。这属于硬编码，健壮性不足。
+ `\[` 和 `\]` 包起来的是参考文献的标号，标号是用 `[0-9]` 代替数字，`{1,}` 表示数字至少有一个。`[ ]*` 表示任意多个(0 个以上)空白符。空白符可以直接使用 ` ` 替代，由于无法保证只有一个空白符，所以选择任意多个。WPS 不支持 ` *` 这种写法，所以使用 `[]` 包住空白符，然后用 `*` 限定。`[]` 表示方框中任何一个符号，比如 `[34]` 表示可以是 `3` 或 `4`。`^t` 是制表符，就是 `Tab` 键，起码一个。`[a-zA-Z, ]` 表示任何英文字母、空白符和逗号。括号括起来表示捕捉这个字符串，后面的“等”表明这个字符串后面必须跟一个中文“等”。“替换”的 `\1` 代表查找到的字符串。这属于硬编码，健壮性不足。
 
 ## 纯正的正则
 
-除了 WPS 和 Office 内的替换，我们还可以使用更为神奇的正则，毕竟真正的正则替换编写的代码更健壮一点。不过这一步需要使用支持正则的工具，比如 Python 和 SED。如果电脑本来就装有前者还好，没有的话纯当作长见识。SED 是 Stream EDitor 的缩写，中文叫做流式编辑器。这东东虽然是命令行操作，但本质是一个编辑器。Windows 系统就不用想了，SED 是 Linux 系统标配。
+除了 WPS 和 Office 内的替换，我们还可以使用更为神奇的正则，毕竟真正的正则替换编写的代码更健壮一点。不过这一步需要使用支持正则的工具，比如 Python 和 SED。如果电脑本来就装有前者还好，没有的话纯当作长见识。SED 是 Stream EDitor 的缩写，中文叫做流式编辑器。这东东虽然是命令行操作，但本质是一个编辑器。Windows 系统不用想了，SED 是 Linux 系统标配。
 
 如果使用 Windows，不建议下面的操作，所以下面的演示就当作是 Linux 系统独占——虽然并非如此，但 Windows 的 Dos 真的太弱了，不适合写脚本——不适合我写。
 
@@ -49,7 +49,7 @@ WPS 可以替换但有点不大合适，如果参考文献的数字标号是括�
 
 ![解压 DOCX 文件](https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121144133.gif)
 
-解压后有一堆文件，都是 XML 文本文件，可以直接使用 SED 进行正则替换。文字内容在 `word/document.xml` 这个文件里。打开文件可以看到内容。
+解压后有一堆文件，都是 XML 文本文件，可以直接使用 SED 进行正则替换。文字内容在 `word/document.xml` 这个文件。打开文件可以看到内容。
 
 ![文字内容位置](https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121144416.png)
 
@@ -61,7 +61,7 @@ WPS 可以替换但有点不大合适，如果参考文献的数字标号是括�
 $ sed -i 's/\([a-zA-Z\.\s]\+\)\(,\s\|\s\)\+等\./\1\2et al./g' word/document.xml
 ```
 
-`-i` 是原位替换，直接在源文件替换。替换分为三个部分：`s/find/replace/flag`。`s` 表示替换 substitute，`find` 表示目标字符串，`replace` 表示替换后的字符串，`g` 表示全局替换 global，斜杠用来分隔。`\([a-zA-Z\.\s]\+\)\(,\s\|\s\)\+等` 找到字母、逗号、点和空白(`\s`)字符，紧接着一个中文 `等`，然后替换成 `et al`。效果与 WPS 差不多，只是不需要使用 WPS 或者 Office，用 SED 即可。如果替换 HTML，可以直接使用 `sed` 操作即可，如：
+`-i` 是原位替换，直接在源文件替换。替换分为三个部分：`s/find/replace/flag`。`s` 表示替换 substitute，`find` 表示目标字符串，`replace` 表示替换后的字符串，`g` 表示全局替换 global，斜杠用来分隔。`\([a-zA-Z\.\s]\+\)\(,\s\|\s\)\+等` 找到字母、逗号、点和空白(`\s`)字符，紧接着一个中文 `等`，然后替换成 `et al`。效果与 WPS 差不多，只是不需要使用 WPS 或者 Office，用 SED 即可。替换 HTML 直接使用 `sed` 操作，如：
 
 ```bash
 $ sed -i 's/\([a-zA-Z\.\s]\+\)\(,\s\|\s\)\+等\./\1\2et al./g' test.html
@@ -112,7 +112,7 @@ main "$@" > /dev/null
 
 保存到某个路径，例如 `/home/chunshuyumao/Documents/Pandoc`，并在 Shell 配置文件，如 `.bashrc` `.zshrc`，加入 `alias reorg=$HOME/chunshuyumao/Documents/Pandoc/reorg.sh`。重新打开终端，使用 `reorg 文件` 就可以完成整个替换。
 
-相信正则替换看着已经头大了。正则替换确实不是很好。举个例子，如果不是生成 DOCX 或者 HTML 而是 PDF 文件，那上帝来了也救不了。相比于 DOCX 这种假的二进制文件，PDF 可是实打实的难以修改，正则只能对付对付文本文件，复杂的二进制只能见鬼。由此可见，简单使用正则不是解决之道。要想彻底解决这个问题，我们还是得回到 Pandoc 这个“罪魁祸首”。
+相信正则替换看着已经头大了。正则替换确实不是很好。举个例子，如果不是生成 DOCX 或者 HTML 而是 PDF 文件，那上帝也救不了。相比于 DOCX 这种假的二进制文件，PDF 可是实打实的难以修改，正则只能对付对付文本文件，复杂的二进制只能见鬼。由此可见，简单使用正则不是解决之道。要想彻底解决这个问题，我们还是得回到 Pandoc 这个“罪魁祸首”。
 
 # 解铃还需系铃人
 
@@ -141,7 +141,7 @@ struct {
 
 ## Pandoc 抽象语法树
 
-我们得先了解这个语法树是个什么东西，Pandoc 提供了一个叫 `native` 的格式允许我们将自己的格式转换成它的语法文件。打开命令行，输入
+得先了解这个语法树是个什么。Pandoc 提供了一个叫 `native` 的格式允许我们将自己的格式转换成它的语法文件。打开命令行，输入
 
 ```bash
 $ pandoc -d ~/Documents/Pandoc/defaults/HTML.yaml -t native test.md -o test.json
@@ -153,11 +153,11 @@ YAML 文件是上一篇文章 {% post_link Pandoc-从-Markdown-到其他格式%}
 
 ![一篇文献在 Pandoc 内的表示](https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121155403.png)
 
-可以看到，Pandoc 内部使用一个 `Div` 标识包住一篇参考文献，而且标签中有 `ref`字样，参考文献内有一个奇葩的字符串 `\31561` 代表中文的“等”，类型标识是 `Str`。记住这两个即可。
+可以看到，Pandoc 内部使用一个 `Div` 标识包住一篇参考文献，而且标签中有 `ref` 字样，参考文献内有一个奇葩的字符串 `\31561` 代表中文的“等”，类型标识是 `Str`。记住这两个即可。
 
 ## 编写 Pandoc Filter
 
-Pandoc Filter 的说明还是蛮清晰的，这里直接使用，不进行讲解。Pandoc 解析输入文件生成的语法树分为两部分，一部分叫做 `Pandoc` 代表正文，另一部分是 `Meta` 表示 `front-matter` 的信息。我们要修改正文，所以只需处理 Pandoc。在之前的目录 `/home/chunshuyumao/Documents/Pandoc` 新建一个 filters 目录，目录里边创建一个 cite_et_al.lua 文件。
+Pandoc Filter 的说明还是蛮清晰的，这里直接使用，不进行讲解。Pandoc 解析输入文件生成的语法树分为两部分，一部分叫做 `Pandoc` 代表正文，另一部分是 `Meta` 表示 `front-matter` 的信息。我们修改正文只需处理 Pandoc。在之前的目录 `/home/chunshuyumao/Documents/Pandoc` 新建一个 filters 目录，目录里边创建一个 cite_et_al.lua 文件。
 
 ```bash
 $ mkdir -p /home/chunshuyumao/Documents/Pandoc/filters
@@ -190,7 +190,7 @@ doc:walk({
 
 `walk` 是 `doc` 的成员，Lua 调用成员函数使用的是 `:`，有别于 Python、类C 语言的 `.`。
 
-好的，解释完毕。打开之前 HTML.yaml 文件，在 filters 选项下添加脚本，并执行转换。
+解释完毕。打开之前的 HTML.yaml 文件，在 filters 选项下添加脚本，并执行转换。
 
 ```yaml
 filters:
@@ -209,7 +209,7 @@ $ pandoc -d ~/Documents/Pandoc/defaults/HTML.yaml test.md -o test.html
 
 ![意外发现](https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121163016.png)
 
-执行后发现很多的 Div 类型被打印，其中有一个类型，即上图红圈内，包含了所有的引用文献。它的标签也很特别，其他文献引用是 “ref-” + citationkey, 它是 “refs”。这就好办了，我们只需要修改它就行了，不用一个一个找其他的文献在哪。它内部的文献仍然是一个 Div 包围。所以我们筛选出来:
+执行后发现很多的 Div 被打印，其中有一个，即上图红圈内，包含了所有的引用文献。它的标签也很特别，其他文献引用是 “ref-” + citationkey, 它是 “refs”。这就好办了，只需要修改它就行了，不用一个一个找其他的文献在哪。它内部的文献仍然是一个 Div 包围。所以我们筛选出来:
 
 ```lua
 function Pandoc(doc)
@@ -224,7 +224,7 @@ function Pandoc(doc)
 end
 ```
 
-这个 `identifier` 是 Div 的标签，其实是 Div 里的 attr 内的 identifier 的引用。什么意思内，就是 `div.identifier` 等于 `div.attr.identifier`，因此不必写那么长，可以用 `div.identifier` 代替即可。`or` 表示如果没有 `identifier` 域则用空字符串('')代替，这是 Lua 的语法糖。
+`identifier` 是 Div 的标签，其实是 Div 里的 attr 内的 identifier 的引用。什么意思内，就是 `div.identifier` 等于 `div.attr.identifier`，因此不必写那么长，可以用 `div.identifier` 代替即可。`or` 表示如果没有 `identifier` 域则用空字符串('')代替，这是 Lua 的语法糖。
 
 ![Div 的 attr 结构](https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121163956.png)
 
@@ -256,7 +256,7 @@ function Pandoc(doc)
 end
 ```
 
-Div 的内容部分在 `content` 域里，所以我们使用 `walk` 函数对 refs Div 的 content 结构域进行遍历。同时写一个新的函数，函数前面有个 `local` 表示脚本之外无法调用。这是 Lua 的一些技巧，方便索引。遍历结束后返回 content 替换掉 Div 原本的内容，最后返回修改的 Div.
+Div 的内容部分在 `content` 域里，所以使用 `walk` 函数对 refs Div 的 content 结构域进行遍历。同时写一个新的函数，函数前面有个 `local` 表示脚本之外无法调用。这是 Lua 的一些技巧，方便索引。遍历结束后返回 content 替换掉 Div 原本的内容，最后返回修改的 Div.
 
 ## 处理 Str 部分
 
@@ -318,7 +318,7 @@ end
 
 ### 重新优化
 
-查看 [文档](https://pandoc.org/lua-filters.html#module-pandoc.utils) 发现 Pandoc 提供一个 `pandoc.utils.citeproc` 函数进行参考文献解析。我们可以应该到自己的代码中，于是代码变成：
+查看 [文档](https://pandoc.org/lua-filters.html#module-pandoc.utils) 发现 Pandoc 提供一个 `pandoc.utils.citeproc` 函数进行参考文献解析。我们可以应用到自己的代码中，于是代码变成：
 
 ```lua
 local function ref_div(div)
