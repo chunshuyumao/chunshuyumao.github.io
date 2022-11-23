@@ -24,7 +24,7 @@
 <meta property="og:description" content="前言 之前埋了坑，今天得填。使用 Pandoc 按照 CSL(Citation Style Language) 生成参考文献时会因为本地化问题出现一些小问题。  CSL 文件可以设置多个本地化判断，但是 Pandoc 渲染出来的依旧是中文。可能和 Zotero 导出的语言设置有关。反正单单使用 CSL 文件改变不了什么，我们需要其他方法。 参考文献输出结果有问题，我们可以考虑用正则表达式进行替换。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-11-21T02:26:14.000Z">
-<meta property="article:modified_time" content="2022-11-21T14:17:51.389Z">
+<meta property="article:modified_time" content="2022-11-23T10:58:56.866Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="Markdown">
 <meta property="article:tag" content="CSL">
@@ -208,7 +208,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      36 分钟
+      35 分钟
     </span>
   
 
@@ -270,11 +270,11 @@ Word 也差不多，效果基本如此。此外，这是在 WPS 2019 for linux
 <p><img
 src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121135756.gif" srcset="/img/loading.gif" lazyload
 alt="WPS Word 正则替换 国标2005 的参考文献" /></p>
-<p><code>\[</code> 和 <code>\]</code>
-包起来的是参考文献的标号，标号是数字所以用 <code>[0-9]</code>
-代替数字，<code>&#123;1,&#125;</code> 表示数字至少有一个。<code>[ ]*</code>
-表示任意多个(0 个以上)空白符。空白符可以直接使用 <code></code>
-替代，但是无法保证只有一个空白符，所以应该选择任意多个。WPS 不支持
+<p><code>\[</code> 和 <code>\]</code> 包起来的是参考文献的标号，标号是用
+<code>[0-9]</code> 代替数字，<code>&#123;1,&#125;</code>
+表示数字至少有一个。<code>[ ]*</code> 表示任意多个(0
+个以上)空白符。空白符可以直接使用 <code></code>
+替代，由于无法保证只有一个空白符，所以选择任意多个。WPS 不支持
 <code>*</code> 这种写法，所以使用 <code>[]</code> 包住空白符，然后用
 <code>*</code> 限定。<code>[]</code> 表示方框中任何一个符号，比如
 <code>[34]</code> 表示可以是 <code>3</code> 或
@@ -288,7 +288,7 @@ alt="WPS Word 正则替换 国标2005 的参考文献" /></p>
 Python 和 SED。如果电脑本来就装有前者还好，没有的话纯当作长见识。SED 是
 Stream EDitor
 的缩写，中文叫做流式编辑器。这东东虽然是命令行操作，但本质是一个编辑器。Windows
-系统就不用想了，SED 是 Linux 系统标配。</p>
+系统不用想了，SED 是 Linux 系统标配。</p>
 <p>如果使用 Windows，不建议下面的操作，所以下面的演示就当作是 Linux
 系统独占——虽然并非如此，但 Windows 的 Dos
 真的太弱了，不适合写脚本——不适合我写。</p>
@@ -299,7 +299,7 @@ src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121144133.gif" 
 alt="解压 DOCX 文件" /></p>
 <p>解压后有一堆文件，都是 XML 文本文件，可以直接使用 SED
 进行正则替换。文字内容在 <code>word/document.xml</code>
-这个文件里。打开文件可以看到内容。</p>
+这个文件。打开文件可以看到内容。</p>
 <p><img
 src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121144416.png" srcset="/img/loading.gif" lazyload
 alt="文字内容位置" /></p>
@@ -316,8 +316,8 @@ alt="文字内容" /></p>
 global，斜杠用来分隔。<code>\([a-zA-Z\.\s]\+\)\(,\s\|\s\)\+等</code>
 找到字母、逗号、点和空白(<code>\s</code>)字符，紧接着一个中文
 <code>等</code>，然后替换成 <code>et al</code>。效果与 WPS
-差不多，只是不需要使用 WPS 或者 Office，用 SED 即可。如果替换
-HTML，可以直接使用 <code>sed</code> 操作即可，如：</p>
+差不多，只是不需要使用 WPS 或者 Office，用 SED 即可。替换 HTML 直接使用
+<code>sed</code> 操作，如：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ sed -i <span class="hljs-string">&#x27;s/\([a-zA-Z\.\s]\+\)\(,\s\|\s\)\+等\./\1\2et al./g&#x27;</span> test.html<br></code></pre></div></td></tr></table></figure>
 <p>替换完毕，将这些东东原原本本压缩回去：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ zip -r new.docx *<br></code></pre></div></td></tr></table></figure>
@@ -337,7 +337,7 @@ alt="替换后的 new.docx 文件" /></p>
 <code>alias reorg=$HOME/chunshuyumao/Documents/Pandoc/reorg.sh</code>。重新打开终端，使用
 <code>reorg 文件</code> 就可以完成整个替换。</p>
 <p>相信正则替换看着已经头大了。正则替换确实不是很好。举个例子，如果不是生成
-DOCX 或者 HTML 而是 PDF 文件，那上帝来了也救不了。相比于 DOCX
+DOCX 或者 HTML 而是 PDF 文件，那上帝也救不了。相比于 DOCX
 这种假的二进制文件，PDF
 可是实打实的难以修改，正则只能对付对付文本文件，复杂的二进制只能见鬼。由此可见，简单使用正则不是解决之道。要想彻底解决这个问题，我们还是得回到
 Pandoc 这个“罪魁祸首”。</p>
@@ -367,8 +367,7 @@ Tree，抽象语法树的缩写。这东东听起来有点抽象，其实就是�
 <p>写 Filter，我们解决的是 Pandoc 读取所有源文件之后的数据，处理完之后
 Pandoc 再进行处理输出。废话不多说，开始干活。</p>
 <h2 id="pandoc-抽象语法树">Pandoc 抽象语法树</h2>
-<p>我们得先了解这个语法树是个什么东西，Pandoc 提供了一个叫
-<code>native</code>
+<p>得先了解这个语法树是个什么。Pandoc 提供了一个叫 <code>native</code>
 的格式允许我们将自己的格式转换成它的语法文件。打开命令行，输入</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ pandoc -d ~/Documents/Pandoc/defaults/HTML.yaml -t native test.md -o test.json<br></code></pre></div></td></tr></table></figure>
 <p>YAML 文件是上一篇文章 <a href="/2022/11/20/Pandoc-%E4%BB%8E-Markdown-%E5%88%B0%E5%85%B6%E4%BB%96%E6%A0%BC%E5%BC%8F/" title="Pandoc: 从 Markdown 到其他格式">Pandoc: 从 Markdown 到其他格式</a> 最后写的文件，调用
@@ -382,14 +381,14 @@ alt="红框内为语法标记" /></p>
 src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121155403.png" srcset="/img/loading.gif" lazyload
 alt="一篇文献在 Pandoc 内的表示" /></p>
 <p>可以看到，Pandoc 内部使用一个 <code>Div</code>
-标识包住一篇参考文献，而且标签中有
-<code>ref</code>字样，参考文献内有一个奇葩的字符串 <code>\31561</code>
+标识包住一篇参考文献，而且标签中有 <code>ref</code>
+字样，参考文献内有一个奇葩的字符串 <code>\31561</code>
 代表中文的“等”，类型标识是 <code>Str</code>。记住这两个即可。</p>
 <h2 id="编写-pandoc-filter">编写 Pandoc Filter</h2>
 <p>Pandoc Filter 的说明还是蛮清晰的，这里直接使用，不进行讲解。Pandoc
 解析输入文件生成的语法树分为两部分，一部分叫做 <code>Pandoc</code>
 代表正文，另一部分是 <code>Meta</code> 表示 <code>front-matter</code>
-的信息。我们要修改正文，所以只需处理 Pandoc。在之前的目录
+的信息。我们修改正文只需处理 Pandoc。在之前的目录
 <code>/home/chunshuyumao/Documents/Pandoc</code> 新建一个 filters
 目录，目录里边创建一个 cite_et_al.lua 文件。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">mkdir</span> -p /home/chunshuyumao/Documents/Pandoc/filters<br>$ <span class="hljs-built_in">touch</span> cite_et_al.lua<br></code></pre></div></td></tr></table></figure>
@@ -409,7 +408,7 @@ Table(表)，这是 Lua 内最常用的数据类型，与 Python 的表 <code>&#
 <p><code>walk</code> 是 <code>doc</code> 的成员，Lua
 调用成员函数使用的是 <code>:</code>，有别于 Python、类C 语言的
 <code>.</code>。</p>
-<p>好的，解释完毕。打开之前 HTML.yaml 文件，在 filters
+<p>解释完毕。打开之前的 HTML.yaml 文件，在 filters
 选项下添加脚本，并执行转换。</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">filters:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">pandoc-crossref</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">citeproc</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">cite_et_al.lua</span><br></code></pre></div></td></tr></table></figure>
 <p><img
@@ -420,12 +419,12 @@ src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121162559.png" 
 src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121163016.png" srcset="/img/loading.gif" lazyload
 alt="意外发现" /></p>
 <p>执行后发现很多的 Div
-类型被打印，其中有一个类型，即上图红圈内，包含了所有的引用文献。它的标签也很特别，其他文献引用是
+被打印，其中有一个，即上图红圈内，包含了所有的引用文献。它的标签也很特别，其他文献引用是
 “ref-” + citationkey, 它是
-“refs”。这就好办了，我们只需要修改它就行了，不用一个一个找其他的文献在哪。它内部的文献仍然是一个
+“refs”。这就好办了，只需要修改它就行了，不用一个一个找其他的文献在哪。它内部的文献仍然是一个
 Div 包围。所以我们筛选出来:</p>
 <figure class="highlight lua"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Pandoc</span><span class="hljs-params">(doc)</span></span><br>  doc:walk&#123;<br>    Div = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(div)</span></span><br>      <span class="hljs-comment">-- 查找 refs Div</span><br>      <span class="hljs-keyword">if</span> (div.identifier <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;&#x27;</span>):<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;refs&#x27;</span>) <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">print</span>(div)<br>      <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span>,<br>  &#125;<br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
-<p>这个 <code>identifier</code> 是 Div 的标签，其实是 Div 里的 attr 内的
+<p><code>identifier</code> 是 Div 的标签，其实是 Div 里的 attr 内的
 identifier 的引用。什么意思内，就是 <code>div.identifier</code> 等于
 <code>div.attr.identifier</code>，因此不必写那么长，可以用
 <code>div.identifier</code> 代替即可。<code>or</code> 表示如果没有
@@ -442,7 +441,7 @@ src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121164303.png" 
 alt="成功输出 refs Div" /></p>
 <p>找到之后对 refc Div 内的文献操作需要写一个函数：</p>
 <figure class="highlight lua"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lua"><br><span class="hljs-comment">-- 这是处理文献的函数</span><br><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ref_div</span><span class="hljs-params">(div)</span></span><br>  <br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Pandoc</span><span class="hljs-params">(doc)</span></span><br>  <span class="hljs-keyword">return</span> doc:walk&#123;<br>    Div = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(div)</span></span><br>      <span class="hljs-comment">-- 查找 refs Div</span><br>      <span class="hljs-keyword">if</span> (div.identifier <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;&#x27;</span>):<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;refs&#x27;</span>) <span class="hljs-keyword">then</span><br>        div.content = div.content:walk&#123; Div = ref_div, &#125;<br>        <span class="hljs-keyword">return</span> div<br>      <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span>,<br>  &#125;<br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
-<p>Div 的内容部分在 <code>content</code> 域里，所以我们使用
+<p>Div 的内容部分在 <code>content</code> 域里，所以使用
 <code>walk</code> 函数对 refs Div 的 content
 结构域进行遍历。同时写一个新的函数，函数前面有个 <code>local</code>
 表示脚本之外无法调用。这是 Lua 的一些技巧，方便索引。遍历结束后返回
@@ -482,7 +481,7 @@ alt="替换成功" /></p>
 <p>查看 <a
 target="_blank" rel="noopener" href="https://pandoc.org/lua-filters.html#module-pandoc.utils">文档</a>
 发现 Pandoc 提供一个 <code>pandoc.utils.citeproc</code>
-函数进行参考文献解析。我们可以应该到自己的代码中，于是代码变成：</p>
+函数进行参考文献解析。我们可以应用到自己的代码中，于是代码变成：</p>
 <figure class="highlight lua"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ref_div</span><span class="hljs-params">(div)</span></span><br>  <span class="hljs-keyword">local</span> stop = <span class="hljs-literal">false</span><br>  <span class="hljs-keyword">local</span> is_en = <span class="hljs-literal">false</span><br><br>  <span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">do_subs</span><span class="hljs-params">(str)</span></span><br>    <span class="hljs-keyword">if</span> stop <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">end</span><br><br>    <span class="hljs-comment">---@type string</span><br>    <span class="hljs-keyword">local</span> text = str.text<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_en <span class="hljs-keyword">then</span><br>      <span class="hljs-keyword">if</span> text:<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;%a+&#x27;</span>) <span class="hljs-keyword">then</span> is_en = <span class="hljs-literal">true</span><br>      <span class="hljs-keyword">elseif</span> text:<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;等.&#x27;</span>) <span class="hljs-keyword">then</span> stop = <span class="hljs-literal">true</span> <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">end</span><br><br>    <span class="hljs-keyword">local</span> times<br>    text, times = text:<span class="hljs-built_in">gsub</span>(<span class="hljs-string">&#x27;等&#x27;</span>, <span class="hljs-string">&#x27;et al&#x27;</span>)<br>    <span class="hljs-keyword">if</span> times &gt;= <span class="hljs-number">1</span> <span class="hljs-keyword">then</span><br>      str.text = text<br>      stop = <span class="hljs-literal">true</span><br>      <span class="hljs-keyword">return</span> str<br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">end</span><br><br>  div.content = div.content:walk&#123; Str = do_subs, &#125;<br><br>  <span class="hljs-keyword">return</span> div<br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Pandoc</span><span class="hljs-params">(doc)</span></span><br>  <span class="hljs-keyword">return</span> pandoc.utils.citeproc(doc):walk&#123;<br>    Div = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(div)</span></span><br>      <span class="hljs-comment">-- 查找 refs Div</span><br>      <span class="hljs-keyword">if</span> (div.identifier <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;&#x27;</span>):<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;refs&#x27;</span>) <span class="hljs-keyword">then</span><br>        div.content = div.content:walk&#123; Div = ref_div, &#125;<br>        <span class="hljs-keyword">return</span> div<br>      <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span>,<br>  &#125;<br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
 <p>HTML.yaml 改为</p>
 <p><img
