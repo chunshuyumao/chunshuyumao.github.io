@@ -1,0 +1,713 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言 之前埋了坑，今天得填。使用 Pandoc 按照 CSL(Citation Style Language) 生成参考文献时会因为本地化问题出现一些小问题。  CSL 文件可以设置多个本地化判断，但是 Pandoc 渲染出来的依旧是中文。可能和 Zotero 导出的语言设置有关。反正单单使用 CSL 文件改变不了什么，我们需要其他方法。 参考文献输出结果有问题，我们可以考虑用正则表达式进行替换。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pandoc 生成参考文献的 etal 问题">
+<meta property="og:url" content="https://chunshuyumao.github.io/2022/11/21/Pandoc-%E7%94%9F%E6%88%90%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%E7%9A%84-etal-%E9%97%AE%E9%A2%98/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="前言 之前埋了坑，今天得填。使用 Pandoc 按照 CSL(Citation Style Language) 生成参考文献时会因为本地化问题出现一些小问题。  CSL 文件可以设置多个本地化判断，但是 Pandoc 渲染出来的依旧是中文。可能和 Zotero 导出的语言设置有关。反正单单使用 CSL 文件改变不了什么，我们需要其他方法。 参考文献输出结果有问题，我们可以考虑用正则表达式进行替换。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-21T02:26:14.000Z">
+<meta property="article:modified_time" content="2022-11-23T10:58:56.866Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="Markdown">
+<meta property="article:tag" content="CSL">
+<meta property="article:tag" content="Pandoc Filter">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Pandoc 生成参考文献的 etal 问题 - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Pandoc 生成参考文献的 etal 问题">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-11-21 10:26" pubdate>
+        2022年11月21日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Pandoc 生成参考文献的 etal 问题</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言">前言</h1>
+<p>之前埋了坑，今天得填。使用 Pandoc 按照 CSL(Citation Style Language)
+生成参考文献时会因为本地化问题出现一些小问题。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121113010.png" srcset="/img/loading.gif" lazyload
+alt="问题再现" /></p>
+<p>CSL 文件可以设置多个本地化判断，但是 Pandoc
+渲染出来的依旧是中文。可能和 Zotero 导出的语言设置有关。反正单单使用 CSL
+文件改变不了什么，我们需要其他方法。</p>
+<p>参考文献输出结果有问题，我们可以考虑用正则表达式进行替换。这种方法最简单，也是多数人能够想到的。此外，Pandoc
+允许通过筛选脚本(Filter)对文件进行转换前、后的修改。<a href="/2022/11/20/Pandoc-%E4%BB%8E-Markdown-%E5%88%B0%E5%85%B6%E4%BB%96%E6%A0%BC%E5%BC%8F/" title="Pandoc: 从 Markdown 到其他格式">Pandoc: 从 Markdown 到其他格式</a>
+里引入的 Pandoc-crossref
+本质也是一个筛选脚本：筛选出交叉引用的标记并进行格式转化。Pandoc
+的命令行 <code>--citeproc</code> 选项，未并入 Pandoc
+内置命令之前也是一个筛选脚本，现在的 Pandoc 还保留着它的原始用法，即
+<code>--filter pandoc-citeproc</code>。因此，对 Pandoc
+文本进行修改也可以借助筛选脚本。这样我们就有了计划，准备行动吧！</p>
+<h1 id="正则替换">正则替换</h1>
+<p>正则替换有两个办法，一个是在 Word 软件，例如 WPS Word 或者 Microsoft
+Word 中直接搜索替换。另一个比较复杂需要其他操作，待会解释。</p>
+<h2 id="wps-正则替换">WPS 正则替换</h2>
+<p>WPS
+可以替换但有点不大合适，如果参考文献的数字标号是括号而不是方括号，我们就得正则表达式，而且这个正则用起来总感觉差点意思，也许叫做通配符好一点。Microsoft
+Word 也差不多，效果基本如此。此外，这是在 WPS 2019 for linux
+测试的，使用不了网上说的 <code>^s</code> <code>^w</code>
+等空白符号，空白符原原本本就是 <code></code> 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">查找：(\[[0-9]&#123;1,&#125;\][ ]*^t&#123;1,&#125;[a-zA-Z, ]&#123;1,&#125;)等<br>替换：\1et al<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121135756.gif" srcset="/img/loading.gif" lazyload
+alt="WPS Word 正则替换 国标2005 的参考文献" /></p>
+<p><code>\[</code> 和 <code>\]</code> 包起来的是参考文献的标号，标号是用
+<code>[0-9]</code> 代替数字，<code>&#123;1,&#125;</code>
+表示数字至少有一个。<code>[ ]*</code> 表示任意多个(0
+个以上)空白符。空白符可以直接使用 <code></code>
+替代，由于无法保证只有一个空白符，所以选择任意多个。WPS 不支持
+<code>*</code> 这种写法，所以使用 <code>[]</code> 包住空白符，然后用
+<code>*</code> 限定。<code>[]</code> 表示方框中任何一个符号，比如
+<code>[34]</code> 表示可以是 <code>3</code> 或
+<code>4</code>。<code>^t</code> 是制表符，就是 <code>Tab</code>
+键，起码一个。<code>[a-zA-Z, ]</code>
+表示任何英文字母、空白符和逗号。括号括起来表示捕捉这个字符串，后面的“等”表明这个字符串后面必须跟一个中文“等”。“替换”的
+<code>\1</code> 代表查找到的字符串。这属于硬编码，健壮性不足。</p>
+<h2 id="纯正的正则">纯正的正则</h2>
+<p>除了 WPS 和 Office
+内的替换，我们还可以使用更为神奇的正则，毕竟真正的正则替换编写的代码更健壮一点。不过这一步需要使用支持正则的工具，比如
+Python 和 SED。如果电脑本来就装有前者还好，没有的话纯当作长见识。SED 是
+Stream EDitor
+的缩写，中文叫做流式编辑器。这东东虽然是命令行操作，但本质是一个编辑器。Windows
+系统不用想了，SED 是 Linux 系统标配。</p>
+<p>如果使用 Windows，不建议下面的操作，所以下面的演示就当作是 Linux
+系统独占——虽然并非如此，但 Windows 的 Dos
+真的太弱了，不适合写脚本——不适合我写。</p>
+<p>之前说过，DOCX 是二进制文件，但没说是哪一类。DOCX
+不是我们理解中的那种二进制，而是一种压缩包，解压缩就能看到内容。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121144133.gif" srcset="/img/loading.gif" lazyload
+alt="解压 DOCX 文件" /></p>
+<p>解压后有一堆文件，都是 XML 文本文件，可以直接使用 SED
+进行正则替换。文字内容在 <code>word/document.xml</code>
+这个文件。打开文件可以看到内容。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121144416.png" srcset="/img/loading.gif" lazyload
+alt="文字内容位置" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121144723.png" srcset="/img/loading.gif" lazyload
+alt="文字内容" /></p>
+<p>接下来就是替换。使用 SED 暴力替换：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ sed -i <span class="hljs-string">&#x27;s/\([a-zA-Z\.\s]\+\)\(,\s\|\s\)\+等\./\1\2et al./g&#x27;</span> word/document.xml<br></code></pre></div></td></tr></table></figure>
+<p><code>-i</code>
+是原位替换，直接在源文件替换。替换分为三个部分：<code>s/find/replace/flag</code>。<code>s</code>
+表示替换 substitute，<code>find</code>
+表示目标字符串，<code>replace</code> 表示替换后的字符串，<code>g</code>
+表示全局替换
+global，斜杠用来分隔。<code>\([a-zA-Z\.\s]\+\)\(,\s\|\s\)\+等</code>
+找到字母、逗号、点和空白(<code>\s</code>)字符，紧接着一个中文
+<code>等</code>，然后替换成 <code>et al</code>。效果与 WPS
+差不多，只是不需要使用 WPS 或者 Office，用 SED 即可。替换 HTML 直接使用
+<code>sed</code> 操作，如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ sed -i <span class="hljs-string">&#x27;s/\([a-zA-Z\.\s]\+\)\(,\s\|\s\)\+等\./\1\2et al./g&#x27;</span> test.html<br></code></pre></div></td></tr></table></figure>
+<p>替换完毕，将这些东东原原本本压缩回去：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ zip -r new.docx *<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121145806.png" srcset="/img/loading.gif" lazyload
+alt="重新压缩" /></p>
+<p>用 WPS 打开新文件看看替换的效果：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121150031.png" srcset="/img/loading.gif" lazyload
+alt="替换后的 new.docx 文件" /></p>
+<p>替换这一步可以用其他语言写，例如 Python、Lua
+等。压缩完毕后只需要覆盖原文件就可以了。这样太麻烦了，可以写一个脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">set</span> -Eeuo pipefail<br><br><span class="hljs-comment"># 退出时删除临时文件</span><br><span class="hljs-built_in">trap</span> clean EXIT<br><span class="hljs-comment"># 生成临时文件</span><br><span class="hljs-built_in">declare</span> -r tmpdir=<span class="hljs-string">&quot;<span class="hljs-subst">$(mktemp -u -d)</span>&quot;</span><br><span class="hljs-comment"># 获取文件的全路径</span><br><span class="hljs-built_in">declare</span> -r target=<span class="hljs-string">&quot;<span class="hljs-subst">$(readlink -m <span class="hljs-string">&quot;<span class="hljs-variable">$1</span>&quot;</span>)</span>&quot;</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">clean</span></span>() &#123;<br>  <span class="hljs-keyword">if</span> [ -e <span class="hljs-string">&quot;<span class="hljs-variable">$tmpdir</span>&quot;</span> ]; <span class="hljs-keyword">then</span><br>    /bin/rm -rf <span class="hljs-string">&quot;<span class="hljs-variable">$tmpdir</span>&quot;</span><br>  <span class="hljs-keyword">fi</span><br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">main</span></span>() &#123;<br><br>  <span class="hljs-comment"># 解压缩，-q 表示 quiet，不用输出信息</span><br>  unzip -qd <span class="hljs-string">&quot;<span class="hljs-variable">$tmpdir</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$1</span>&quot;</span><br>  <span class="hljs-built_in">pushd</span> <span class="hljs-string">&quot;<span class="hljs-variable">$tmpdir</span>&quot;</span><br>  sed -i <span class="hljs-string">&#x27;s/\([a-zA-Z\.\s]\+\)\(,\s\|\s\)\+等\./\1\2et al./g&#x27;</span> word/document.xml<br>  zip -qr <span class="hljs-string">&quot;<span class="hljs-variable">$target</span>&quot;</span> *<br>  <span class="hljs-built_in">popd</span><br>&#125;<br><br>main <span class="hljs-string">&quot;<span class="hljs-variable">$@</span>&quot;</span> &gt; /dev/null<br></code></pre></div></td></tr></table></figure>
+<p>保存到某个路径，例如
+<code>/home/chunshuyumao/Documents/Pandoc</code>，并在 Shell
+配置文件，如 <code>.bashrc</code> <code>.zshrc</code>，加入
+<code>alias reorg=$HOME/chunshuyumao/Documents/Pandoc/reorg.sh</code>。重新打开终端，使用
+<code>reorg 文件</code> 就可以完成整个替换。</p>
+<p>相信正则替换看着已经头大了。正则替换确实不是很好。举个例子，如果不是生成
+DOCX 或者 HTML 而是 PDF 文件，那上帝也救不了。相比于 DOCX
+这种假的二进制文件，PDF
+可是实打实的难以修改，正则只能对付对付文本文件，复杂的二进制只能见鬼。由此可见，简单使用正则不是解决之道。要想彻底解决这个问题，我们还是得回到
+Pandoc 这个“罪魁祸首”。</p>
+<h1 id="解铃还需系铃人">解铃还需系铃人</h1>
+<p>兜了一圈还是回到了 Pandoc。Pandoc 使用 pandoc-citeproc/citeproc
+解析参考文献是内部机制改变不了，只能想其他办法。之前说过 Pandoc 支持使用
+Lua 写筛选脚本，最好到 <a
+target="_blank" rel="noopener" href="https://pandoc.org/lua-filters.html">官网</a> 了解 Pandoc
+调用筛选脚本的步骤。</p>
+<figure class="highlight clean"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs clean">source -&gt; AST -&gt; filter -&gt; AST -&gt; target<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121152414.png" srcset="/img/loading.gif" lazyload /></p>
+<p>AST 是 Abstract Syntax
+Tree，抽象语法树的缩写。这东东听起来有点抽象，其实就是给字符加上一点标记。举个例子，<code>2022</code>
+是一个字符串，如果在 Python
+中它被认为是数字，我们就给它一个结构，长这样：</p>
+<figure class="highlight arcade"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs arcade">struct &#123;<br>  <span class="hljs-built_in">text</span> = <span class="hljs-string">&#x27;2022&#x27;</span><br>  type = <span class="hljs-built_in">number</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这样程序读取的时候只要查看 <code>type</code>
+就知道，原来这是一个数字。如果 <code>type</code> 换成
+<code>string</code> 那就被认为是字符串。但是内容 <code>2022</code>
+完全一样。编程语言就是通过这样的方式区分各种标识符到底是什么东西。这东西还可以分析语言，比如
+<code>牛</code> 这个字，用 <code>形</code> 或者 <code>adj</code>
+表示形容词，用 <code>名</code> 或者 <code>n</code> 表示名词。但是
+<code>牛</code>
+完全就一个写法。机器就是通过这个笨拙的方式去了解语言。</p>
+<p>我解释这个是为啥？因为无聊。</p>
+<p>写 Filter，我们解决的是 Pandoc 读取所有源文件之后的数据，处理完之后
+Pandoc 再进行处理输出。废话不多说，开始干活。</p>
+<h2 id="pandoc-抽象语法树">Pandoc 抽象语法树</h2>
+<p>得先了解这个语法树是个什么。Pandoc 提供了一个叫 <code>native</code>
+的格式允许我们将自己的格式转换成它的语法文件。打开命令行，输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ pandoc -d ~/Documents/Pandoc/defaults/HTML.yaml -t native test.md -o test.json<br></code></pre></div></td></tr></table></figure>
+<p>YAML 文件是上一篇文章 <a href="/2022/11/20/Pandoc-%E4%BB%8E-Markdown-%E5%88%B0%E5%85%B6%E4%BB%96%E6%A0%BC%E5%BC%8F/" title="Pandoc: 从 Markdown 到其他格式">Pandoc: 从 Markdown 到其他格式</a> 最后写的文件，调用
+Pandoc-crossref、citeproc 和一些其他的配置。这个 test.md
+文件只需要包含引用即可，没什么别的要求。native 格式不一定是
+JSON，我只是为了高亮显示，所以后缀写成了 JSON。转换结束后打开：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121154858.png" srcset="/img/loading.gif" lazyload
+alt="红框内为语法标记" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121155403.png" srcset="/img/loading.gif" lazyload
+alt="一篇文献在 Pandoc 内的表示" /></p>
+<p>可以看到，Pandoc 内部使用一个 <code>Div</code>
+标识包住一篇参考文献，而且标签中有 <code>ref</code>
+字样，参考文献内有一个奇葩的字符串 <code>\31561</code>
+代表中文的“等”，类型标识是 <code>Str</code>。记住这两个即可。</p>
+<h2 id="编写-pandoc-filter">编写 Pandoc Filter</h2>
+<p>Pandoc Filter 的说明还是蛮清晰的，这里直接使用，不进行讲解。Pandoc
+解析输入文件生成的语法树分为两部分，一部分叫做 <code>Pandoc</code>
+代表正文，另一部分是 <code>Meta</code> 表示 <code>front-matter</code>
+的信息。我们修改正文只需处理 Pandoc。在之前的目录
+<code>/home/chunshuyumao/Documents/Pandoc</code> 新建一个 filters
+目录，目录里边创建一个 cite_et_al.lua 文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">mkdir</span> -p /home/chunshuyumao/Documents/Pandoc/filters<br>$ <span class="hljs-built_in">touch</span> cite_et_al.lua<br></code></pre></div></td></tr></table></figure>
+<p>打开 cite_et_al.lua，在里边写入以下内容：</p>
+<figure class="highlight lua"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Pandoc</span><span class="hljs-params">(doc)</span></span><br>  doc:walk&#123;<br>    Div = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(div)</span></span><br>      <span class="hljs-built_in">print</span>(div)<br>    <span class="hljs-keyword">end</span>,<br>  &#125;<br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<p>只处理 Pandoc 部分所以创建一个 Pandoc 函数，文档中指出 Pandoc
+函数只有一个参数，取名为 doc. 几乎所有的 Pandoc 类型都有一个
+<code>walk</code> 函数用于遍历其内部元素，所以调用它，传入的参数是一个
+Table(表)，这是 Lua 内最常用的数据类型，与 Python 的表 <code>&#123;&#125;</code>
+差不多。表内有唯一的一个 key(键) 叫做 <code>Div</code>，表示我们只处理
+<code>Div</code> 类型，这个键对应的 value(值) 是一个函数，函数只是打印
+<code>Div</code> 类型，其他什么也不做。</p>
+<p>Lua
+有一个语法糖：当函数只有一个参数时，函数调用的括号可以省略。<code>walk</code>
+只有一个参数，所以括号被省略，原本的调用应该是:</p>
+<figure class="highlight lua"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lua">doc:walk(&#123;<br>  Div = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(div)</span></span><br>    <span class="hljs-built_in">print</span>(div)<br>  <span class="hljs-keyword">end</span>,<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+<p><code>walk</code> 是 <code>doc</code> 的成员，Lua
+调用成员函数使用的是 <code>:</code>，有别于 Python、类C 语言的
+<code>.</code>。</p>
+<p>解释完毕。打开之前的 HTML.yaml 文件，在 filters
+选项下添加脚本，并执行转换。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">filters:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">pandoc-crossref</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">citeproc</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">cite_et_al.lua</span><br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121162559.png" srcset="/img/loading.gif" lazyload /></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ pandoc -d ~/Documents/Pandoc/defaults/HTML.yaml test.md -o test.html<br></code></pre></div></td></tr></table></figure>
+<p>下面执行转化不再列出代码，因为输入的就是上面这一行。查看输出：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121163016.png" srcset="/img/loading.gif" lazyload
+alt="意外发现" /></p>
+<p>执行后发现很多的 Div
+被打印，其中有一个，即上图红圈内，包含了所有的引用文献。它的标签也很特别，其他文献引用是
+“ref-” + citationkey, 它是
+“refs”。这就好办了，只需要修改它就行了，不用一个一个找其他的文献在哪。它内部的文献仍然是一个
+Div 包围。所以我们筛选出来:</p>
+<figure class="highlight lua"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Pandoc</span><span class="hljs-params">(doc)</span></span><br>  doc:walk&#123;<br>    Div = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(div)</span></span><br>      <span class="hljs-comment">-- 查找 refs Div</span><br>      <span class="hljs-keyword">if</span> (div.identifier <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;&#x27;</span>):<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;refs&#x27;</span>) <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">print</span>(div)<br>      <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span>,<br>  &#125;<br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<p><code>identifier</code> 是 Div 的标签，其实是 Div 里的 attr 内的
+identifier 的引用。什么意思内，就是 <code>div.identifier</code> 等于
+<code>div.attr.identifier</code>，因此不必写那么长，可以用
+<code>div.identifier</code> 代替即可。<code>or</code> 表示如果没有
+<code>identifier</code> 域则用空字符串('')代替，这是 Lua 的语法糖。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121163956.png" srcset="/img/loading.gif" lazyload
+alt="Div 的 attr 结构" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121164035.png" srcset="/img/loading.gif" lazyload
+alt="attr 内的 identifier" /></p>
+<p>执行转化，查看输出：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121164303.png" srcset="/img/loading.gif" lazyload
+alt="成功输出 refs Div" /></p>
+<p>找到之后对 refc Div 内的文献操作需要写一个函数：</p>
+<figure class="highlight lua"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lua"><br><span class="hljs-comment">-- 这是处理文献的函数</span><br><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ref_div</span><span class="hljs-params">(div)</span></span><br>  <br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Pandoc</span><span class="hljs-params">(doc)</span></span><br>  <span class="hljs-keyword">return</span> doc:walk&#123;<br>    Div = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(div)</span></span><br>      <span class="hljs-comment">-- 查找 refs Div</span><br>      <span class="hljs-keyword">if</span> (div.identifier <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;&#x27;</span>):<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;refs&#x27;</span>) <span class="hljs-keyword">then</span><br>        div.content = div.content:walk&#123; Div = ref_div, &#125;<br>        <span class="hljs-keyword">return</span> div<br>      <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span>,<br>  &#125;<br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<p>Div 的内容部分在 <code>content</code> 域里，所以使用
+<code>walk</code> 函数对 refs Div 的 content
+结构域进行遍历。同时写一个新的函数，函数前面有个 <code>local</code>
+表示脚本之外无法调用。这是 Lua 的一些技巧，方便索引。遍历结束后返回
+content 替换掉 Div 原本的内容，最后返回修改的 Div.</p>
+<h2 id="处理-str-部分">处理 Str 部分</h2>
+<p>记得最开始的分析吧，我们要处理的是文献 Div 里的 Str
+类型。因此修改代码：</p>
+<figure class="highlight lua"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ref_div</span><span class="hljs-params">(div)</span></span><br>  <span class="hljs-keyword">local</span> stop = <span class="hljs-literal">false</span><br>  <span class="hljs-keyword">local</span> is_en = <span class="hljs-literal">false</span><br><br>  <span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">do_subs</span><span class="hljs-params">(str)</span></span><br>  <span class="hljs-keyword">end</span><br><br>  div.content = div.content:walk&#123; Str = do_subs, &#125;<br><br>  <span class="hljs-keyword">return</span> div<br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<p><code>do_subs</code> 是 do substitution 的缩写，实现替换。定义在
+ref_div 这个函数里边，以便使用上边的两个标志。<code>ref_div</code>
+处理一篇文献只需要替换一次“等”，所以设置一个标识位 <code>stop</code>
+表示替换停止。只要替换停止，函数直接返回不再进行替换。<code>is_en</code>
+判断是不是英文文献，如果是则替换。替换结束后需要把值返回给
+div.content，然后再返回 div。</p>
+<p>最后编写 do_subs 函数，如下：</p>
+<figure class="highlight lua"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">do_subs</span><span class="hljs-params">(str)</span></span><br>  <span class="hljs-keyword">if</span> stop <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">end</span><br><br>    <span class="hljs-comment">---@type string</span><br>    <span class="hljs-keyword">local</span> text = str.text<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_en <span class="hljs-keyword">then</span><br>      <span class="hljs-keyword">if</span> text:<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;%a+&#x27;</span>) <span class="hljs-keyword">then</span> is_en = <span class="hljs-literal">true</span><br>      <span class="hljs-keyword">elseif</span> text:<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;等.&#x27;</span>) <span class="hljs-keyword">then</span> stop = <span class="hljs-literal">true</span> <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">end</span><br><br>    <span class="hljs-keyword">local</span> times<br>    text, times = text:<span class="hljs-built_in">gsub</span>(<span class="hljs-string">&#x27;等&#x27;</span>, <span class="hljs-string">&#x27;et al&#x27;</span>)<br>    <span class="hljs-keyword">if</span> times &gt;= <span class="hljs-number">1</span> <span class="hljs-keyword">then</span><br>      str.text = text<br>      stop = <span class="hljs-literal">true</span><br>      <span class="hljs-keyword">return</span> str<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<ol type="1">
+<li><p>首先判断是不是停止替换，如果是，直接返回；如果不是，则进行后边的操作。</p></li>
+<li><p>获取 str 里的字符串，字符串保存在 text 里——可通过 Pandoc
+文档查看。判断是不是英文文献，刚开始我们设置不是英文文献，所以它就进行搜索。</p></li>
+<li><p>使用正则查找英文单词，只要出现英文单词就是英文文献。正则用
+<code>%a+</code> 来表示至少一个字母，是英文文献就把 <code>is_en</code>
+设置为
+<code>true</code>。如果找不到英文单词，不一定不是英文文献，例如可能是
+<code>[1]</code> 这类的标号。因此再判断一下有没有出现 <code>等.</code>
+这个中文字符。“等”只出现在中文和英文文献里，前面找不到英文单词，现在又出现“等”，那就铁定是中文文献，所以设置
+<code>stop</code>，不需要白费功夫替换中文，节省点时间。如果还是没有找到“等”，就直接返回，什么也不要设置。</p></li>
+<li><p>如果是英文文献，使用 <code>gsub</code>
+进行替换。返回值分别是替换后的字符和替换次数。替换次数大于等于一说明至少替换了一次，这时可以停止替换，一篇文献不可能出现两次“等”，同时将替换后的字符替换原来的字符并返回。</p></li>
+</ol>
+<p>经过以上四步，文献就替换完成了。验证一下：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121172624.png" srcset="/img/loading.gif" lazyload
+alt="替换成功" /></p>
+<p>大功告成！</p>
+<h3 id="重新优化">重新优化</h3>
+<p>查看 <a
+target="_blank" rel="noopener" href="https://pandoc.org/lua-filters.html#module-pandoc.utils">文档</a>
+发现 Pandoc 提供一个 <code>pandoc.utils.citeproc</code>
+函数进行参考文献解析。我们可以应用到自己的代码中，于是代码变成：</p>
+<figure class="highlight lua"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ref_div</span><span class="hljs-params">(div)</span></span><br>  <span class="hljs-keyword">local</span> stop = <span class="hljs-literal">false</span><br>  <span class="hljs-keyword">local</span> is_en = <span class="hljs-literal">false</span><br><br>  <span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">do_subs</span><span class="hljs-params">(str)</span></span><br>    <span class="hljs-keyword">if</span> stop <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">end</span><br><br>    <span class="hljs-comment">---@type string</span><br>    <span class="hljs-keyword">local</span> text = str.text<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_en <span class="hljs-keyword">then</span><br>      <span class="hljs-keyword">if</span> text:<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;%a+&#x27;</span>) <span class="hljs-keyword">then</span> is_en = <span class="hljs-literal">true</span><br>      <span class="hljs-keyword">elseif</span> text:<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;等.&#x27;</span>) <span class="hljs-keyword">then</span> stop = <span class="hljs-literal">true</span> <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">end</span><br><br>    <span class="hljs-keyword">local</span> times<br>    text, times = text:<span class="hljs-built_in">gsub</span>(<span class="hljs-string">&#x27;等&#x27;</span>, <span class="hljs-string">&#x27;et al&#x27;</span>)<br>    <span class="hljs-keyword">if</span> times &gt;= <span class="hljs-number">1</span> <span class="hljs-keyword">then</span><br>      str.text = text<br>      stop = <span class="hljs-literal">true</span><br>      <span class="hljs-keyword">return</span> str<br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">end</span><br><br>  div.content = div.content:walk&#123; Str = do_subs, &#125;<br><br>  <span class="hljs-keyword">return</span> div<br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Pandoc</span><span class="hljs-params">(doc)</span></span><br>  <span class="hljs-keyword">return</span> pandoc.utils.citeproc(doc):walk&#123;<br>    Div = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(div)</span></span><br>      <span class="hljs-comment">-- 查找 refs Div</span><br>      <span class="hljs-keyword">if</span> (div.identifier <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;&#x27;</span>):<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;refs&#x27;</span>) <span class="hljs-keyword">then</span><br>        div.content = div.content:walk&#123; Div = ref_div, &#125;<br>        <span class="hljs-keyword">return</span> div<br>      <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span>,<br>  &#125;<br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<p>HTML.yaml 改为</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121173048.png" srcset="/img/loading.gif" lazyload
+alt="不需要 citeproc 了" /></p>
+<p>因为在自己的代码中调用了 citeproc，所以不需要在 HTML.yaml
+中调用。同理 docx.yaml 也需要改：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20221121173211.png" srcset="/img/loading.gif" lazyload
+alt="docx.yaml" /></p>
+<p>至此，我们写了一个 Lua 脚本用于修改文献。这从根本改变了 Pandoc
+的输出，因此即使输出文件是 PDF
+也是正确的。这种方法算比较完善的方法了。好煎熬。</p>
+<h1 id="后语">后语</h1>
+<p>Pandoc
+是一个强大的工具。然而这个世界没有什么是完美的，它也有无法满足需求的那天，不过我们可以通过自己的方式去改变它。从最早的正则表达式进行修改到后来直接调用
+Pandoc API(Application programming
+interface)，就像一个探索的过程，感觉解决问题后总有莫名的成就感，哈哈。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Pandoc/">Pandoc</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Markdown/">Markdown</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CSL/">CSL</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Pandoc-Filter/">Pandoc Filter</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/22/VSCode-%E9%80%9A%E8%BF%87-SSH-%E8%BF%9C%E7%A8%8B%E4%BD%BF%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">VSCode 通过 SSH 远程使用服务器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/20/Pandoc-%E4%BB%8E-Markdown-%E5%88%B0%E5%85%B6%E4%BB%96%E6%A0%BC%E5%BC%8F/">
+                        <span class="hidden-mobile">Pandoc: 从 Markdown 到其他格式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

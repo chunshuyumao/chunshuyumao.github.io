@@ -1,0 +1,597 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="找点啥完成四月的活，算 KPI 吗？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="好玩的命令行工具">
+<meta property="og:url" content="https://chunshuyumao.github.io/2022/04/24/%E5%A5%BD%E7%8E%A9%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="找点啥完成四月的活，算 KPI 吗？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://101.200.84.36/images/2022/04/24/202204242119118.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/04/24/202204242139772.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/04/24/202204242152627.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/04/24/202204242216842.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/04/24/202204242231346.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/04/24/202204242229855.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/04/24/202204242227215.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/04/24/202204242227678.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/04/24/202204242234230.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/04/24/202204242236997.png">
+<meta property="og:image" content="http://101.200.84.36/images/2022/04/24/202204242239603.png">
+<meta property="article:published_time" content="2022-04-24T14:54:10.000Z">
+<meta property="article:modified_time" content="2022-07-29T12:43:12.000Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="命令行">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://101.200.84.36/images/2022/04/24/202204242119118.png">
+  
+  
+  <title>好玩的命令行工具 - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="好玩的命令行工具">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-04-24 22:54" pubdate>
+        2022年4月24日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">好玩的命令行工具</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言">前言</h1>
+<p>老习惯，前言牢骚不用看。4 月偷了懒，今天突然心血来潮，更更自己文章 ——
+不然就过去一个月了。谈谈自己最近做的事，顺便分享一些好玩的命令行命令。自己做的事是闲事，所以直接放前言。</p>
+<p>值得一提的一件事是，参与测试国内首个大型的编程语言。编程语言现在已经不是什么新鲜事
+—— 当初自己就有一个非计算机系的学弟在只学了 C++
+的一些皮毛之后，纯手工造了一个新的语言。这种大佬咱没话可说。可惜他完全是新手上车，以初学者的方式理解高级语言，所以略有不足（如果他咨询咨询我的话可能会更好，不过也是，咱也没问人家）。既然如此，这门新的编程语言有何特点？其实不好说，因为人家还在内测，具体很多东西还待商榷。不过我们要知道，目前为止，几乎所有编程界的高级语言都依赖于
+C/C++，这让它们或多或少执行效率都不咋地 —— 比如
+Python，堪称龟速。虽然有如 Lua
+这类的小巧的语言，但是它们往往是大语言的伴生物，不能独当一面。这里就不多做介绍了。</p>
+<p>目前为止，能在效率上和 C/C++ 抗衡，又有自己优势的就是 Rust ——
+更安全。其余的 Go 或者等等都有待商榷。不过了解 Rust
+的应该知道，这门语言为了安全，语法变得非常复杂 ——
+最近自己也试着学学这门语言，一言难尽。有此看来，我参与内测的编程语言的定位很明显了。个人觉得这门语言还是很优秀的，因为有很多先辈的经验。同样，因为作为“国货之光”，大家可能会对它抱有很大的期望
+——
+如果它给你的感觉不大好，那很可能是你给它倾注的期望太大了。两边都没有错，希望要多一点理解。</p>
+<p>另一个要说的，就是中文编程。我实在无法理解为什么很多人对中文编程那么执着？诚然，中文更符合我们的习惯
+—— 可是中文的输入一直是个问题。历史传说的 26
+键打不过九键，拼音打不过双拼，双拼打不过五笔……
+这种故事多了。如果要创造一个中文编程，最好的方式就是按照国人的思维创造。思维方式不同，照搬国外语言然后换一个中国字的结果就是
+——
+文字游戏。比如易语言，这门语言确实是中文编程，咱也不深究，但是使用函数方法的时候，我们又需要输入半角符号
+—— 基本等于 C
+语言里的宏定义了，但是易语言至少做了一些创新。反观一些模仿者，就说前一阵子刚出现的某中文操作系统和创造者创造的“甲、乙”语言
+—— 完全就是收割智商，可结果还是有一班信徒。至此，咱也没话可说了 ——
+早知道智商税这么好赚……</p>
+<h1 id="正文">正文</h1>
+<p>今天要介绍的是一些命令行工具 —— 有些不仅仅是 Linux
+系统才可以使用。</p>
+<ol type="1">
+<li>cmus 命令行音乐播放器</li>
+<li>FFmpeg 视频和音频工具</li>
+<li>Telnet 远程登陆工具</li>
+</ol>
+<h2 id="cmus-命令行音乐播放器">cmus 命令行音乐播放器</h2>
+<p>使用 Linux 作为主系统之后，我很习惯直接使用命令行解决大多数问题 ——
+说实在，我就没打开过自己的文件管理器几次。虽然我例行公事地下载了 VLC
+媒体播放器 ——
+一个非常优秀的跨平台多媒体播放器，但是自己很少使用。简而言之，咱基本只使用命令行。</p>
+<p>敲命令怎么能让耳朵闲着？为了在使用命令行的时候可以听歌放松，我选择了
+<a target="_blank" rel="noopener" href="https://github.com/cmus/cmus" title="cmus">cmus</a>
+播放器，一个纯 C 语言写的命令行播放器，内存和速度没得说 ——
+贼低贼快。大多数的 Linux 发行版都可以直接用命令行安装，我用的是 Manjaro
+，所以使用 <code>sudo pacman -S cmus</code> 安装。</p>
+<p>安装完毕之后在命令行上输入 <code>cmus</code>
+，回车打开，界面如下：</p>
+<p><img src="http://101.200.84.36/images/2022/04/24/202204242119118.png" srcset="/img/loading.gif" lazyload
+alt="cmus 界面" /></p>
+<p>现在的 cmus 还没有音乐，我们需要导入。确认进入 cmus
+之后，直接在键盘上输入 <code>:a ~/Music</code>
+，回车。眼尖的同学会发现，cmus 的命令和 VIM 很相似。<code>:</code>
+是命令行模式的标志，所以一定要打出来；<code>a</code> 表示 add
+，也可以直接使用 <code>add</code> 长指令；后面的 <code>~/Music</code>
+是音乐路径，这是我放音乐的地方。刚刚的命令也可以写成这样
+<code>:add ~/Music</code>。</p>
+<p><img src="http://101.200.84.36/images/2022/04/24/202204242139772.png" srcset="/img/loading.gif" lazyload
+alt="添加音乐" /></p>
+<p><img src="http://101.200.84.36/images/2022/04/24/202204242152627.png" srcset="/img/loading.gif" lazyload
+alt="添加音乐后" /></p>
+<h3 id="基本操作">基本操作</h3>
+<p>因为和 VIM 差不多，所以使用 <kbd>j</kbd>、<kbd>k</kbd>
+上下移动，<kbd>h</kbd>、<kbd>l</kbd> 向前向后调整播放进度， <kbd>z</kbd>
+播放上 一首，<kbd>b</kbd> 播放下一首，<kbd>c</kbd>
+暂停/播放，<kbd>x</kbd> 从头播放，<kbd>v</kbd>
+停止，<kbd>CTRL</kbd>+<kbd>r</kbd> 单曲循环/歌单循环，<kbd>e</kbd>
+添加下一首播放，<kbd>tab</kbd>
+切换<strong>艺术家</strong>和<strong>音乐库</strong>两列等等。更多操作可以使用
+<code>man cmus</code> 查看。</p>
+<p>此外，还有 <kbd>CTRL</kbd>+<kbd>l</kbd> 刷新缓存 ——
+因为导入的音乐有些信息未必完整，最后需要手动修改。个人觉得 cmus
+很适合命令行的极度爱好者 —— 还有我这类附庸风雅的。</p>
+<h2 id="ffmpeg-音视频工具">FFmpeg 音视频工具</h2>
+<p>这个东东来历大了，现在市面上搞音视频的不认识这家伙都不好意思说自己不认识。我不喜欢什么东西都往自己电脑上装，所以之前没打算使用
+cmus，而是想自己写一个命令行脚本播放音乐，当时盯上的后端就是这东西。后来是写了一点，但是惊奇地发现：原来我的电脑自己就带了
+cmus ！果断中途放弃自己写脚本的想法。太讽刺了 ——
+电脑自己安装就觉得心安理得……</p>
+<p>我今天介绍 <a target="_blank" rel="noopener" href="https://ffmpeg.org/" title="FFmpeg">FFmpeg</a>
+主要是音视频的转化。使用 Windows
+的时候，我基本不会选择命令行，而是直接使用格式工厂(当然，格式工厂也是靠
+FFmpeg)，不过到了 Linux ——
+时代就变了。简单来说，如果你有一个视频，而且你恰好想提取它的的音频，那么恭喜你，
+FFmpeg 可以满足你。FFmpeg 是跨平台的，所以也可以在 Windows 上找到。Linux
+下直接使用自己发行版的包管理器就可以安装，我的使用 Manjaro :
+<code>sudo pacman -S ffmpeg</code>。</p>
+<p><img src="http://101.200.84.36/images/2022/04/24/202204242216842.png" srcset="/img/loading.gif" lazyload
+alt="FFmpeg 官网" /></p>
+<p><code>ffmpeg -i input_file.mp4 output_file.mp3</code>就可以提取视频的音频。当然，各种操作多了去了，咱不是搞音视频开发的，很多参数看不懂，基本的操作了解就行。通过
+<code>man ffmpeg</code> 或者 <code>ffmpeg --help</code>
+查看更多的命令。FFmpeg 通常会附带 FFplay
+，可以进行音视频的播放，功能还是很强大的 —— 不过我使用它来听过歌
+<code>ffplay -showmode 0 -loop -1 -i unput_file.mp3</code>。<code>-showmode 0</code>
+后面的 <code>0</code> 表示不用打开播放界面，因为播放界面会打开一个 GUI.
+<code>-loop</code> 是循环次数，后面跟一个数字，我接的是 <code>-1</code>
+(负一)，表示无限循环，如果是 <code>1</code> 、<code>3</code>
+等，那就是循环一次或者三次。<code>-i</code> 后面跟着播放的文件。</p>
+<h2 id="telnet-远程登陆工具">Telnet 远程登陆工具</h2>
+<p>Telnet
+是一个远古的工具，在现代生产生活中扮演无名小卒，但是人家也曾辉煌过。现在我要介绍的，是建立在
+Telnet 上的两个好玩东西：</p>
+<ol type="1">
+<li><ruby>字符艺术<rt>ASCII</rt></ruby>《星球大战》</li>
+<li><ruby>字符艺术<rt>ASCII</rt></ruby> 世界地图。</li>
+</ol>
+<p>上古时代有个大佬把《星战》做成了字符艺术，现在我们只需要在命令行上输入
+<code>telnet towel.blinkenlights.nl</code> 就可以快速过一遍《星战》了 ——
+作为非《星战》迷，我表示忍受不了电影的画质，但是很喜欢<ruby>字符艺术<rt>ASCII</rt></ruby>。</p>
+<p><img src="http://101.200.84.36/images/2022/04/24/202204242231346.png" srcset="/img/loading.gif" lazyload
+alt="二十世纪福克斯" /></p>
+<p><img src="http://101.200.84.36/images/2022/04/24/202204242229855.png" srcset="/img/loading.gif" lazyload
+alt="老故事会了" /></p>
+<p><img src="http://101.200.84.36/images/2022/04/24/202204242227215.png" srcset="/img/loading.gif" lazyload
+alt="家政机器原型" /></p>
+<p><img src="http://101.200.84.36/images/2022/04/24/202204242227678.png" srcset="/img/loading.gif" lazyload
+alt="牛魔王" /></p>
+<p>其次就是命令行版的“谷歌地图”了—— <code>telnet mapscii.me</code>
+，响应速度贼快。键盘操作，基本是
+<kbd>h</kbd>、<kbd>j</kbd>、<kbd>k</kbd>、<kbd>l</kbd>左上下右移动，<kbd>a</kbd>、<kbd>z</kbd>放大缩小。</p>
+<p><img src="http://101.200.84.36/images/2022/04/24/202204242234230.png" srcset="/img/loading.gif" lazyload
+alt="image-20220424223452168" /></p>
+<p><img src="http://101.200.84.36/images/2022/04/24/202204242236997.png" srcset="/img/loading.gif" lazyload
+alt="我大南开" /></p>
+<p><img src="http://101.200.84.36/images/2022/04/24/202204242239603.png" srcset="/img/loading.gif" lazyload
+alt="我大新开湖" /></p>
+<p>当然，每次输入这么长的命令很麻烦，所以直接在自己家目录的 Shell
+配置文件添加一下代码，我用 VIM 打开自己的 ZSh 配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ vim ~/.zshrc<br><br><span class="hljs-built_in">alias</span> map=<span class="hljs-string">&quot;telnet mapscii.me&quot;</span><br><span class="hljs-built_in">alias</span> strwrs=<span class="hljs-string">&quot;telnet towel.blinkenlights.nl&quot;</span><br></code></pre></div></td></tr></table></figure>
+<p>保存退出后输入 <code>source ~/.zshrc</code> 就可以输入
+<code>map</code> 或者 <code>strwrs</code>
+代替长长的指令了。这里说明一下，如果使用的是 Bash， 需要配置的是
+<code>.bashrc</code> 文件。</p>
+<h1 id="后语">后语</h1>
+<p>本来想再推荐几个命令行游戏的，不过自己玩玩之后发现没玩明白 ——
+索性就不介绍了。其实今天介绍的都比较冷门 ——
+网易云其实也有命令行版本、Telnet 都是上古的工具了。还有诸如
+cowsay、sl、oneko 等等好玩的东西没介绍 ——
+不过也没办法，很多人现在谈到好玩的命令行就提 cowsay
+让我觉得这个东西没必要介绍。</p>
+<p>这篇文章算是敷衍忪懒的四月吧，希望五月能再勤一点。(也许后面会更一些
+Rust 的文章？)</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Linux/">Linux</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/">命令行</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/04/29/%E5%9C%A8-Linux-%E4%B8%8A%E5%AE%9E%E7%8E%B0%E5%9B%9E%E6%94%B6%E7%AB%99/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">在 Linux 上实现回收站</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/31/Chevereto%E9%85%8D%E5%90%88PicGo%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%BE%E5%BA%8A/">
+                        <span class="hidden-mobile">Chevereto 配合 PicGo 搭建自己的图床</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

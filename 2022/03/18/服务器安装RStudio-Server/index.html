@@ -1,0 +1,880 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="服务器 Rstudio Server 安装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务器安装 RStudio-Server">
+<meta property="og:url" content="https://chunshuyumao.github.io/2022/03/18/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85RStudio-Server/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="服务器 Rstudio Server 安装">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-18T07:06:56.000Z">
+<meta property="article:modified_time" content="2022-07-29T12:43:12.000Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="RStudio">
+<meta property="article:tag" content="Miniconda">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>服务器安装 RStudio-Server - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="服务器安装 RStudio-Server">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-18 15:06" pubdate>
+        2022年3月18日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      19 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">服务器安装 RStudio-Server</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言">前言</h1>
+<p>RStudio Server 是 RStudio
+的服务器版。单机版其实也已经够用，可是有些时候我们需要进行迁移或者跨平台使用，重新安装一遍非常麻烦。我的服务器只有2G
+内存，比不上我的电脑，没理由使用服务器不用自己的电脑。可惜服务器不用也是浪费，而且自己配置也是一种乐趣，所以就花了点时间。其实这也和我不愿意安装各种客户端有关。</p>
+<p>折腾好一天才成功在服务器安装 RStudio
+Server。这里奉劝天下士，有事没事真别浪费时间在国内找网上的资料，要真的有问题不行了，去相关的技术论坛找问题或者好好跟着官网教程走，不然就是在浪费生命。</p>
+<p>本次安装的平台和软件:</p>
+<ol type="1">
+<li>Miniconda3 Linux 64-bit。使用 conda 管理多版本 R 语言和
+Python。</li>
+<li>RStudio Server v2022.02.0+443。RStudio
+的服务器版本，可以通过浏览器接入。</li>
+<li>ECS 共享型 n4 单核2G内存服务器，Rocky Linux 8.5 版，兼容 CentOS7/8
+和 RHEL8 及以上版本。</li>
+</ol>
+<p>我会带大家一步一步踩坑，所有按我教程走的时候遇到问题不用紧张——毕竟俺就是这么来的。</p>
+<h1 id="miniconda3">Miniconda3</h1>
+<p>R
+语言是免费开源的编程语言，被广泛运用到科学计算领域，被称为科学家的编程语言。R
+语言这年头最为人所知的能力就是画图和数据分析。大数据分析时代，R 与
+Python 齐驱并进（虽然 Python 是后来者居上）。与 Python 相比，R
+语言独有的特点是版本不兼容：R
+语言一般不具有向前向后兼容性，低版本使用得了的<ruby>包<rt>package</rt></ruby>高版本一般使用不了。正因如此，你会看到很多学者的电脑安装各种版本的
+R 语言。</p>
+<p>在 Linux 上安装 R
+语言可能直接安装到系统路径，想使用多个版本就容易起冲突。解决这个问题最普遍的思想是通过虚拟环境管理器管理
+R 语言版本。</p>
+<p>Python 我就不多说了。Python 最著名的包管理器是 PIP.
+默认情况下只要安装了 Python 就会自带这个东西。PIP
+提供了简单的包查询、下载、查找和卸载功能，一般不解决依赖问题。正常情况下不会有什么大毛病，一碰到科学计算包就不好看了。举个例子，如果我要安装
+A 包，A 包里边使用了 B 包，PIP 安装就会出错。好心的话，PIP
+会提醒你少了某种东西，可惜大多数时候它只会和你一样懵。</p>
+<p>为了更好的解环境包依赖问题，有一群人开始思考某种新的包管理器，conda
+由此而生。conda 成功解决了依赖问题——你没安装的东西它会帮你安装——并发展成
+<ruby>包管理系统<rt>package management system</rt></ruby>、
+<ruby>环境管理系统<rt>environment management
+system</rt></ruby>，而且还兼管多种语言的版本管理——当然最常用的就是 R 和
+Python.</p>
+<p>conda 一般不能单独安装，想要使用它需要安装 Anaconda。Anaconda 和
+Python 同祖同宗，都是大蛇。Anaconda
+预安装上百个科学包，基本不用愁。可惜大多数我们都用不上。用不上又得安装，动辄几个
+G 的内存看起来很恶心。鉴于此，Miniconda 横空出世：它也使用 conda
+解决包依赖问题，但不像 Anaconda
+什么都安装，它只保留最少的软件包，剩下你需要啥就装啥。对于内存捉襟见肘的小伙伴来说，这简直是福音。因此我打算安装
+Miniconda3.</p>
+<h2 id="安装-miniconda3">安装 Miniconda3</h2>
+<p>到官网<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://docs.conda.io/en/latest/miniconda.html
+">[1]</span></a></sup>下载对应系统的版本。我要安装到 Linux
+服务器，所以选择 <a
+target="_blank" rel="noopener" href="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh">Miniconda3
+Linux 64-bit</a> 。使用你喜欢的下载方式下载，我用 axel.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell">axel <span class="hljs-literal">-n</span> <span class="hljs-number">32</span> https://repo.anaconda.com/miniconda/Miniconda3<span class="hljs-literal">-latest-Linux-x86_64</span>.sh<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181615732.png" srcset="/img/loading.gif" lazyload
+alt="选择版本" /></p>
+<p>下载完之后，使用
+<code>ls</code>查看自己的目录下有没有以下脚本。如果没有需要继续下载。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181628572.png" srcset="/img/loading.gif" lazyload
+alt="下载的脚本" /></p>
+<p>给予脚本可执行权限：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">chmod u+x Miniconda3-latest-Linux-x86_64.sh<br></code></pre></div></td></tr></table></figure>
+<p>然后执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">./Miniconda3-latest-Linux-x86_64.sh<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181631221.png" srcset="/img/loading.gif" lazyload
+alt="执行" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181631078.png" srcset="/img/loading.gif" lazyload
+alt="一直 Enter 回车" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181632355.png" srcset="/img/loading.gif" lazyload
+alt="选择 yes 确认安装" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181637069.png" srcset="/img/loading.gif" lazyload
+alt="选择安装位置" /></p>
+<p>安装位置通常是你的家目录，例如我的家目录是
+<code>/home/chunshuyumao</code>，所以安装位置是
+<code>/home/chunshuyumao/miniconda3</code>，你也可以在
+<code>&gt;&gt;&gt;</code>之后修改自己的路径。建议还是安装到自己的家目录下。</p>
+<p>安装完毕它会问你是否激活 conda 环境，选择 yes
+会在每次打开控制台时自动激活 conda 的默认环境
+base。如果不想默认开启就选择 no. 如果无意中选择了 yes, 也可以通过输入
+<code>conda config --set auto_activate_base false</code>
+取消激活。一般我选择 yes，然后再输入命令取消。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181736554.png" srcset="/img/loading.gif" lazyload
+alt="默认激活" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181740692.png" srcset="/img/loading.gif" lazyload
+alt="选择 yes" /></p>
+<p>安装完之后重新登陆控制台可以看到 conda
+命令可以使用了，或者不用重启登陆，只需输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">source ~/.bashrc<br></code></pre></div></td></tr></table></figure>
+<p>其中 <code>~/.bashrc</code> 是你的 shell 的配置文件，我使用的是 zsh,
+所以输入的是 <code>source ~/.zshrc</code>。输入 <code>conda -V</code>
+查看安装是否成功。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181743461.png" srcset="/img/loading.gif" lazyload
+alt="查看版本" /></p>
+<h2 id="配置国内源">配置国内源</h2>
+<p>conda 不配置国内源速度会很慢，输入以下代码配置国内源：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free<br>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r<br>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main<br>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda<br>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge<br></code></pre></div></td></tr></table></figure>
+<p>配置国内源之后安装 mamba —— mamba 可以看作是更快的 conda. 由于 conda
+没想到自己发展那么快，随着包越来越多，解析依赖的速度越来越慢，对于一些大型的包需要解决的依赖更多——这时候
+conda 显得力不从心，于是诞生了 mamba
+这个更快的包管理。不想了解这段历史的话直接安装 mamba
+就对了。安装之后进行简单的升级，确认一下</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">conda install mamba -y<br>mamba update conda -y<br>conda update mamba -y<br></code></pre></div></td></tr></table></figure>
+<h2 id="安装-r-语言">安装 R 语言</h2>
+<p>conda
+通过创建多个<ruby>环境<rt>encironment</rt></ruby>管理语言的版本，要安装多版本需要创建环境。后面使用的
+Seurat 包需要 R 语言的版本高于 4.0 ，所以创建一个高版本的 R
+语言环境：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">conda create -n r4.1.2 -y<br></code></pre></div></td></tr></table></figure>
+<blockquote>
+<p><code>-n</code> 指定环境的名字，为了方便区分，我直接命名为
+<code>r4.1.2</code> ，意思是要安装 4.1.2 版本。<code>-y</code> 是 yes,
+就是直接确认创建，不用再询问。</p>
+</blockquote>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181804758.png" srcset="/img/loading.gif" lazyload
+alt="创建 R 语言环境" /></p>
+<p>激活环境，输入
+<code>conda activate r4.1.2</code>。如下图，右边提示现在是
+<code>r4.1.2</code> 环境</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181805983.png" srcset="/img/loading.gif" lazyload
+alt="激活环境" /></p>
+<p>想使用哪个环境就激活那个环境。</p>
+<blockquote>
+<p>如果想关闭环境，使用 <code>conda deactivate</code></p>
+</blockquote>
+<p>安装 R 语言 4.1.2 版</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">mamba install r-base==4.1.2 -y<br></code></pre></div></td></tr></table></figure>
+<p>安装完毕输入 <code>R</code>
+回车，查看是否有问题。如果进入以下界面就说明安转成功，输入
+<code>quit()</code> 退出 R 语言的交互界面。</p>
+<p>同理，想要安装其他版本的 R
+语言，需要创建一个新环境，然后激活它再安装版本——使用 <code>==</code>
+指定语言版本，不指定的话默认安装最新版。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181842541.png" srcset="/img/loading.gif" lazyload
+alt="检验安装是否成功" /></p>
+<p>退出的时候它会问是否保存工作环境，一般不用保存，输入 <code>n</code>
+即可</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181843681.png" srcset="/img/loading.gif" lazyload
+alt="不保存工作环境" /></p>
+<h2 id="安装-python">安装 Python</h2>
+<p>创建新环境，安装最新版 Python：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">conda create -n py3.10 -y<br>mamba install -n py3.10 python==3.10 -y<br></code></pre></div></td></tr></table></figure>
+<p>这里在 <code>install</code> 的时候没有激活 py3.10 环境，所以需要使用
+<code>-n</code> 指定安装 Python3.10 的环境。</p>
+<p>安装完之后输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">conda info --envs<br></code></pre></div></td></tr></table></figure>
+<p>查看我们现有的环境</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181849999.png" srcset="/img/loading.gif" lazyload
+alt="现有的环境" /></p>
+<p>可以看到，我们现在有三个环境: base, py3.10, r4.1.2。其中激活的是
+py3.10。</p>
+<blockquote>
+<p>哪个环境是激活的会有一个 <code>*</code> 标注。</p>
+</blockquote>
+<h1 id="安装-rstudio-server">安装 RStudio Server</h1>
+<h2 id="安装">安装</h2>
+<p>接下来到官网<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://www.rstudio.com/products/rstudio/download-server/
+">[2]</span></a></sup>安装 RStudio Server. 选择你的系统，我用的是 RHEL
+系列，点击第一个系统进入安装教程。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181852320.png" srcset="/img/loading.gif" lazyload
+alt="选择系统" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181853918.png" srcset="/img/loading.gif" lazyload
+alt="安装教程" /></p>
+<p>首先是下载安装包。使用 <code>wget</code> 就按照官网说的下载，使用
+<code>curl</code> 就用 <code>curl</code> 下载，使用 <code>axel</code>
+就用 <code>axel</code> 下载，下面三种下载方式选一种：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">wget https://download2.rstudio.org/server/centos7/x86_64/rstudio-server-rhel-2022.02.0-443-x86_64.rpm<br>curl -O https://download2.rstudio.org/server/centos7/x86_64/rstudio-server-rhel-2022.02.0-443-x86_64.rpm<br>axel -n 32 https://download2.rstudio.org/server/centos7/x86_64/rstudio-server-rhel-2022.02.0-443-x86_64.rpm<br></code></pre></div></td></tr></table></figure>
+<p>确认下载成功：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181856163.png" srcset="/img/loading.gif" lazyload
+alt="确认下载成功" /></p>
+<p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo yum install rstudio-server-rhel-2022.02.0-443-x86_64.rpm -y<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181859478.png" srcset="/img/loading.gif" lazyload
+alt="安装完毕" /></p>
+<p>允许自启动，并启动它：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo systemctl enable rstudio-server<br>sudo systemctl start rstudio-server<br>sudo systemctl status rstudio-server<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181900768.png" srcset="/img/loading.gif" lazyload
+alt="一般会启动失败" /></p>
+<p>不用担心，启动失败很正常。输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">sudo rstudio-server verify-installation</span><br><br>TTY detected. Printing informational message about logging configuration. Logging configuration loaded from &#x27;/etc/rstudio/logging.conf&#x27;. Logging to &#x27;/var/log/rstudio/rstudio-server/rserver.log&#x27;.<br>Path to R not specified, and no module binary specified; Invalid R module ()<br></code></pre></div></td></tr></table></figure>
+<p>上面显示的错误是找不到 R 语言的路径，这个简单，我们配置一下 R
+语言的路径。</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo vim /etc/rstudio/rserver.conf<br></code></pre></div></td></tr></table></figure>
+<p>按 <kbd>Shift</kbd>+<kbd>g</kbd> 转到最后一行，按 <kbd>o</kbd>
+输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">rsession-which-r=/home/chunshuyumao/miniconda3/envs/r4.1.2/bin/R<br></code></pre></div></td></tr></table></figure>
+<p>其中，<code>/home/chunshuyumao</code>写你的家目录，这里是我的家目录，
+miniconda3 安装在哪里就使用哪个目录。我创建的 R 语言环境在 miniconda3
+<ruby>虚拟环境目录<rt>envs</rt></ruby>下的
+<code>r4.1.2</code>。如果你不确定你的 R 语言在哪里，可以激活环境之后使用
+<code>which R</code> 查看，例如：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181912027.png" srcset="/img/loading.gif" lazyload
+alt="which R" /></p>
+<p>上面图中的 <code>~</code> 代表 <code>/home/chunshuyumao</code>
+也就是你的家目录。</p>
+<p>配置完之后，按一下 <kbd>Esc</kbd> 键，然后输入 <code>:wq</code>
+，回车就可以了。再次输入
+<code>sudo rstudio-server verify-installation</code>
+，发现仍然有问题。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181914017.png" srcset="/img/loading.gif" lazyload
+alt="修改路径" /></p>
+<p>配置库路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo vim /etc/rstudio/rserver.conf<br></code></pre></div></td></tr></table></figure>
+<p>按 <kbd>Shift</kbd>+<kbd>g</kbd> 转到最后一行，按 <kbd>o</kbd>
+输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">rsession-ld-library-path=/home/chunshuyumao/miniconda3/envs/r4.1.2/lib:/home/chunshuyumao/miniconda3/envs/r4.1.2/lib/R/lib<br></code></pre></div></td></tr></table></figure>
+<p>把 <code>/home/chusnhuyumao</code>
+改成你的家目录，<code>r4.1.2</code>改为你的 R 语言虚拟环境名即可。</p>
+<p>按一下 <kbd>Esc</kbd> 键，然后输入 <code>:wq</code> ，回车退出。</p>
+<p>重启试试:</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo systemctl restart rstudio-server<br>sudo rstudio-server verify-installation<br></code></pre></div></td></tr></table></figure>
+<p>出现下面提示说明你已经成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">Server is running and must be stopped before running verify-installation<br></code></pre></div></td></tr></table></figure>
+<p>如果提示
+<code>error while loading shared libraries: libssl.so.10</code>，请跳到
+<a href="#prob">4</a>。</p>
+<p>RStudio Server 默认监听 8787 端口，可以使用
+<code>sudo netstat -an4p | grep 8787</code> 查看 rserver 是否启动</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181930508.png" srcset="/img/loading.gif" lazyload
+alt="查看端口" /></p>
+<blockquote>
+<p>如果提示没有 <code>netstat</code> 这个命令，请先安装
+<code>sudo yum install -y net-tools</code></p>
+</blockquote>
+<p>开启防火墙的话，开放一下 8787 端口：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo firewall-cmd --add-port=8787/tcp --permanent<br>sudo firewall-cmd --reload<br></code></pre></div></td></tr></table></figure>
+<h2 id="测试登录">测试登录</h2>
+<p>浏览器输入 <code>IP:8787</code>，这个 IP 是公网 IP
+。登陆使用的是你服务器的帐号和密码。</p>
+<blockquote>
+<p>如果你在虚拟机上尝试，请使用虚拟机的 IP，使用 <code>ip addr</code>
+查看， inet 之后就是你的 IP</p>
+</blockquote>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181940261.png" srcset="/img/loading.gif" lazyload
+alt="登陆" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181941757.png" srcset="/img/loading.gif" lazyload
+alt="登陆成功" /></p>
+<p>Rstudio Server 搭建完毕。</p>
+<h1 id="一些问题"><a name="prob">一些问题</a></h1>
+<p>来到这里的都是因为这条错误：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">/usr/lib/rstudio-server/bin/rsession: error while loading shared libraries: libR.so: cannot open shared object file: No such file or directory<br></code></pre></div></td></tr></table></figure>
+<p>这和 OpenSSL 有关。我在 Rocky Linux 8.5 遇到的问题，使用 CentOS7
+虚拟机没有碰到。查看库目录存在 libssl
+的各个版本，创建软链接想要骗过系统发现不行，最后使用 yum search
+看到了<code>compat-openssl10</code>
+包，看标签应该是兼容包，安装之后发现没问题，就此记录。</p>
+<p>安装 <code>compat-openssl10.x86_64</code>后再次重启 RStudio Server
+服务。</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo yum install compat-openssl10.x86_64 -y<br>sudo systemctl restart rstudio-server<br>sudo systemctl status rstudio-server<br></code></pre></div></td></tr></table></figure>
+<h1 id="安装-scanpy-和-seurat">安装 Scanpy 和 Seurat</h1>
+<p>Scanpy 和 Seurat 是数据分析使用的，个人安装，可以不用看。</p>
+<h2 id="安装-scanpy">安装 Scanpy</h2>
+<p>到 Scanpy
+官网<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://scanpy.readthedocs.io/en/stable/installation.html
+">[3]</span></a></sup>查看下载 Scanpy 教程</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203181958423.png" srcset="/img/loading.gif" lazyload
+alt="安装 Scanpy" /></p>
+<p>激活 Python 环境安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">conda activate py3.10<br>mamba install seaborn scikit-learn statsmodels numba pytables -y <br>mamba install python-igraph leidenalg -y<br>pip install scanpy -i https://pypi.tuna.tsinghua.edu.cn/simple<br></code></pre></div></td></tr></table></figure>
+<blockquote>
+<p>请注意，一定要使用 pip ，不是 pip3 。</p>
+</blockquote>
+<p>安装完毕，输入 <code>python</code>进入交互界面，
+<code>import scanpy</code> 成功就说明安装好了。</p>
+<h2 id="安装-seurat">安装 Seurat</h2>
+<p>安装
+Seurat<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://satijalab.org/seurat/
+">[4]</span></a></sup> 比较简单，激活 R 语言环境:</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">conda activate r4.1.2<br>R<br>install.packages(&#x27;Seurat&#x27;)<br>install.packages(&#x27;dplyr&#x27;)<br>install.packages(&#x27;patchwork&#x27;)<br></code></pre></div></td></tr></table></figure>
+<p>提示选择镜像源，可以选择北京——我这里是 17。选完直接回车。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203182010716.png" srcset="/img/loading.gif" lazyload
+alt="镜像源" /></p>
+<p>Linux 安装 Seurat 的时候会进行源码编译，用时较长，需要有耐性。如果是
+Windows 安装就比较快，直接二进制安装。</p>
+<p>编译 Seurat 到一半提示</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">x86_64-conda-linux-gnu-c++: fatal error: Killed signal terminated program cc1plus<br></code></pre></div></td></tr></table></figure>
+<p>这是因为我的服务器只有 2G
+内存，编译需要大量内存，显然内存不足。查看一下发现，我的服务器内存小就算了，还没有<ruby>交换分区<rt>swap</rt></ruby>，不卡死才怪。生成一个空文件，临时作为<ruby>交换分区文件<rt>swap
+file</rt></ruby>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo dd if=/dev/zero of=/swaptmp bs=4M count=1024<br></code></pre></div></td></tr></table></figure>
+<p>解释一下，<code>swaptmp</code>
+是<ruby>交换分区<rt>swap</rt></ruby>的名字，随便取。位置在
+<code>/</code> 根目录下。 <code>bs</code>是
+<code>blocksize</code>，就是区块大小，不用管。 <code>count</code>
+是写入的区块个数，我写入 1024 块。</p>
+<p>通过上面的命令，我创造了 4x1024M( 也就是 4G ) 大的文件。 为什么是 4G
+？因为我的内存为 2G, <ruby>交换分区<rt>swap</rt></ruby>最好不超过内存的
+2 倍。</p>
+<blockquote>
+<p>内存指的是物理内存，不是硬盘空间，我的配置是 2G 内存 + 40G
+硬盘空间</p>
+</blockquote>
+<p>完成之后格式化并启用<ruby>交换分区文件<rt>swap file</rt></ruby>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo mkswap /swaptmp<br>sudo swapon /swaptmp<br></code></pre></div></td></tr></table></figure>
+<p>继续编译 Seurat .</p>
+<p>编译完不想保留<ruby>交换分区文件<rt>swap
+file</rt></ruby>可以卸载：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo swapoff /swaptmp<br>sudo rm -rf /swaptmp<br></code></pre></div></td></tr></table></figure>
+<p>不过依我看，如果你的内存不够编译
+Seurat，索性留着<ruby>交换分区<rt>swap</rt></ruby>也许更好。想要保留<ruby>交换分区文件<rt>swap
+file</rt></ruby>，请进行以下配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo vim /etc/fstab<br></code></pre></div></td></tr></table></figure>
+<p>按 <kbd>Shift</kbd>+<kbd>g</kbd> 转到最后一行，按 <kbd>o</kbd>
+输入</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs avrasm">/swaptmp <span class="hljs-keyword">swap</span> <span class="hljs-keyword">swap</span> defaults <span class="hljs-number">0</span> <span class="hljs-number">0</span><br></code></pre></div></td></tr></table></figure>
+<p>按一下 <kbd>Esc</kbd> 键，然后输入 <code>:wq</code> ，回车退出。</p>
+<h1 id="测试">测试</h1>
+<p>登陆你的 RStudio Server. 输入</p>
+<figure class="highlight stylus"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">library</span><span class="hljs-params">(Seurat)</span></span><br><span class="hljs-function"><span class="hljs-title">library</span><span class="hljs-params">(dplyr)</span></span><br><span class="hljs-function"><span class="hljs-title">library</span><span class="hljs-params">(patchwork)</span></span><br></code></pre></div></td></tr></table></figure>
+<p>没有报错就说明成功了。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203182028913.png" srcset="/img/loading.gif" lazyload
+alt="测试" /></p>
+<p><kbd>Ctrl</kbd>+<kbd>l</kbd>清空交互窗口，新建一个 R
+文件，输入以下内容：</p>
+<figure class="highlight r"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs R">data<span class="hljs-operator">=</span><span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span> <span class="hljs-number">8</span><span class="hljs-punctuation">)</span><br><span class="hljs-built_in">names</span><span class="hljs-operator">=</span><span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-string">&quot;C++&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;C&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;Python&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;R&quot;</span><span class="hljs-punctuation">)</span><br>cols<span class="hljs-operator">=</span><span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-string">&#x27;black&#x27;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&#x27;blue&#x27;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&#x27;red&#x27;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&#x27;green&#x27;</span><span class="hljs-punctuation">)</span><br><br>pie<span class="hljs-punctuation">(</span>data<span class="hljs-punctuation">,</span> labels<span class="hljs-operator">=</span><span class="hljs-built_in">names</span><span class="hljs-punctuation">,</span> col<span class="hljs-operator">=</span>cols<span class="hljs-punctuation">)</span><br></code></pre></div></td></tr></table></figure>
+<p>全选，点击界面右上角的 <ruby>运行<rt>run</rt></ruby>。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203182033434.png" srcset="/img/loading.gif" lazyload
+alt="新建文件" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203182035833.png" srcset="/img/loading.gif" lazyload
+alt="运行" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203182035471.png" srcset="/img/loading.gif" lazyload
+alt="效果" /></p>
+<p>点击 <ruby>工具<rt>Tools</rt></ruby> 选择 <ruby>全局选项<rt>Global
+Options</rt></ruby> ，选择 <ruby>包<rt>Packages</rt></ruby>，修改
+<ruby>首要 CRAN 仓库<rt>Primary CRAN repository</rt></ruby>
+为离你最近的地方。选择 Python
+修改版本为你喜欢的版本——它会自动检测你服务器的 Python 版本。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203182036919.png" srcset="/img/loading.gif" lazyload
+alt="设置" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203182037629.png" srcset="/img/loading.gif" lazyload
+alt="修改镜像" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203182039945.png" srcset="/img/loading.gif" lazyload
+alt="Python 版本" /></p>
+<p>到这里，我们安装完 RStudio Server 还进行了简单的配置，完美收工。</p>
+<h1 id="后语">后语</h1>
+<p>原本我不想使用 RStudio Server，最开始的想法是安装 R 语言，然后 VS
+Code
+远程连接。之前在自己的虚拟机玩过，可以完美运行。因为没有图形界面，运行之后会产生一个
+PDF 文件，只需要在 VS Code 安装一个 PDF
+预览插件就可以了。不料今天各种问题：PDF 预览不了，R
+语言的提示用不了。最后我都要疯了。配置 RStudio Server
+的时候上不去官网查看教程，于是上网搜。真是倒霉的一天，网上一群人不知所云。最后还是逛国外网站才解决问题。真是有事没事别用国内的搜索引擎——你永远找不到自己想要的答案，我都不想吐槽了。</p>
+<p>VS code 的设置真的反人类——至少反我。我都不知道哪跟哪，最后直接放弃了
+VS Code. 我还留着 VS Code 仅仅是因为它的智能提示。不过我已经不玩 C/C++
+了，看来没必要留着这个东西。相比之下，我更愿意 VS Code 使用像 Sublime
+Text 那样的 JSON 配置格式——虽然我知道它也有，只是它的 JSON
+格式让我感觉在写 C# ，真的不舒服。鬼知道，别人用都没问题就我有问题？</p>
+<p>目前对我来说还有疑惑的是 Server
+版不能安装包，只能使用控制台安装。我不是很了解，因为之前没有用过
+RStudio. RStudio Server 的 Python
+智能提示比较慢，可能和服务器有关吧，需要再鼓捣鼓捣。除此之外应该没啥大问题了。不清楚这个服务器顶不顶得住大规模运算——虽然未必有。我也听过
+Jupter NoteBook 可惜自己玩不会。</p>
+<p>内存不够用着实让我眼前一黑。当时正编译，远程控制台直接卡崩，其他控制台瞬间动不了。我以为是自动挂起，结果怎么都连不上服务器，赶忙上阿里云控制台，发现有一个严重警告，没看懂。当时以为是安装问题，登陆服务器再试安装
+Seurat
+两遍都是强行断连接。最后瞟了一眼才发现是内存不足被系统强行杀掉。一直以为内存不是大事的我才意识到，我的服务器只有
+2G 内存。当初学的 <code>dd</code> 那点知识终于用上了，看来 swap
+分区还是有必要的，特别是老旧、内存不大的机子。</p>
+<p>安装 Seurat 的一些经历也奇怪。之前有一阵子安装 miniconda3 ，配置
+Seurat 的时候一直安装不了 Stringi
+包，差点没怀疑人生——因为之前安装都没问题。结果第二天又可以安装了。我就不信这个邪，当晚再试——果然又安装不了。最后估摸着发现，晚上安装不了，白天可以？有点意思，可能这个包昼出夜伏。开个玩笑，可能那时候服务器顶不住太多的请求，又或者
+DNS 污染，反正就这么奇葩。</p>
+<h1 id="相关网址">相关网址</h1>
+<section class="footnotes">
+<div class="footnote-list">
+<ol>
+<li>
+<span id="fn:1"
+class="footnote-text"><span>https://docs.conda.io/en/latest/miniconda.html
+<a href="#fnref:1" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:2"
+class="footnote-text"><span>https://www.rstudio.com/products/rstudio/download-server/
+<a href="#fnref:2" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:3"
+class="footnote-text"><span>https://scanpy.readthedocs.io/en/stable/installation.html
+<a href="#fnref:3" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:4"
+class="footnote-text"><span>https://satijalab.org/seurat/
+<a href="#fnref:4" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+</ol>
+</div>
+</section>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/RStudio/">RStudio</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Miniconda/">Miniconda</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/24/%E5%9F%BA%E4%BA%8E%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91-API%EF%BC%9A%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%BF%BB%E8%AF%91%E8%84%9A%E6%9C%AC/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">基于百度翻译 API：手撸一个命令行翻译脚本</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/15/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Markdown%E5%86%99%E8%AE%BA%E6%96%87/">
+                        <span class="hidden-mobile">如何使用Markdown写论文</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

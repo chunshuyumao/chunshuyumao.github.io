@@ -1,0 +1,788 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一件乐事和伤心事">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于百度翻译 API：手撸一个命令行翻译脚本">
+<meta property="og:url" content="https://chunshuyumao.github.io/2022/03/24/%E5%9F%BA%E4%BA%8E%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91-API%EF%BC%9A%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%BF%BB%E8%AF%91%E8%84%9A%E6%9C%AC/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="一件乐事和伤心事">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-24T12:54:31.000Z">
+<meta property="article:modified_time" content="2022-07-29T12:43:12.000Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>基于百度翻译 API：手撸一个命令行翻译脚本 - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="基于百度翻译 API：手撸一个命令行翻译脚本">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-24 20:54" pubdate>
+        2022年3月24日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">基于百度翻译 API：手撸一个命令行翻译脚本</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言">前言</h1>
+<p>今
+天费了九牛二虎之力，手撸了命令行翻译软件。原本是件好事，晚上准备记录的时候遇见了一件伤心事：我的
+Gitee 图床仓库被屏蔽了。不大清楚为什么自己的图片外链访问过多？想想 PicGO
+上是使用 Gitee
+的不在少数，偏偏我遇上了。看来自己的博客每次都有成千上万人浏览。不过我本就没有准备在一棵树上吊死，我还有
+sm.ms 图床，虽然慢了点。卑躬屈膝地给 Gitee
+管理员写了封信，好歹让我能备份自己的图片吧，咱也没啥要求了。既然如此，大家还是好好考虑一下要不要用
+Gitee，至少目前我是没办法用了。</p>
+<p>闲话少叙，正事还没讲呢。</p>
+<p>一直以来我都是用
+translate-shell<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://github.com/soimort/translate-shell/
+">[1]</span></a></sup>，一个简单的命令行翻译软件，给自己翻译。最近想想，我好像之前申请过百度翻译开放平台的一个账号。那时候我还用
+Windows，所以也使用<strong>知云文献翻译</strong><sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span
+class="hint--top hint--rounded" aria-label="http://www.zhiyunwenxian.cn/
+">[2]</span></a></sup>。<strong>知云文献翻译</strong>还是很良心的，可惜没有
+Linux
+平台。<strong>知云</strong>允许自定义<ruby>百度翻译API<rt>Application
+Programming
+Interface</rt></ruby>，好奇心驱使下我就申请了百度翻译的账号。后来用了多少没看，文献也啥好翻译的，时不时查一个词还不错。</p>
+<p>translate-shell<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://sourceforge.net/projects/translate-shell.mirror/
+">[3]</span></a></sup> 功能强大，如果使用
+Linux，可以直接命令行安装，我用的 Manjaro Linux, 所以安装方式是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo pacman -S translate-shell<br></code></pre></div></td></tr></table></figure>
+<p>其他发行版就用你们熟悉的方式吧。安装完成之后使用 <code>trans</code>
+进行翻译。具体可以参照<ruby>帮助<rt>man</rt></ruby>。</p>
+<p>使用一阵子之后，我突然也想搞自己的翻译软件？当然，我打算用 shell/bash
+直接写个脚本。其实这样也有好处：好歹让我习惯 bash
+的用法。话不多少，准备：</p>
+<ol type="1">
+<li>百度翻译开发账号<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span
+class="hint--top hint--rounded" aria-label="https://fanyi-api.baidu.com/
+">[4]</span></a></sup></li>
+<li>Linux 平台，可以是<ruby>适用于 Windows 的 Linux 子系统( WSL
+)<rt>Windows Subversion for Linux</rt></ruby>，Linux
+虚拟机、主机、服务器，Cygwin<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span
+class="hint--top hint--rounded" aria-label="https://www.cygwin.com/
+">[5]</span></a></sup>，也许 Windows 上的 Git Bash 也可以？</li>
+</ol>
+<p>我使用的是 Manjaro 5.15 内核，bash 是
+5.1。其实这些都不用在意：我列出来就是假装自己很懂而已，大多数情况下这些东东都是兼容的。</p>
+<h1 id="申请百度翻译账号">申请百度翻译账号</h1>
+<p>开工之前，我们先去百度翻译官网申请一个账号：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203/202203250946067.png" srcset="/img/loading.gif" lazyload
+alt="申请账号" /></p>
+<p>申请完之后选择<strong>文档与支持–&gt;开发者文档</strong>，选择右边的<strong>开通链接</strong>，选择<strong>通用翻译</strong>。其他的服务以后有兴趣自己试试。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251000872.png" srcset="/img/loading.gif" lazyload
+alt="开通链接" /></p>
+<p>填申请。因为我已经申请过通用翻译，所以这里开了一个其他翻译方式，对照着看就差不多了。填完之后直接申请，基本秒通过。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251002303.png" srcset="/img/loading.gif" lazyload
+alt="申请" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251004510.png" srcset="/img/loading.gif" lazyload
+alt="通过" /></p>
+<p>完成之后选择<strong>开发者信息</strong>，记住右边的 <strong>APP
+ID</strong> 和密<ruby>钥<rt>yuè</rt></ruby>。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251028435.png" srcset="/img/loading.gif" lazyload
+alt="重要东东" /></p>
+<p>选择<strong>文档与支持</strong>，<strong>接入服务</strong>版块介绍了<strong>通用翻译</strong>的一些信息，基础的翻译而已，不用太较真——<strong>开发者文档</strong>有<strong>通用翻译</strong>使用的介绍。接下来我们基本都是看<strong>通用翻译</strong>的<strong>开发文档</strong>。很大程度上，大家可以自己动手造，用不着看我的演示。不过我还是介绍自己踩过的坑。百度的开发者文档做的还挺好，后面还有各种语言的事例，如果不使用
+Bash 的话可以看看——我之前也用 Python 写过一个，觉得还可以。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251029605.png" srcset="/img/loading.gif" lazyload
+alt="文档支持" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251031898.png" srcset="/img/loading.gif" lazyload
+alt="通用翻译" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251032376.png" srcset="/img/loading.gif" lazyload
+alt="使用方式" /></p>
+<h1 id="开始制作">开始制作</h1>
+<p>我后面基本是按照百度翻译的文档进行介绍，所以难免有抄袭的铁证。</p>
+<p>首先是<strong>通用翻译</strong>的地址</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">https://fanyi-api.baidu.com/api/trans/vip/translate<br></code></pre></div></td></tr></table></figure>
+<p>随便打开一个 Shell 脚本文件。我用 VIM 编辑器，所以使用 VIM 打开。</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">vim mt.sh<br></code></pre></div></td></tr></table></figure>
+<blockquote>
+<p>因为 Bash 兼容性很强，现在的 Linux 基本都是配置 Bash，所以我可能会
+Shell 和 Bash 混用，大家只要知道我讲的是 Bash 就行了。</p>
+<p>Bash 是 Bourne Again Shell 的缩写，以前有个 Bourne Shell, 所以是
+Again .</p>
+<p>文件名叫做 mt.sh 是因为它是 My Translater，懒得写那么多字母，干脆就是
+mt.</p>
+</blockquote>
+<p>在脚本最上面写下</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">encoding:utf-8</span><br></code></pre></div></td></tr></table></figure>
+<p>​ <img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251048397.png" srcset="/img/loading.gif" lazyload
+alt="杀棒(shabang)" /></p>
+<blockquote>
+<p><code>#！</code> 这个符号读作 shabang 或者 hashbang.
+它的作用不用深究，例行公事写下来就行。</p>
+<p>下面的 <code>encoding</code> 相信写过 Python
+的人都比较习惯，例行公事，不写也没事。</p>
+</blockquote>
+<p>接下来就是写下自己的信息，HTTPS 地址和
+APPID、密钥等。<code>declare -r</code> 声明这些是常量( Read Only
+)，可有可无，例行公事。文档中还提到 Salt
+参数，说是一个随机码，既然是随机的，我们也随便给它一个。</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">翻译 HTTPS 地址</span><br>declare -r basic_url=&quot;https://fanyi-api.baidu.com/api/trans/vip/translate&quot;<br><span class="hljs-meta prompt_"># </span><span class="language-bash">APPID</span><br>declare -r appid=&quot;20222231001673136&quot;<br><span class="hljs-meta prompt_"># </span><span class="language-bash">密钥</span><br>declare -r token=&quot;L4Jr77zOjy91cKx9_4oP&quot;<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251053579.png" srcset="/img/loading.gif" lazyload
+alt="信息" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251055525.png" srcset="/img/loading.gif" lazyload
+alt="Salt" /></p>
+<p>在 Linux 系统生成随机数的方式还是蛮多，我对 <code>openssl rand</code>
+比较满意，所以就用它了，在自己的脚本中写入:</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">declare -r salt=$(openssl rand -base64 18|cut -c 10)<br></code></pre></div></td></tr></table></figure>
+<ol type="1">
+<li>先看内部， <code>openssl rand</code>
+是一条指令，用于生成随机数，<code>-base64</code> 是使用 64
+个可打印的字符，<code>18</code> 表示我要生成 18 个字符。</li>
+<li><code>|</code> 在 Linux
+中表示<strong>管道符</strong>，意思是把右边输出当作左边的输入。也就是说，<strong>管道符</strong>右边的输出是左边的输入。不了解也没事，知道这么一件事就可以了。</li>
+<li><code>cut</code> 表示截断输入，通常是字符或者文件。<code>-c</code>
+表示按照字符截断，<code>10</code> 表示截取第 10 个字符。如果想截取 10
+个字符，需要用 <code>1-10</code>。原本我是想截取 10
+个的，但是发现的时候已经截图了，那就算了。</li>
+<li><code>$()</code>
+表示获取括号里边计算的结果。简而言之就是，获取括号里指令的结果。</li>
+</ol>
+<p>上面的 <code>cut -c 10</code> 指令可有可无，一来文档没有说 Salt
+有没有长度限制，二来其实管道符右边的式子也可以控制生成的长度。随便吧，最简单就是以下的表示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">declare -r salt=$(openssl rand -base64 10)<br></code></pre></div></td></tr></table></figure>
+<h2 id="签名">签名</h2>
+<p>接下来准备生成<ruby>签名<rt>sign</rt></ruby>。什么是<ruby>签名<rt>sign</rt></ruby>？其实就是我们翻译的请求信息。根据文档要求，签名应该长这样:</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">MD5(appid+q+salt+token)<br></code></pre></div></td></tr></table></figure>
+<p>其中，<code>q</code> 是 query 的缩写，就是我们想要翻译的文字，UTF-8
+编码——不了解编码不用管，知道就行。</p>
+<p>我们准备了 appid、salt 和 token 了，现在只差
+q。为了方便调试，我们声明一个 q, 取名 query。</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">delcare query=&quot;like&quot;<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251121224.png" srcset="/img/loading.gif" lazyload
+alt="query" /></p>
+<p>首先拼接字符串，然后取 MD5</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs reasonml">tmpStr=<span class="hljs-string">&quot;$appid$query$salt$token&quot;</span><br>sign=<span class="hljs-constructor">$(<span class="hljs-params">echo</span> -<span class="hljs-params">n</span> <span class="hljs-params">tmpStr</span> | <span class="hljs-params">md5sum</span> | <span class="hljs-params">cut</span> -<span class="hljs-params">c</span> 32)</span><br></code></pre></div></td></tr></table></figure>
+<p>解释一下，我们用 <code>md5sum</code> 生成 MD5，然后只取 32
+个字符——因为文档说我们只需要 32 位。Shell 语言和 Perl
+语言很相似，可能在其他高级语言里想要获取某一个变量的值，我们可以直接使用这个变量名；但是在
+Shell 里，我们需要用 <code>$</code>
+符号获取变量值，最正规的方式是：<code>$&#123;appid&#125;</code>。因为要拼接成一个字符串，所以建议拼接的两边加上双引号。Shell
+的字符串拼接也很有趣，直接把两个字符串放一起就行了。</p>
+<blockquote>
+<p><code>-n</code> 非常重要，别丢了</p>
+</blockquote>
+<p>举个例子，其他语言的语言拼接：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">python</span><br>str1 = &quot;Hello&quot;<br>str2 = &quot;World&quot;<br>str3 = str1 + str2<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">cpp</span><br>std::string str1&#123; &quot;Hello&quot; &#125;;<br>std::string str2&#123; &quot;World&quot; &#125;;<br>std::string str3&#123; str1 + str2 &#125;;<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">lua</span><br>local str1 = &quot;Hello&quot;<br>local str2 = &quot;World&quot;<br>local str3 = str1..str2<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">Shell/Perl</span><br>str1=&quot;Hello&quot;<br>str2=&quot;World&quot;<br>str3=&quot;$str1$str2&quot;<br></code></pre></div></td></tr></table></figure>
+<p>闲话少叙，其实上面的两行可以写成一行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sign=$(echo -n &quot;$appid$query$salt$token&quot; | md5sum | cut -c 32)<br></code></pre></div></td></tr></table></figure>
+<h2 id="翻译">翻译</h2>
+<p>获取签名之后就可以使用百度翻译提供的 API 翻译了。在 Shell
+脚本中，我们使用大名鼎鼎的 cURL 进行网路请求。首先声明，我对 cURL
+不熟，一般我都不用它——因为学不会。</p>
+<p>cURL 请求的命令是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">curl url<br></code></pre></div></td></tr></table></figure>
+<p>所以我们需要提供一个 url. 上面我们准备了百度翻译的 API,
+现在开始拼接。在脚本中输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">url=&quot;$basic_url?q=$query&amp;from=en&amp;to=zh&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot;<br>curl &quot;$url&quot;<br></code></pre></div></td></tr></table></figure>
+<p>或者直接一行</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">curl &quot;$basic_url?q=$query&amp;from=en&amp;to=zh&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot;<br></code></pre></div></td></tr></table></figure>
+<p>如果使用 VIM，那就 <kbd>Esc</kbd>，然后输入
+<code>:wq</code>，回车退出。在命令行上输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">chmod u+x mt.sh<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251220209.png" srcset="/img/loading.gif" lazyload
+alt="给予可执行权限" /></p>
+<p>输入 <code>./mt.sh</code> 执行脚本。可以看到有返回了，结果就在
+<code>dst</code> 里边。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251255943.png" srcset="/img/loading.gif" lazyload
+alt="结果" /></p>
+<p>现在要做的就是取出我们的结果，使用 <code>-e</code> 进行转义输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">result=$(curl &quot;$basic_url?q=$query&amp;from=en&amp;to=zh&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot;)<br>echo -e &quot;$result&quot;<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">或者直接一行</span><br>echo -e &quot;$(curl &quot;$basic_url?q=$query&amp;from=en&amp;to=zh&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot;)&quot;<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251258949.png" srcset="/img/loading.gif" lazyload
+alt="转义" /></p>
+<h2 id="字符串截断">字符串截断</h2>
+<p>在获取结果之前，我们先说说如何在 Shell
+中截取字符串。就拿我们上面的字符串做例子。现在我们要做的是把“喜欢”取出来。使用下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">result=&quot;$&#123;result##*dst\&quot;:\&quot;)&quot;<br>echo -e $&#123;result%\&quot;\&#125;\]\&#125;&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251308513.png" srcset="/img/loading.gif" lazyload
+alt="获取结果" /></p>
+<p>解释一下：</p>
+<ol type="1">
+<li><p>首先，分割字符串使用 <code>#</code> 和 <code>%</code>
+，前者表示从左往右删除，后者表示从右往左删除。举个例子
+<code>str='chunshuyumao'</code> 如果我想删掉 <code>chunshu</code>，就用
+<code>$&#123;str#chunshu&#125;</code>。如果我懒了，不想写那么多个字母，那就写成这样
+<code>$&#123;str#*shu&#125;</code>，用 <code>*</code> 表示任意字符，这样只要找到了
+<code>shu</code>，就把 <code>shu</code>
+和它之前的字符全删掉。同理，<code>%</code> 表示从右边开始算起。那两个
+<code>#</code> 表示什么？在 Linux
+中有个习惯，两个东西通常表示极端——例如在 VIM 中，<code>d</code>
+表示删除，<code>dd</code> 就直接删除一行；<code>y</code>
+表示复制，<code>yy</code> 就直接复制一行。<code>#</code>
+表示从左边找的第一个符合条件的字符串，两个 <code>#</code>
+就是从左边找的最后一个符合条件的字符串。举个例子</p>
+<p><code>str="chunshuyumaoshuzhuang"</code>，如果用
+<code>$&#123;str#*shu&#125;</code> 就会得到 <code>yumaoshuzhuang</code> ,使用
+<code>$&#123;str##*shu&#125;</code> 就会得到
+<code>zhuang</code>。同理，<code>%%</code>
+表示从右边数最后一个匹配的字符串。</p></li>
+<li><p>因为引号( “ ) 是特殊的字符串，所以我们用 <code>\</code>
+转义，所以第一行的原本想法是
+<code>$&#123;result#*dst":"&#125;</code>，加上转义字符之后就是
+<code>$&#123;result##*dst\":\"&#125;</code>。</p></li>
+<li><p>括号也是特殊字符，所以一并转义</p></li>
+</ol>
+<p>这样就得到结果了。不过大家可能也看到下面的输出了，我们不希望有这个输出。</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell"><span class="hljs-meta prompt_">  % </span><span class="language-bash">Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br>                                 Dload  Upload   Total   Spent    Left  Speed<br>100    76  100    76    0     0    301      0 --:--:-- --:--:-- --:--:--   301<br></code></pre></div></td></tr></table></figure>
+<p>在脚本使用 cURL 的后面加上 <code>2&gt;/dev/null</code>
+这个语句是把一些不重要的输出放到 <code>/dev/null</code>
+这个文件。不用担心，这个文件没啥用。参看下面的结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">result=$(curl &quot;$basic_url?q=$query&amp;from=en&amp;to=zh&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot; 2&gt;/dev/null)<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251326986.png" srcset="/img/loading.gif" lazyload
+alt="重定向输出" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251329558.png" srcset="/img/loading.gif" lazyload
+alt="最后的结果" /></p>
+<p>截至目前，你的脚本看起来是这样的：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">encoding:utf-8</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">翻译 HTTPS 地址</span><br>declare -r basic_url=&quot;https://api.fanyi.baidu.com/api/trans/vip/translate&quot;<br><span class="hljs-meta prompt_"># </span><span class="language-bash">你的 APPID</span><br>declare -r appid=&quot;xxxxxxxxxxxxxxxxxxxx&quot;<br><span class="hljs-meta prompt_"># </span><span class="language-bash">你的密钥</span><br>declare -r token=&quot;xxxxxxxxxxxxxxxxxxxx&quot;<br><span class="hljs-meta prompt_"># </span><span class="language-bash">random code</span> <br>declare salt=$(openssl rand -base64 18|cut -c 1-10)<br><br>declare query=&quot;like&quot;<br><br>sign=$(echo -n &quot;$appid$query$salt$token&quot; | md5sum | cut -c 1-32)<br>result=$(curl &quot;$basic_url?q=$query&amp;from=en&amp;to=zh&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot; 2&gt;/dev/null)<br>result=&quot;$&#123;result##*dst\&quot;:\&quot;&#125;&quot;<br>echo -e $&#123;result%\&quot;\&#125;\]\&#125;&#125;<br></code></pre></div></td></tr></table></figure>
+<p>既然已经成功了，我们开始修改 query 的内容。</p>
+<h2 id="输入">输入</h2>
+<p>第一个要解决的就是 query 的输入问题。我们希望这样使用自己的翻译器
+<code>./mt.sh "English"</code>. Shell
+脚本和其他语言一样，可以获取它的命令行参数。听不懂没事，假设我这样调用自己的脚本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">./mt.sh chun shu yu mao<br></code></pre></div></td></tr></table></figure>
+<p><code>./mt.sh</code>、<code>chun</code>、<code>shu</code>、<code>yu</code>、<code>mao</code>
+就是命令行参数。脚本中使用 <code>$n</code> 的方式获取参数，其中
+<code>n</code> 表示阿拉伯数字。我下面输出一下参数</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251338985.png" srcset="/img/loading.gif" lazyload
+alt="输出参数" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251338982.png" srcset="/img/loading.gif" lazyload
+alt="输出参数" /></p>
+<p>知道这个之后，我们修改一下自己的脚本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">declare query=&quot;$1&quot;<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251419011.png" srcset="/img/loading.gif" lazyload
+alt="桉树输入" /></p>
+<p>单词可以输入了，我们试着输入句子如何？</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251419770.png" srcset="/img/loading.gif" lazyload
+alt="句子" /></p>
+<p>失败了，很显然没有结果，我们试着打印 <code>result</code>。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251420484.png" srcset="/img/loading.gif" lazyload
+alt="打印结果" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251428364.png" srcset="/img/loading.gif" lazyload
+alt="打印" /></p>
+<p>没有任何反馈。其实这是因为我们的句子有问题，看一下文档：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251428097.png" srcset="/img/loading.gif" lazyload
+alt="URL encode" /></p>
+<p>我们发送请求的时候需要进行编码。举个例子，上浏览器上搜
+<code>I'm so handsome</code> 的时候，地址栏显示是
+<code>I'm+so+handsome</code> .
+类似这种就是编码——实际并非完全如此，知道大概就行。文档说使用 URL
+Encoding，直接使用我给的式子就行：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251428869.png" srcset="/img/loading.gif" lazyload
+alt="URL encode" /></p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">declare query=&quot;$1&quot;<br><br>sign=$(echo -n &quot;$appid$query$salt$token&quot; | md5sum | cut -c 1-32)<br><br>query=$(echo &quot;$query&quot; | tr -d &#x27;\n&#x27; | xxd -plain | sed &#x27;s/\(..\)/%\1/g&#x27;)<br>query=$(echo $query | sed &#x27;s/ //g&#x27; )<br><br>result=$(curl &quot;$basic_url?q=$query&amp;from=en&amp;to=zh&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot; 2&gt;/dev/null)<br>result=&quot;$&#123;result##*dst\&quot;:\&quot;&#125;&quot;<br>echo -e $&#123;result%\&quot;\&#125;\]\&#125;&#125;<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251437661.png" srcset="/img/loading.gif" lazyload
+alt="翻译句子" /></p>
+<p>ok,
+基本完成了。到这里，脚本实现翻译已经完成了。如果你觉得这已经不错了，那就可以结束这篇文章了。如果觉得还想要改进，那就继续阅读。</p>
+<h2 id="扩展">扩展</h2>
+<p>我们用脚本和百度翻译 API
+完成了自己的第一个翻译脚本。接下来进行多语言拓展。首先我们看一下百度支持的常用翻译：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251441719.png" srcset="/img/loading.gif" lazyload
+alt="支持的翻译" /></p>
+<p>翻译的语言信息要放哪里呢？来看看我们之前写的请求地址：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">result=$(curl &quot;$basic_url?q=$query&amp;from=en&amp;to=zh&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot; 2&gt;/dev/null)<br></code></pre></div></td></tr></table></figure>
+<p>上面我们从哪种语言翻译过去，就使用 <code>from=代号</code>,
+翻译成哪种语言就用
+<code>to=代号</code>。好的，我们改改，改成翻译为文言文：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">result=$(curl &quot;$basic_url?q=$query&amp;from=en&amp;to=wyw&amp;appid=$appid&amp;salt=$salt&amp;sign=$sign&quot; 2&gt;/dev/null)<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251447688.png" srcset="/img/loading.gif" lazyload
+alt="文言文翻译" /></p>
+<p>为了让使用者可以控制翻译的设置，我们可以添加一些参数，例如我已经做好的脚本：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251500470.png" srcset="/img/loading.gif" lazyload
+alt="help" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251509696.png" srcset="/img/loading.gif" lazyload
+alt="列出支持的语言" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202203251513256.png" srcset="/img/loading.gif" lazyload
+alt="中英翻译" /></p>
+<p>所以接下来，我们就要实现上面这些功能——不过不是现在。</p>
+<h1 id="相关网址">相关网址</h1>
+<section class="footnotes">
+<div class="footnote-list">
+<ol>
+<li>
+<span id="fn:1"
+class="footnote-text"><span>https://github.com/soimort/translate-shell/
+<a href="#fnref:1" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:2" class="footnote-text"><span>http://www.zhiyunwenxian.cn/
+<a href="#fnref:2" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:3"
+class="footnote-text"><span>https://sourceforge.net/projects/translate-shell.mirror/
+<a href="#fnref:3" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:4" class="footnote-text"><span>https://fanyi-api.baidu.com/
+<a href="#fnref:4" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:5" class="footnote-text"><span>https://www.cygwin.com/
+<a href="#fnref:5" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+</ol>
+</div>
+</section>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Linux/">Linux</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/26/%E5%9F%BA%E4%BA%8E%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91-API%EF%BC%9A%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%BF%BB%E8%AF%91%E8%84%9A%E6%9C%AC-%E8%BF%9B%E9%98%B6/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">基于百度翻译 API：手撸一个命令行翻译脚本--进阶</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/18/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85RStudio-Server/">
+                        <span class="hidden-mobile">服务器安装 RStudio-Server</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

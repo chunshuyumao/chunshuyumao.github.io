@@ -1,0 +1,645 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="初步搭建FTP服务之后更进一步的学习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FTP服务进阶">
+<meta property="og:url" content="https://chunshuyumao.github.io/2022/03/12/FTP%E6%9C%8D%E5%8A%A1%E8%BF%9B%E9%98%B6/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="初步搭建FTP服务之后更进一步的学习。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-12T01:42:00.000Z">
+<meta property="article:modified_time" content="2022-08-14T08:54:21.000Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="FTP">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>FTP服务进阶 - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="FTP服务进阶">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-12 09:42" pubdate>
+        2022年3月12日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">FTP服务进阶</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言">1. 前言</h1>
+<p>上次搭建的 FTP
+服务满足基本的要求，但是还有一些情况我们没有考虑。这次主要针对两种情况进行优化：</p>
+<ol type="1">
+<li><ruby>被动模式<rt>passive mode</rt></ruby>(PASV)。</li>
+<li><ruby>虚拟用户<rt>virtual users</rt></ruby>。</li>
+</ol>
+<h1 id="被动模式">2. 被动模式</h1>
+<p>2.1. FTP 服务的两种模式</p>
+<p>FTP
+服务端和客户端的通信有两种模式，一个是<ruby>主动<rt>PORT</rt></ruby>模式，另一种是<ruby>被动<rt>PASV</rt></ruby>模式。两种模式的主要区别是相对于服务端而言。</p>
+<ol type="1">
+<li>主动模式。客户端通过随机端口 X 连接到服务器 21
+端口，告诉服务器：用你的 20 端口连接我的 Y 端口。随后 Y 端口和 20
+端口进行数据传输。</li>
+<li>被动模式。客户端通过随机端口 X 连接到服务器 21
+端口，服务器告诉客户端：连接到我的 Z
+端口。随后客户端通过自己的另一个随机端口 W 连接到服务器的 Z 端口。</li>
+</ol>
+<p>这样看来，被动模式似乎更麻烦，实际确实如此，但这种麻烦是有原因的。大多数人的电脑使用的是
+Windows 系统， Windows
+系统的防火墙一般默认开启。防火墙通常会阻止各种端口的接入。主动模式下，服务器用
+20 端口连接客户端的 Y 端口，如果防火墙开启，就会阻止 20 端口和 Y
+端口连接。下面演示一下：</p>
+<p>首先关闭我的防火墙，也就是没有防火墙干扰的情况下的连接。下面查看防火墙状态之后发现是<ruby>未激活的<rt>inactive</rt></ruby>。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121023625.png" srcset="/img/loading.gif" lazyload
+alt="没有防火墙" /></p>
+<p>没有防火墙的时候，可以正常使用 ls 命令列出登陆目录下的文件。</p>
+<p>接下来打开防火墙再次进行连接：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121026609.png" srcset="/img/loading.gif" lazyload
+alt="激活防火墙之后连接" /></p>
+<p>这次防火墙处于激活状态，我们可以正常登陆 FTP
+服务端，但是无法发送指令。因为登陆使用的随机端口 X
+可以被服务器接收，服务器收到连接 Y 端口的指令并用 20 端口连接到客户端的
+Y
+端口的时候被防火墙挡住了。客户端再次发送指令，服务器的所有反馈都没有办法进入客户端。这样，服务器和客户端也就无所谓连接。</p>
+<p>想要继续连接有两个办法：</p>
+<ol type="1">
+<li>关闭防火墙。</li>
+<li>服务端开启<ruby>被动<rt>PASV</rt></ruby>模式。</li>
+</ol>
+<p>方法一简单粗暴，但是有些人不希望自己的防火墙关闭，为了一劳永逸只能选择开启被动模式。</p>
+<p>服务端开启被动模式。我们查看防火墙一直开着，登陆 FTP
+使用主动模式的指令还是失败，使用
+<code>passive</code>进入被动模式，然后输入指令，发现可以正常操作。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121038954.png" srcset="/img/loading.gif" lazyload
+alt="开启被动模式" /></p>
+<p>这样，被动模式就成功在客户端存在防火墙的情况下仍然可以和服务端连接。</p>
+<blockquote>
+<p>默认情况下防火墙只会阻止某些端口的进入，客户端端口可以正常向外访问，所以被动模式的服务器给了客户端一个端口，让客户端去连接服务器，主动模式下则是服务器连接客户端。因此，主动和被动是相对服务器而言的：主动模式下服务器连接，被动模式下客户端连接。</p>
+</blockquote>
+<p>2.2. 开启被动模式</p>
+<p>连接服务器，使用你喜欢的编辑器打开 vsFTPd 配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo vim /etc/vsftpd/vsftpd.conf<br></code></pre></div></td></tr></table></figure>
+<p>直接转到最后一行，添加以下配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">pasv_enable=YES<br>pasv_addr_resolve=YES<br>pasv_address=101.200.84.36<br>pasv_min_port=41001<br>pasv_max_port=42010<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121049175.png" srcset="/img/loading.gif" lazyload
+alt="修改配置文件" /></p>
+<p>解释一下，<code>pasv_enable</code> 配置<ruby>被动模式
+<rt>passive</rt></ruby>( PASV)
+是否开启。默认情况下被动模式是开启的，但是不起作用。</p>
+<p><code>pasv_addr_resolve</code>
+配置的是域名解析。虽然不一定用到，但是还是写下吧。</p>
+<p><code>pasv_address</code> 配置返回的 IP 。如果你的 vsFTPd
+服务器是安装在局域网，例如自己家庭使用、虚拟机练习，那这个 IP
+就填你的局域网 IP ；如果 vsFTPd 部署在自己服务器，那就使用服务器公网 IP
+。</p>
+<blockquote>
+<p>公网 IP 是你购买服务器后，云服务商手机告诉你的公网
+IP。如果忘了，可以到服务商提供的控制台查看。</p>
+<p>局域网 IP 简单，就是你使用 <code>ip addr</code> 或者
+<code>ifconfig</code>看到的 IP 。</p>
+</blockquote>
+<p>如果不填写 <code>pasv_address</code>
+而且你的服务器是云服务器，即使你的被动模式开启了，其他人也连接不上，会出现这样的提示：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121100091.png" srcset="/img/loading.gif" lazyload
+alt="取消公网 IP" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121059035.png" srcset="/img/loading.gif" lazyload
+alt="没有配置公网 IP" /></p>
+<p>因为被动模式开启但没有配置公网 IP ，服务器就使用局域网 IP
+作为被动模式的 IP，例如我服务器的局域网 IP
+<code>172.27.163.6</code>。因此使用云服务器一定要改
+<code>pasv_address</code>。</p>
+<p><code>pasv_min_port</code> 和 <code>pasv_max_port</code>
+是服务器开放的端口范围，什么意思？就是服务器可能也要开防火墙——总不能让它冒险吧——因此保留这些端口不挡住，可以给客户端在被动模式时连接。范围可大可小——但是注意，由于一个端口一般只能连接一台客户端，如果
+FTP
+服务器使用人数比较多可以把端口范围放大，否则可以调小。建议使用高端口，但是也不要超过五位数。</p>
+<p>设置完成之后保存退出，重启 vsFTPd 服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo systemctl restart vsftpd<br></code></pre></div></td></tr></table></figure>
+<p>到这里，被动模式已经开启。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121111379.png" srcset="/img/loading.gif" lazyload
+alt="再次测试" /></p>
+<p>一般来说，被动模式和主动模式可以同时开启：以备不时之需。</p>
+<p>Windows 的 FTP
+客户端一般都会选择被动模式登陆，如果服务端没有开启被动模式，客户端就无法获取服务端的文件。这种时候可以查看客户端的设置，通常可以选择连接模式。如果是
+Linux ,一般都是手动操作。保不准自己进入了被动模式，那怎么退出？大多数的
+FTP 客户端会提供一些指令，可以使用 <code>help</code> 或者
+<code>?</code>进行查询：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121115309.png" srcset="/img/loading.gif" lazyload
+alt="FTP 客户端命令" /></p>
+<p>这么来说，我的客户端退出被动模式就很简单了:</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">passive off<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121117065.png" srcset="/img/loading.gif" lazyload
+alt="退出被动模式" /></p>
+<h1 id="虚拟用户">3. 虚拟用户</h1>
+<p>刚搭建的 FTP 服务器开启了匿名模式，即可以使用 ftp
+作为用户名无密码登陆；还允许本地用户登陆，即允许服务器上的用户登陆。这样有一定风险的：本地用户拥有的权限，登陆后仍然拥有。比如我进行登陆，可以直接看到整个服务器的目录结构：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121123862.png" srcset="/img/loading.gif" lazyload
+alt="服务器目录结构" /></p>
+<p>这就产生了权限漏洞。如果我们即想要分享，又不希望别人对自己的文件进行不必要的干扰，最好的办法就是创建虚拟用户，然后进行权限限制。</p>
+<p>3.1. 添加服务器用户</p>
+<p>首先我们需要在服务器创建一个映射虚拟用户的不可登陆的用户帐号：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo useradd vuser -d /var/ftp -s /sbin/nologin<br></code></pre></div></td></tr></table></figure>
+<p>解释一下，<code>-d</code>
+是指定虚拟用户的家目录，我们之前已经创建过这个目录作为匿名用户的家目录，现在我们不打算使用匿名帐户，直接把家目录划给虚拟用户。</p>
+<p>虚拟用户只是一个系统权限映射的用户，没有必要让它登陆服务器，所以设置使用
+<code>-s</code> 指定它不可登陆。</p>
+<blockquote>
+<p><code>-s</code>一般是创建用户时指定使用的 <code>shell</code> ， Linux
+中通过把 <code>shell</code> 指定到 <code>nologin</code> 实现禁止登陆</p>
+</blockquote>
+<p>创建之后可以使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">cat /etc/passwd | grep vuser<br></code></pre></div></td></tr></table></figure>
+<p>查看用户信息</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121143056.png" srcset="/img/loading.gif" lazyload
+alt="查看虚拟用户信息" /></p>
+<p>3.2. 添加虚拟用户</p>
+<p>进入 <code>/etc/vsftpd</code> 添加一个文件，我这里是
+<code>vuser.cfg</code>
+，在里边填入虚拟用户的信息。注意，单行是用户名，双行是用户密码：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121148543.png" srcset="/img/loading.gif" lazyload
+alt="添加虚拟用户" /></p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">lileilei<br>20220202<br>hanmeimei<br>20220303<br></code></pre></div></td></tr></table></figure>
+<p>保存退出。</p>
+<p><code>cfg</code>文件不能被 vsFTPd 读取，需要转化格式，变成可读的
+<code>db</code> 格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo db_load -T -t hash -f /etc/vsftpd/vuser.cfg /etc/vsftpd/vuser.db<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121153783.png" srcset="/img/loading.gif" lazyload
+alt="转化为 db 格式" /></p>
+<p>把 <code>db</code> 改为只有 root 用户可以读写</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo chmod 600 vuser.db<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121253782.png" srcset="/img/loading.gif" lazyload
+alt="修改权限" /></p>
+<p>让 vsFTPd 读取自己配置的 <code>db</code>
+，需要配置<ruby>可插入认证模块<rt>Pluggable Authentication
+Modules</rt></ruby>( PAM )文件。</p>
+<p>创建 PAM 文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo vim /etc/pam.d/vsftpd.vuser<br></code></pre></div></td></tr></table></figure>
+<p>输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">auth sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vuser<br>account sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vuser<br></code></pre></div></td></tr></table></figure>
+<p><code>db</code> 之后的配置文件是我们上面写的 vuser.db 文件。</p>
+<p>3.3. 修改 vsFTPd 配置文件</p>
+<p>进入 <code>/etc/vsftpd</code> 目录，如果没有
+<code>vuserconfig</code>目录，则创建一个新的目录。</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">cd /etc/vsftpd/<br>sudo mkdir vuserconfig<br></code></pre></div></td></tr></table></figure>
+<p>然后进入 vuserconfig
+目录，目录里边是我们的虚拟用户的权限文件。想要限制谁的权限，就在这个目录创建同名的文件。我配置一个用户的权限：</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo vim lileilei<br></code></pre></div></td></tr></table></figure>
+<p>配置权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">local_root=/var/ftp<br>write_enable=YES<br>anon_umask=022<br>anon_world_readable_only=NO<br>anon_upload_enable=YES<br>anon_mkdir_write_enable=YES<br>anon_other_write_enable=YES<br>download_enable=YES<br></code></pre></div></td></tr></table></figure>
+<p>修改 /etc/vsftpd/vsftpd.conf 文件：注释掉
+pam_service_name=vsftpd，这是默认的用户配置文件，我们添加了虚拟用户，所以改成我们自己的
+vsftpd.vuser ，这里的 guest_username=vuser 的 vuser 与我们在服务器建立的
+vuser 用户名字一样。</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">guest_enable=YES<br>guest_username=vuser<br>user_config_dir=/etc/vsftpd/vuserconfig<br>allow_writeable_chroot=YES<br>pam_service_name=vsftpd.vuser<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121327337.png" srcset="/img/loading.gif" lazyload
+alt="修改 vsFTPd 配置文件" /></p>
+<p>最后重启 vsFTPd 服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo systemctl restart vsftpd<br></code></pre></div></td></tr></table></figure>
+<p>客户端尝试本地用户登陆，发现失败了；使用虚拟用户 lileilei
+登陆成功。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121332066.png" srcset="/img/loading.gif" lazyload
+alt="尝试本地用户登陆" /></p>
+<p>虚拟用户，创建完毕！如果要继续添加新用户，可以往 vuser.cfg
+添加，然后生成 <code>db</code> 文件就可以了。</p>
+<h1 id="后语">4. 后语</h1>
+<p>上面就是我们 FTP 的进阶配置。可以看到，虽然 FTP
+显得很古老，但是仍然具有很强大的功能。通过一些配置可以实现虚拟用户登陆、配置登陆用户的权限等等，所以
+FTP 仍然可以在现在这个互联网时代保持其优异的分享功能。</p>
+<p>实际上，如果是在家庭中，我们可以自己搭建一个局域网内的 FTP
+服务器，让自己的家庭成员可以分享自己的文件，这比使用公有云更安全，对隐私的保护更出色。</p>
+<p>FTP 可探索的配置还是很多的，所以好好探索吧！</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FTP/">FTP</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/15/Zotero%E6%96%87%E7%8C%AE%E7%AE%A1%E7%90%86%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Zotero文献管理插件安装</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/05/manjaro%E5%8F%8C%E7%B3%BB%E7%BB%9F%E5%BC%95%E5%AF%BC%E4%BF%AE%E5%A4%8D/">
+                        <span class="hidden-mobile">Manjaro 双系统引导修复</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

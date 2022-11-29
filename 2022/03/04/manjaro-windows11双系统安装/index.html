@@ -1,0 +1,732 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="安装双系统是一件简单的事。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Manjaro + Windows11双系统安装">
+<meta property="og:url" content="https://chunshuyumao.github.io/2022/03/04/manjaro-windows11%E5%8F%8C%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="安装双系统是一件简单的事。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-04T11:32:58.000Z">
+<meta property="article:modified_time" content="2022-07-29T12:43:12.000Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="双系统">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Manjaro + Windows11双系统安装 - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Manjaro + Windows11双系统安装">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-04 19:32" pubdate>
+        2022年3月4日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Manjaro + Windows11双系统安装</h1>
+            
+            <div class="markdown-body">
+              <h1 id="为什么要用-linux-系统">为什么要用 Linux 系统</h1>
+<p>实际上，使用哪一个系统是没有理由的，个人电脑上基本没有能和 Windows
+过招的系统。然而对我来说， Windows 太麻烦了：8G 内存跑 Windows
+还只是勉强流畅，特别是当我微信和QQ一起打开的时候，内存占用到我都怀疑人生了。我确实尝试过重装系统，但是对我来说怎么重装，最后还是会走到讨厌它的那一步。</p>
+<p>Windows11 出来之后， Windows
+系统给我的印象就好了很多，特别是它的搜索功能，虽然它早就存在了，毕竟我不喜欢在桌面上放图标。使用它一阵子之后，我还是萌生了换系统的想法。可能这种想法一直存在脑海里，我才不喜欢
+Windows 系统。</p>
+<p>既然要换系统，那我得找到一个令我满意的系统。我把目光放到了 Linux
+，毕竟 MacOS 可望不可及。然而问题是，开源而且免费的 Linux
+系统还是有很多分支，多到一只手根本数不过来。此外，这些系统虽然都叫做
+Linux ，但是彼此之间差别还是不小。</p>
+<p>我最开始接触的 Linux 是 CentOS 。所以当时打算换到 CentOS8
+，虽然它似乎更合适做服务器。然而天有不测风云，谁知道 CentOS Linux
+不再更新了。虽然 CentOS Stream 仍然被维护，但是我觉得 CentOS
+已经等于被宣判了死刑，因此只能再找出路。</p>
+<p>在虚拟机里安装了各种版本的 Linux 之后，我对 Manjaro Linux 和 Arch
+Linux 有非常大的好感。 Arch Linux 自由度非常高，可定制性强，官方 wiki
+也很丰富，是探索 Linux 极好的选择。我花了好一阵子重温命令行安装 Linux
+的知识，还给它安装了各种桌面。然而 Arch
+总给我一种怪怪的感觉，可能对我来说，它吸引人的方面是拿来把玩，而不是作为主力系统。</p>
+<p>但是我很喜欢 Arch ，于是各种搜罗有关 Arch 系统的信息，最后发现了
+Manjaro 。 Manjaro 是 Arch 的衍生版，但是和 Arch
+又有一定的区别。例如同样作为滚动发行的 Linux ， Manjaro官方包 相比而言比
+Arch 更安全一点——因为它不是直接发布的，而是要经过一定的测试。 Manjaro
+的另一特点是基本做到开箱即用，而 Arch
+本身需要的配置很繁琐——这也是它吸引人的地方。</p>
+<p>Manjaro 满足了我懒得折腾的心愿，同时作为 Arch 的衍生品，它与 Arch
+共享很多的包。众所周知， Arch 拥有非常强大的社区支持。</p>
+<p>Manjaro 官网
+<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span
+class="hint--top hint--rounded" aria-label="https://manjaro.org/
+">[1]</span></a></sup> 提供了三种版本的 Manjaro 桌面：</p>
+<ol type="1">
+<li>XFCE ，轻量级桌面。</li>
+<li>KDE ，重量级桌面，实际上现在和 GNOME
+也差不多，可定制性高，桌面漂亮。</li>
+<li>GNOME ，中量级桌面，简约高效。</li>
+</ol>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042022699.gif" srcset="/img/loading.gif" lazyload
+alt="Manjaro官网" /></p>
+<p>我选择了 GNOME ，因为它给我的感觉正像 Arch
+，非常简单，没有多余的软件，没有负担。实际上 KDE
+也为人称道，特别是它的高定制性，几乎可以定制所有的细节。然而我还是选择
+GNOME
+，我要的就是简单。既然要简单，自然选择<ruby>最小安装<rt>Minimal</rt></ruby>，
+LTS 是长期支持版，我没有选择。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042028792.png" srcset="/img/loading.gif" lazyload
+alt="最小安装" /></p>
+<hr />
+<h1 id="制作启动盘">制作启动盘</h1>
+<p>下载 Manjaro 镜像之后，我们需要制作启动盘，这里推荐使用国人的 Ventoy
+<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span
+class="hint--top hint--rounded" aria-label="https://www.ventoy.net
+">[2]</span></a></sup>。这个小工具看起来小，但是可以引导多个系统。只需要把镜像放到它制作的启动盘里就可以引导多个系统。这有什么好处？通常情况下，我们制作启动盘的方式是格式化U盘，然后使用启动盘制作软件制作启动盘(格式化是必须的，有时是自己手动，有时是启动盘软件格式化)。这样，一个U盘无论多大，一次只能引导一个系统，要引导新系统时都需要格式化。一来麻烦，二来对U盘的使用寿命也不好。当然，最重要的是，
+Ventoy 引导多个系统的能力听起来就很厉害。</p>
+<p>有一个教训是我直接给自己的电脑装了 Manjaro 之后，由于某些需要想要装回
+Windows
+，此时所有的启动盘制作软件制作的启动盘都没有用。制作启动盘之前必须格式化U盘，所以当我把系统搞坏之后连原本的
+Linux
+系统也装不了。最后只能手动制作启动盘，纯手工给U盘分区，因为我要安装的系统超过了
+fat32 文件系统的最大上限。</p>
+<p>因此使用 Ventoy
+是一项保险的举措，至少等你后悔的时候，它不会让你失望。</p>
+<h2 id="下载ventoy">下载Ventoy</h2>
+<p>我们可以到官网下载 Ventoy 。如果不想安装，可以下载 便携版
+，开箱即用。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042039980.png" srcset="/img/loading.gif" lazyload
+alt="Ventoy官网" /></p>
+<h2 id="开始制作">开始制作</h2>
+<p>制作启动盘很简单，打开 Ventoy ，然后选择U盘即可。通常情况下， Ventoy
+会自动识别你的U盘。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042050020.png" srcset="/img/loading.gif" lazyload
+alt="启动Ventoy" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042051376.png" srcset="/img/loading.gif" lazyload
+alt="制作启动盘" /></p>
+<p>安装完之后，把你的 ISO 镜像复制到 U盘。你会发现 U盘
+仍旧是空的，实际上只是你看不见其他文件而已。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042057885.png" srcset="/img/loading.gif" lazyload
+alt="复制ISO镜像" /></p>
+<hr />
+<h1 id="电脑分区">电脑分区</h1>
+<p>对我来说， Linux 够用了，但是谁也不知道可能又需要 Windows
+专有的软件。既然要安装双系统，而且是 Linux 作为主系统，那只需要给
+Windows 保留一小部分的空间。</p>
+<p>Windows
+分区比较简单，系统就自带了。我们只需要搜索“分区”就会弹出需要的软件，选择就好了。搜索使用
+<kbd> Windows</kbd>+ <kbd>s</kbd>。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042058958.png" srcset="/img/loading.gif" lazyload
+alt="搜索分区软件" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042059442.png" srcset="/img/loading.gif" lazyload
+alt="查看硬盘" /></p>
+<p>分区的时候，固态硬盘(C盘)分出一部分，待会安装 Manjaro
+；机械硬盘也要分，主要作为存储区。我是在已经安装完毕的电脑演示的，所以可以看到，实际上我的电脑已经分成了很多的区。</p>
+<p>要分区，先压缩一定的空间，通常是你想要分配多少就要所多少。记住，
+1G=1024M 。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042102453.png" srcset="/img/loading.gif" lazyload
+alt="演示分机械硬盘" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042104626.png" srcset="/img/loading.gif" lazyload
+alt="压缩" /></p>
+<p>压缩完之后新建 卷 。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042104738.png" srcset="/img/loading.gif" lazyload
+alt="压缩完之后" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042106771.png" srcset="/img/loading.gif" lazyload
+alt="继续选择" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042106229.png" srcset="/img/loading.gif" lazyload
+alt="分配驱动号" /></p>
+<p>新建卷标，最好是有意义的卷标。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042107720.png" srcset="/img/loading.gif" lazyload
+alt="设置卷标，建议设成有意义的卷标" /></p>
+<p>分区完成。按照这个方式给固态硬盘分区。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042108967.png" srcset="/img/loading.gif" lazyload
+alt="分区完成" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042109229.png" srcset="/img/loading.gif" lazyload
+alt="成果" /></p>
+<p>至此，我们已经分区完成了。注意，后面我们要做的就是把 Linux
+安装到我们分出來的 新盘 。</p>
+<hr />
+<h1 id="进入bios或者uefi引导界面">进入BIOS或者UEFI引导界面</h1>
+<p>BIOS 和 UEFI
+是系统安装的引导界面，也就是我们给老电脑开机的时候，看到的黑乎乎的界面。每个厂商的引导界面的快捷键都不一样，最常见的是
+<kbd>F2</kbd> 和 <kbd>F12</kbd>。例如我的是华硕电脑，使用
+<kbd>F2</kbd>。通常这些东西都是可以在网上查到的。</p>
+<p>那什么时候按呢？简单，就是重启电脑的，等到刚刚出现厂商标志的时候，以迅雷不及掩耳之势按住你电脑的按键。当然，最傻的方式是电脑重启黑屏之后就一直按你的快捷键。</p>
+<p>进入 BIOS 或者 UEFI 之后，先去高级模式( Advance Mode )把 Boot 的
+Security 改成 disable(关闭) 。然后选择 Boot Mode
+中的U盘启动。当然，如果你的界面和我的一样，你也可以选择调整右手边的 Boot
+Priority ，把U盘调到最前面。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042120262.jpg" srcset="/img/loading.gif" lazyload
+alt="选择BootMode" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042125263.jpg" srcset="/img/loading.gif" lazyload
+alt="选择U盘启动" /></p>
+<p>选择想要安装的系统。我这里有两个系统，一个 Arch ,一个 Manjaro ，选择
+Manjaro ，回车。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042126910.jpg" srcset="/img/loading.gif" lazyload
+alt="Ventoy引导界面" /></p>
+<p>这里可以进行简单的配置。然后选择 open source drivers 。 open source
+是开源，通常等于使用 Intel 显卡； proprietary drivers 就是闭源，自然就是
+Nvidia
+了。我的电脑是双显卡，所以使用哪一个都差不多。不过说实话，我使用闭源的
+Nvidia
+的时候出现了比较大的问题：开机容易卡在黑黢黢的界面。修改之后直接回车。实际上也不用修改，后面还是可改的。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042132829.png" srcset="/img/loading.gif" lazyload
+alt="这里简单配置一下" /></p>
+<p>如果你的电脑出现一堆的文字，那是正常现象，不用担心。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042137953.png" srcset="/img/loading.gif" lazyload
+alt="启动" /></p>
+<p>等到进入这个界面就说明没问题了。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042139339.png" srcset="/img/loading.gif" lazyload
+alt="Live 界面" /></p>
+<p>这里可以体验一下 Manjaro ，因为所做的修改都不会保留下来。</p>
+<hr />
+<h1 id="安装">安装</h1>
+<p>记得连接网络，点击 右上角 ，连接网络。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042141928.png" srcset="/img/loading.gif" lazyload
+alt="记得连接WIFI" /></p>
+<p>连接网络之后开始安装，点击 右下角
+的安装软件——最右下角，开始安装。</p>
+<p>选择语言等基本配置。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042145530.png" srcset="/img/loading.gif" lazyload
+alt="开始安装" /></p>
+<p>一直回车到分区界面，选择 手动分区 (manual partitioning)。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042146756.jpg" srcset="/img/loading.gif" lazyload
+alt="选择手动分区" /></p>
+<p>选择磁盘，找到我们之前的分区，通过 标签
+(卷标)可以查看我们的分区——所以分区的时候一定要给一个有意义的卷标。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042150337.jpg" srcset="/img/loading.gif" lazyload
+alt="(选择我们的分区)" /></p>
+<p>点击我们分出的区域——注意，一定要选择我们的分区，例如我的分区 Linux
+，然后选择 创建(Create) ，给大小 300M 就可以了， 文件系统 (file
+system)是 fat32
+，挂载点是<code>/boot/efi</code>，给一个卷标，标识为<code>boot</code>，选择<code>OK</code>。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042157081.png" srcset="/img/loading.gif" lazyload
+alt="分区" /></p>
+<p>选择 空闲空间 (free space)，继续新建。这里有两种情况：</p>
+<h2
+id="你有两块硬盘一块固态硬盘一块机械硬盘并且分别分出了两个分区给linux">你有两块硬盘，一块固态硬盘，一块机械硬盘，并且分别分出了两个分区给Linux</h2>
+<p>分区布局：</p>
+<ol type="1">
+<li>EFI 分区，固态硬盘，300M足矣。</li>
+<li>/分区(root)，固态硬盘，剩余的空间。</li>
+<li>swap 分区，机械硬盘，和自己的内存一样大。</li>
+<li>/home 分区，机械硬盘剩下的三分之二以上。</li>
+<li>/opt 分区，机械硬盘最多三分之一。</li>
+</ol>
+<p>固态硬盘剩余的所有空间新建一个分区，作为 根
+(root)挂载点，文件系统是<code>ext4</code>。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042203158.png" srcset="/img/loading.gif" lazyload
+alt="根分区" /></p>
+<p>然后点击顶部的存储器，选择机械硬盘。同理选择自己分出來的那一部分——说过了，看自己的卷标识别，千万不要在固态硬盘和机械硬盘上使用
+Windows系统的分区，不然没人救得了你。</p>
+<p>分出一部分的空间，新建一个 swap 分区， swap
+大小是你的内存大小。我的是 8G 内存，所以选择 8G
+。文件系统选择<code>linuxswap</code>，标记<code>swap</code>，卷标自定义，最好有意义。不用选择挂载点。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042211258.png" srcset="/img/loading.gif" lazyload
+alt="swap分区" /></p>
+<p>最后，把你机械硬盘的剩余空间分成两部分——四六或者三七分，少的部分作为<code>/opt</code>挂载点，文件系统选择<code>ext4</code>，没有标记：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042215243.png" srcset="/img/loading.gif" lazyload
+alt="opt分区" /></p>
+<p>最后剩余的空间放到<code>/home</code>分区，文件系统还是<code>ext4</code>，无标签，卷标可以给个名字</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042217101.png" srcset="/img/loading.gif" lazyload
+alt="home分区" /></p>
+<p>至此，你的分区差不多了。最后你的分区看起来像这样(注意，原本还有
+windrows
+系统的分区，这里演示不了。下面是固态硬盘分区和机械硬盘的分区)：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042220498.png" srcset="/img/loading.gif" lazyload
+alt="固态分区" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042222826.png" srcset="/img/loading.gif" lazyload
+alt="机械硬盘分区" /></p>
+<h2 id="你只有一块分区">你只有一块分区</h2>
+<p>参照两块硬盘的分区，只不过不用分出<code>/opt</code>
+和<code>/home</code>分区而已。</p>
+<p>分区布局：</p>
+<ol type="1">
+<li>EFI 分区，同上。</li>
+<li>swap 分区，同上。</li>
+<li>/分区(root)，剩余的所有空间。</li>
+</ol>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042229457.png" srcset="/img/loading.gif" lazyload
+alt="分区如下" /></p>
+<p>分区一直是一个见仁见智的话题，如果你有自己的想法，可以不参照我的方案。</p>
+<hr />
+<h1 id="安装-1">安装</h1>
+<p>最后填写一些信息，然后就安装，重启。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042226386.png" srcset="/img/loading.gif" lazyload
+alt="配置" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203042227959.png" srcset="/img/loading.gif" lazyload
+alt="安装" /></p>
+<p>至此， Manjaro 安装完毕。</p>
+<hr />
+<h1 id="后语">后语</h1>
+<p>安装完毕之后，我们还需要安装一些常用的软件、使用中文拼音等，但是一篇写不完，所以后面我会再详细介绍怎么安装常用软件以及美化自己的系统。</p>
+<hr />
+<h1 id="相关网址">相关网址</h1>
+<section class="footnotes">
+<div class="footnote-list">
+<ol>
+<li>
+<span id="fn:1" class="footnote-text"><span>https://manjaro.org/
+<a href="#fnref:1" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:2" class="footnote-text"><span>https://www.ventoy.net
+<a href="#fnref:2" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+</ol>
+</div>
+</section>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Linux/">Linux</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8F%8C%E7%B3%BB%E7%BB%9F/">双系统</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/05/manjaro%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Manjaro 安装常用软件</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/04/%E9%98%BF%E9%87%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BAftp%E6%9C%8D%E5%8A%A1/">
+                        <span class="hidden-mobile">阿里云服务器搭建 FTP 服务</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
