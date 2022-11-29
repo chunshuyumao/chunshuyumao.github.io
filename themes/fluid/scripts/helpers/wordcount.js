@@ -42,12 +42,9 @@ hexo.extend.helper.register('wordtotal', (site) => {
 
 const MyWordCount = (content) => {
 
-  content = content.replace( /(\r\n+|\s+| +)/g, "龘");
-  content = content.replace( /[\x00-\xff]/g, "w");
-  content = content.replace( /w+/g, "*");
-  content = content.replace( /龘+/g, "");
-
-  return  content.length;
+  return content
+    .replace(/[\r\n\s]+/g, "龘").replace(/[\x00-\xff]/g, "w")
+    .replace(/w+/g, "*").replace(/龘+/g, "").length
 }
 
 hexo.extend.filter.register('after_post_render', (page) => {
