@@ -15,7 +15,7 @@ excerpt: 初步实现 Zettlr 的网页标签渲染
 
 <ruby>Zettlr<rt>/ˈsetlər/</rt></ruby> 服务的是写作者和科研工作者，这类受众通常不会使用花里胡哨的东西，所以 [Zettlr](https://zettlr.com "Zettlr") 减少了很多方面的扩展。举个例子，在 Zettlr 中使用 <ruby>HTML（超文本标记语言）<rt>HyperText Markup Language</rt></ruby>的标签不会得到渲染，你输入 `<button>这是一个按钮</button>` ，它会原样输出。
 
-![原生 Zettlr ](http://101.200.84.36/images/2022/05/12/202205122125084.png "原生 Zettlr ")
+![原生 Zettlr ](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/12/202205122125084.png "原生 Zettlr ")
 
 写博客的时候时不时会使用到英文简写（一般不大适合使用中文），这时候我会给英文简写做个备注，比如把简写的原文写下。按理来说，原文应该使用括号写出，但是英文原文太长会影响排版，因此我会选择使用 `<ruby>` 标签把原文写在简写和中文的上方，减少页面占用。这种时候 Zettlr 不渲染就会显得比较难看。
 
@@ -25,7 +25,7 @@ excerpt: 初步实现 Zettlr 的网页标签渲染
 
 修改代码之后，现在自己编译的 Zettlr 已经可以渲染网页标签——还可以自定义标签，当然是在<ruby>资源管理<rt>Asset Manager</rt></ruby>中配置自定义的 <ruby>CSS（层叠样式表）<rt>Cascading Style Sheets</rt></ruby>。
 
-![改造后的 Zettlr ](http://101.200.84.36/images/2022/05/12/202205122138784.png "改造后的 Zettlr ")
+![改造后的 Zettlr ](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/12/202205122138784.png "改造后的 Zettlr ")
 
 # 修改
 
@@ -43,11 +43,11 @@ source/common/modules/markdown-editor/hooks/render-elements.ts
 import canRenderElement from '../plugins/util/can-render-element'
 ```
 
-![引入需要的函数](http://101.200.84.36/images/2022/05/12/202205122141485.png "引入需要的函数")
+![引入需要的函数](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/12/202205122141485.png "引入需要的函数")
 
 接下来在 `renderElements` 函数的最后调用 `renderElems` 函数，函数是我们要写的，所以不用担心。
 
-![调用添加的渲染](http://101.200.84.36/images/2022/05/12/202205122144351.png "调用添加的渲染")
+![调用添加的渲染](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/12/202205122144351.png "调用添加的渲染")
 
 在 `renderElememts` 上方写一个函数，叫做 `renderElems` 。
 

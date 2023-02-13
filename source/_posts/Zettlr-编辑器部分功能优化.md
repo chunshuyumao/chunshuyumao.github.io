@@ -16,11 +16,11 @@ excerpt: 优化 Zettlr 编辑器的部分功能
 
 因为 Zettlr 编辑器支持在 Markdown 下的文献引用，自己逐步从 Tyopra 转向 Zettlr。和 Tyopra 比，Zettlr 的体验确实不是很好。此外，Zettlr 还存在图片默认左对齐、文章字数统计对中英文支持不好等问题。
 
-![图片左对齐，中英文（右上角）混合统计有问题。按理来说统计有 4 千字，这里的统计接近 8 千字。](http://101.200.84.36/images/2022/05/09/202205100936007.png "图片左对齐，中英文（右上角）混合统计有问题。按理来说统计有 4 千字，这里的统计接近 8 千字。")
+![图片左对齐，中英文（右上角）混合统计有问题。按理来说统计有 4 千字，这里的统计接近 8 千字。](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205100936007.png "图片左对齐，中英文（右上角）混合统计有问题。按理来说统计有 4 千字，这里的统计接近 8 千字。")
 
 我希望的是图片可以默认居中对齐，然后中英文混输的字数统计可以准确一点。前者可以通过自定义 <ruby>CSS（层叠样式表）<rt>Cascading Style Sheets</rt></ruby> 进行修改，后者只能修改源码了。
 
-![修改后的效果](http://101.200.84.36/images/2022/05/09/202205100942279.png "修改后的效果")
+![修改后的效果](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205100942279.png "修改后的效果")
 
 既然要修改源码，索性一并修改 <ruby>CSS（层叠样式表）<rt>Cascading Style Sheets</rt></ruby> 的源码。因此这就是接下来的工作。接下来的修改在 Zettlr 2.2.5 和 2.2.6（最新版） 版本都是通用的。以后的版本可能在代码上有所不同，但本修改应该仍然起作用。由于是自己修改源码，每次发布新版的时候都需要手动修改。一个好的解决办法是给 GitHub 上的维护着提个 issue 或者直接拉取分支和人家一起干（这不是我该干的）。
 
@@ -69,7 +69,7 @@ electron-builder.yml  resources        test         yarn.lock
 
 打开浏览器，输入 `https://github.com/zettlr/zettlr` 进入 GitHub 界面，选择 Code 中的 Download ZIP 进行下载。
 
-![](http://101.200.84.36/images/2022/05/09/202205101008484.png)
+![](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205101008484.png)
 
 下载完成之后可以进行解压。在 Windows ，随便使用一个压缩软件就可以解压。在 Linux 中可以使用 unzip 命令解压，效果如下。
 
@@ -102,9 +102,9 @@ Linux 用户可以在命令行上输入 `vim source/common/util/count-words.ts` 
   content = content.replace(/𰻝+/g, "");
 ```
 
-![未更改](http://101.200.84.36/images/2022/05/09/202205101026625.png "未更改")
+![未更改](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205101026625.png "未更改")
 
-![更改后](http://101.200.84.36/images/2022/05/09/202205101030724.png "更改后")
+![更改后](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205101030724.png "更改后")
 
 保存退出。这几行代码的统计方式虽然原始，但是十分高效——和 Word、WPS Word 的统计基本是一样的。代码里的“<ruby>𰻝<rt>biáng</rt></ruby>”字如果打不出来可以使用其他生僻字代替，例如“ <ruby>龘<rt>dá</rt></ruby>”“ <ruby>爨<rt>cuàn</rt></ruby>”“<ruby>厶<rt>sī</rt></ruby>”“ <ruby>鬱<rt>yù</rt></ruby>”“<ruby>𣊧<rt>lǎng</rt></ruby>”等等。其实上面的统计很简单，大概意思是：先将空格符、回车符、换行符换成一个生僻字，然后将拉丁字母替换成 w ，在把以生僻字隔离的一个至多个 w 替换成 * ，然后减去生僻字就是所有的字数了。
 
@@ -123,7 +123,7 @@ Linux 用户可以在命令行上输入 `vim source/common/util/count-words.ts` 
  我 * 是 * 爱* 南* 开*  的 *  。 俺 也 一 样 。 
 ```
 
-![以防出现方框](http://101.200.84.36/images/2022/05/10/202205101207897.png)
+![以防出现方框](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/10/202205101207897.png)
 
 ## 图片居中
 
@@ -133,9 +133,9 @@ Linux 用户可以在命令行上输入 `vim source/common/util/count-words.ts` 
 $ vim source/common/modules/markdown-editor/editor.less
 ```
 
-![未修改](http://101.200.84.36/images/2022/05/09/202205101049346.png "未修改")
+![未修改](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205101049346.png "未修改")
 
-![修改后](http://101.200.84.36/images/2022/05/09/202205101050726.png "修改后")
+![修改后](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205101050726.png "修改后")
 
 这一部分是前端知识，知道这么回事就行。
 

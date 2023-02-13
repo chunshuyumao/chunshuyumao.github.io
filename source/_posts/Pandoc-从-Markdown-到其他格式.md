@@ -197,7 +197,7 @@ $ pandoc -s -M title="Convert from Markdown to HTML" test.md -o test.html
 |:----:|:----:|
 |BibLaTex|.bib|
 |BibTex|.bibtex|
-|CSL JAON|.json|
+|CSL JSON|.json|
 |CSL YAML|.yaml|
 |RIS|.ris|
 : 参考文献格式

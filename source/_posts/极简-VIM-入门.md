@@ -19,9 +19,9 @@ excerpt: VIM 入门
 
 听到这样的回答，有些新手就开始退缩，而有些人觉得这值得挑战，选择继续练习。于是他们会跑到网上查看相关的 VIM 教程，写教程的人基本都是用过 VIM 或者从不同地方复制过各类教程引流，所以他们上来就先要把这个初学者镇住，以展现自己丰富的知识和 VIM 经验。请看 VIM 的快捷键：
 
-![基础操作](http://101.200.84.36/images/2022/05/09/202205091902478.gif)
+![基础操作](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205091902478.gif)
 
-![进阶操作](http://101.200.84.36/images/2022/05/09/202205091902865.png)
+![进阶操作](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205091902865.png)
 
 就这样，一个初学者还没有入门，基本就被劝退了。这就好比，刚学英语的时候被告知“英语至少有 25 万个单词，历史上堆积的甚至超过 40 万个，一个人一辈子大约 8 万天，要背完所有的单词至少每天记住 5 个单词”，我相信就是丘吉尔也觉得活着好累。所以学 VIM 的时候，要想退出很简单 —— 找个大佬，让他教你，他基本会把你劝退，因为他大概率上来就是一个快捷键图。
 
@@ -54,7 +54,7 @@ set statusline=%<%F%m%r%h%=%(%{&fileformat}\ %{&encoding}\ %c,%l\ %p%%%)
 
 普通模式需要记住的操作比较少，记住 —— 普通模式是不可以修改文件和输入内容的！VIM 的普通模式主要用于移动鼠标和视图。很多人习惯使用键盘上的箭头键，但是 VIM 使用的是 <kbd>h</kbd>、 <kbd>j</kbd>、<kbd>k</kbd>、<kbd>l</kbd> 表示左、下、上、右。为什么这么奇葩？因为上古时代的键盘就是这样的（请看下图），那个时候的编辑器还叫 VI （VIM 是 VI 的增强版，VI Improved）。此外，看一下下面键盘的 <kbd>Esc</kbd> 键是在 <kbd>Q</kbd> 左边，所以那个时候按退出键比现在简单。记住这些就可以了。
 
-![上古时代的键盘](http://101.200.84.36/images/2022/05/09/202205091946872.jpg)
+![上古时代的键盘](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205091946872.jpg)
 
 
 ### 插入模式
@@ -68,17 +68,17 @@ set statusline=%<%F%m%r%h%=%(%{&fileformat}\ %{&encoding}\ %c,%l\ %p%%%)
 
 现在打开一个文件，像我一样通过 <kbd>h</kbd>、<kbd>j</kbd> 、<kbd>k</kbd>、<kbd>l</kbd> 随便选取一个位置。
 
-![移动到指定位置](http://101.200.84.36/images/2022/05/09/202205091956771.png)
+![移动到指定位置](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205091956771.png)
 现在我在 not 之前插入字符，那就把光标移动到 n 上，然后按 <kbd>i</kbd> 键，输入字符，效果如下：
 
-![输入 you](http://101.200.84.36/images/2022/05/09/202205092009991.png)
+![输入 you](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092009991.png)
 可以看到，这时候已经进入插入模式，所以左下角有一个“-- INSERT --” 标志。其余的命令可以自己尝试。
 
 ### 命令模式
 
 要进入命令模式先进入普通模式：按 <kbd>Esc</kbd> 。命令模式其实就是普通模式加命令。命令模式的命令以冒号（:）开头，请在输入的时候注意左下角会出现命令 —— 冒号需要打出来。
 
-![命令模式](http://101.200.84.36/images/2022/05/09/202205092015997.png)
+![命令模式](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092015997.png)
 
 我们需要记住的命令有：
 
@@ -97,17 +97,17 @@ set statusline=%<%F%m%r%h%=%(%{&fileformat}\ %{&encoding}\ %c,%l\ %p%%%)
 
 比如下面，我要选择第二第三行，使用行可视化，会看到左下角有 “-- VISUAL --”的标志。然后通过 <kbd>h</kbd>、<kbd>j</kbd> 、<kbd>k</kbd>、<kbd>l</kbd> 进行选择。这里使用 <kbd>j</kbd> 向下选择。选择完之后可以按 <kbd>Esc</kbd> 退出。因为还没有教其他操作，所以这里先不进行其他操作。
 
-![选择第二第三行](http://101.200.84.36/images/2022/05/09/202205092026991.png)
+![选择第二第三行](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092026991.png)
 
-![进入可视模式](http://101.200.84.36/images/2022/05/09/202205092029374.png)
+![进入可视模式](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092029374.png)
 
-![按 j 进行向下选择](http://101.200.84.36/images/2022/05/09/202205092030765.png "按 j 进行向下选择")
+![按 j 进行向下选择](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092030765.png "按 j 进行向下选择")
 
 下面来看块模式。块模式通常用于插入和删除。比如我要在第一第二第三行之前插入我的大名：光标移动到第一行的第一个字符， <kbd>Shift</kbd>+<kbd>v</kbd>（也就是大写 V），把光标往下移动到第三行，输入 <kbd>Shift</kbd>+<kbd>i</kbd>，然后输入 chunshuyumao —— 注意，这时候只有第一行出现了 chunshuyumao，接下来连按两次 <kbd>Esc</kbd> ，完成。
 
-![Shift + i，输入 chunshuyumao](http://101.200.84.36/images/2022/05/09/202205092035400.png)
+![Shift + i，输入 chunshuyumao](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092035400.png)
 
-![按两次 Esc 键](http://101.200.84.36/images/2022/05/09/202205092038342.png)
+![按两次 Esc 键](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092038342.png)
 
 到这里，最基础的部分就讲完了。开始学习语法部分。
 
@@ -146,13 +146,13 @@ VIM 的语法主要是“动词 [+ 介词] + 名词”。介词一般可以省�
 
 看下图，我现在要删除 important —— delete inside word，缩写就是 diw。使用 inside ，是因为我们的光标在这个单词之内。
 
-![删除之前](http://101.200.84.36/images/2022/05/09/202205092057496.png "删除之前")
+![删除之前](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092057496.png "删除之前")
 
-![删除之后](http://101.200.84.36/images/2022/05/09/202205092059060.png)
+![删除之后](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092059060.png)
 
 删除之后，我们发现 more 和 than 之间的空格有点大，因为 important 被删，空格变成了两个。如果我们想要把空格也删掉，可以在删除 important 的时候使用 delete around word（也就是 daw)。如下：
 
-![把单词和空格一起删掉](http://101.200.84.36/images/2022/05/09/202205092103676.png "把单词和空格一起删掉")
+![把单词和空格一起删掉](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092103676.png "把单词和空格一起删掉")
 
 同理，想要删掉一个句子，使用 delete inside sentence（dis）或者 delete around sentence（das）。还有删除段落: delete inside paragraph（dip）和 delete around paragraph（dap）。
 
@@ -160,9 +160,9 @@ VIM 的语法主要是“动词 [+ 介词] + 名词”。介词一般可以省�
 
 除了上面的名词，搞编程的同学可能会碰到这样的问题：删除 main 函数的内容 —— 但是不删除括号。如下，我们需要做的就是 delete inside {（dt{），结果如下：
 
-![删除 main 函数花括号内的内容](http://101.200.84.36/images/2022/05/09/202205092207065.png)
+![删除 main 函数花括号内的内容](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092207065.png)
 
-![效果](http://101.200.84.36/images/2022/05/09/202205092210408.png)
+![效果](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092210408.png)
 
 如果想要把花括号也给删了，那就使用 delete around {（da{）。这个 { 可以改成任何符号，例如 [、( 等等。如果遇到网页使用的<ruby>标签<rt>tag</rt></ruby>，可以使用 t 代替，例如我上面的 `<img>` 标签，我想删掉标签 `<img>` 内的内容就使用 delete inside tag（dit），删除内容和标签就使用 delete around tag（dat)。
 
@@ -177,17 +177,17 @@ VIM 的语法主要是“动词 [+ 介词] + 名词”。介词一般可以省�
 
 上面的介词都可以省略 —— 注意，省略的后果是：不论是句子、单词还是段落，编辑器默认从光标开始。例如使用 delete 2 word（d2w）：编辑器就认为你所说的两个单词是从光标之后。看下面的例子
 
-![删除之前](http://101.200.84.36/images/2022/05/09/202205092057496.png "删除之前")
+![删除之前](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092057496.png "删除之前")
 
-![不使用介词,，输入 d2w](http://101.200.84.36/images/2022/05/09/202205092116759.png "不使用介词,，输入 d2w")
+![不使用介词,，输入 d2w](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092116759.png "不使用介词,，输入 d2w")
 
 ### 惯用法
 
 现在将光标移动到第九行，输入 yank inside sentence（yis）复制一行。输入 paste（p）就会粘贴到下一行（大写 P 会粘贴到上一行）。
 
-![复制一行](http://101.200.84.36/images/2022/05/09/202205092120488.png)
+![复制一行](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092120488.png)
 
-![粘贴](http://101.200.84.36/images/2022/05/09/202205092123546.png)
+![粘贴](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205092123546.png)
 
 虽然听起来很霸气，但是我们删除一行或者复制一行通常不会使用 dis（das）或者 yis（yas），因为需要三个字母 —— 我们是懒人，单词好越少越好，所以一般使用 dd 或者 yy 进行删除和复制。类似的还有使用 cc 代替 change inside sentence（cis）。
 

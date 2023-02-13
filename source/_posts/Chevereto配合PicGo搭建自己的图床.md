@@ -56,7 +56,7 @@ cd lnmp1.8
 
 你可以选择自己喜欢的下载方式，我喜欢用 Axel 。
 
-![下载解压](http://101.200.84.36/images/2022/03/31/202203311924121.png)
+![下载解压](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311924121.png)
 
 使用 `ls` 查看你的目录，输入 `./install.sh` 进行安装。如果你用的和我一样，都是 Rocky Linux, 那么恭喜你，你中奖了，喜提错误警告：
 
@@ -76,21 +76,21 @@ elif grep -Eqi "Rocky Linux" /etc/issue || grep -Eq "Rocky Linux" /etc/*-release
     PM='yum'
 ```
 
-![打开脚本](http://101.200.84.36/images/2022/03/31/202203311928363.png)
+![打开脚本](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311928363.png)
 
-![修改配置](http://101.200.84.36/images/2022/03/31/202203311935014.png)
+![修改配置](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311935014.png)
 
 这其实是让脚本以为自己在 CentOS 系统上运行——我说过 Rocky Linux 兼容 CentOS ，所以没必要担心。按 <kbd>Esc</kbd> ，输入 `:wq` ，回车，保存退出。重新执行脚本。
 
 重新执行之后脚本会让你选择自己的数据库，如果知道的话就选择，不懂的直接默认。我选择最新的 MariaDB 10.4.19，所以输入 10. 后面设置数据库密码。
 
-![选择数据库类型](http://101.200.84.36/images/2022/03/31/202203311940652.png)
+![选择数据库类型](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311940652.png)
 
-![设置密码](http://101.200.84.36/images/2022/03/31/202203311943548.png)
+![设置密码](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311943548.png)
 
 安装 PHP。这就不是版本越高越好了，暂且选择 7.1 吧，因为我现在的数据库和 Chevereto 支持的就是这个版本。后面的那个内存分配器随便选择，也可以默认不选，我选择 2 。然后回车安装。
 
-![PHP版本](http://101.200.84.36/images/2022/03/31/202203311946674.png)
+![PHP版本](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311946674.png)
 
 到这里，基本可以洗洗睡了——会安装很久。我的服务器在安装过程中 CPU 使用率直接飙到 90% 以上，基本使劲浑身解数来解决编译问题，最后还是花了 126 分钟，简直慢到死。不过现在是在自己的电脑演示，速度还是挺快的。
 
@@ -98,7 +98,7 @@ elif grep -Eqi "Rocky Linux" /etc/issue || grep -Eq "Rocky Linux" /etc/*-release
 
 我们使用脚本的另一个好处是，如果自己的环境配错了，可以修改。比如我安装了 PHP 高版本，但是需要的是低版本，可以是使用 `./upgrade.sh` 进行修改。手动的话，比较麻烦。同理，如果想要卸载，也可以使用我们下载的 LNMP 中的脚本完成。也可以去 [LNMP](https://www.lnmp.org/ "LNMP") 脚本官网查看教程。
 
-![安装完成](http://101.200.84.36/images/2022/03/31/202203312009531.png)
+![安装完成](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312009531.png)
 
 安装完成，使用了 22 分钟，比服务器强多了。我没有域名，所以就不搞虚拟主机了，直接上 IP.
 
@@ -118,7 +118,7 @@ systemctl restart mariadb
 
 可以看到 default 目录下有一个 phpmyadmin 文件夹，待会我们会访问它。
 
-![phpmyadmin](http://101.200.84.36/images/2022/03/31/202203312027429.png)
+![phpmyadmin](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312027429.png)
 
 打开配置文件，找到 server  有 `listen 80` 的那一部分配置。在 `include enable-php.conf` 后面添加以下配置：
 
@@ -138,7 +138,7 @@ location ~ [^/]\.php(/|$) {
 }
 ```
 
-![配置](http://101.200.84.36/images/2022/03/31/202203312033765.png)
+![配置](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312033765.png)
 
 注意配置里的一些字段，例如后面有的图片格式后面的括号显示有效期 ( expires ) 是 30 天。你可以修改自己的。
 
@@ -148,9 +148,9 @@ location ~ [^/]\.php(/|$) {
 
 > http://ip/phpmyadmin 中的 IP 是指你的服务器公网 IP，而不是这两个字符。
 
-![登陆选择数据库](http://101.200.84.36/images/2022/03/31/202203312040197.png)
+![登陆选择数据库](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312040197.png)
 
-![创建图床数据库](http://101.200.84.36/images/2022/03/31/202203312043700.png)
+![创建图床数据库](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312043700.png)
 
 创建数据库的时候，编码选择 utf8_general_ci . 我对数据库不是很了解，不能给专业的解释，只能告诉你这样避免乱码。
 
@@ -173,11 +173,11 @@ unzip chevereto-free-1.6.zip && mv chevereto-free-1.6/* /home/wwwroot/default/
 
 我下载的是 1.6 版，解压的时候需要看自己下载的是第几版，不要照抄我的步骤。解压之后 default 目录应该长这样：
 
-![default 目录](http://101.200.84.36/images/2022/03/31/202203312106787.png)
+![default 目录](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312106787.png)
 
 现在可以到浏览器直接输入你的服务器公网 IP 了：
 
-![登陆 Chevereto](http://101.200.84.36/images/2022/03/31/202203312107148.png)
+![登陆 Chevereto](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312107148.png)
 
 当然，你最初看到的不是这个，而是一个初始界面。我没办法演示，但是你知道要填写这类信息就行：
 
@@ -194,17 +194,17 @@ Database user password --> 上面你创建的密码，我的是 chunshuyumao
 
 登陆 Chevereto, 右上角选择 Dashbord --> Settings --> Website，修改 Website privacy mode 为 private, 这样你的网站就不会被别人接触到了。
 
-![设置](http://101.200.84.36/images/2022/03/31/202203312120424.png)
+![设置](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312120424.png)
 
-![设置](http://101.200.84.36/images/2022/03/31/202203312121054.png)
+![设置](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312121054.png)
 
-![修改为Website privacy mode 为 priavte](http://101.200.84.36/images/2022/03/31/202203312123309.png)
+![修改为Website privacy mode 为 priavte](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312123309.png)
 
-![上传的图片](http://101.200.84.36/images/2022/03/31/202203312127809.png)
+![上传的图片](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312127809.png)
 
 你点击右上角的上传按钮进行上传——这个应该可以调成中文，我只是不想调而已。
 
-![上传](http://101.200.84.36/images/2022/03/31/202203312129523.png)
+![上传](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312129523.png)
 
 图床安装完毕。你的服务器里，图床在 /home/wwwroor/default/images 下边。
 
@@ -222,13 +222,13 @@ Database user password --> 上面你创建的密码，我的是 chunshuyumao
 >
 > http://888.777.666:8080/api/1/upload 就是 IP 为 888.777.666 ，端口为 8080
 
-![搜索 Chevereto 插件](http://101.200.84.36/images/2022/03/31/202203312135945.png)
+![搜索 Chevereto 插件](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312135945.png)
 
-![配置](http://101.200.84.36/images/2022/03/31/202203312136390.png)
+![配置](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312136390.png)
 
 还缺一个 Key. 打开我们的 Chevereto --> Dash Board --> Settings --> Website --> API，把你的 Key 复制一份填写即可。
 
-![Key](http://101.200.84.36/images/2022/03/31/202203312139840.png)
+![Key](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312139840.png)
 
 最后你就可以使用 PicGo 开心地上传自己的图床了！
 

@@ -82,7 +82,7 @@ $ file BV1Sg41137WR
 BV1Sg41137WR: gzip compressed data, from Unix, original size modulo 2^32 259418
 ```
 
-![尝试请求](http://101.200.84.36/images/2022/06/08/202206082248087.png "尝试请求")
+![尝试请求](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/08/202206082248087.png "尝试请求")
 
 `curl -O url` 表示把请求网址的结果保存，我们看到，保存之后生成了一个 `BV1Sg41137WR` 的 gZIP 压缩文件。解压这个文件试试：
 
@@ -93,13 +93,13 @@ $ file BV1Sg41137WR
 BV1Sg41137WR: HTML document, Unicode text, UTF-8 text, with very long lines (63971), with no line terminators
 ```
 
-![解压文件](http://101.200.84.36/images/2022/06/08/202206082249382.png "解压文件")
+![解压文件](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/08/202206082249382.png "解压文件")
 
 可以看到，解压之后这个文件其实是一个 HTML 文件，也就是网页的源码。我们要找的视频网址等内容都在里边，接下来就是我们解读了。解释解释上面的行为。
 
 `mv` 是重命名的意思，因为后面需要解压，自然就需要重名了。FreeBSD 等 Unix 直系后代系统习惯通过文件内容判断文件格式。比如上面的 `BV1Sg41137WR` 文件，通过判断可以得知是 gZIP 文件。在 FreeBSD 中可以直接使用 `gzip -d` 解压，因为通过内容可以轻松辨认出来；但是 Linux 系统通过文件扩展名辨认文件， `BV1Sg41137WR` 没有文件名，在 Linux 上使用 `gzip -d` 它就分辨不出来这个文件是啥，自然就拒绝解压。
 
-![错误案例](http://101.200.84.36/images/2022/06/08/202206082255543.png "错误案例")
+![错误案例](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/08/202206082255543.png "错误案例")
 
 `mv` 是 `move` 的缩写，用于移动和重命名。按理来说我们的操作应该是
 
@@ -119,7 +119,7 @@ mv BV1Sg41137WR{,.gz}
 
 接下来可以使用文本编辑器查看下载的 HTML 源码，其实最好的方式是通过浏览器直接查看源码。因为已经搞清楚了 B站 尿性，所以我这里就不解释如何通过分析源码了解我们想要的内容。直接告诉大家：我们需要的部分在源码中的 `window.__playinfo__` 部分，可以通过浏览器查看源码然后查找得到。
 
-![目标](http://101.200.84.36/images/2022/06/09/202206091212163.png "目标")
+![目标](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/09/202206091212163.png "目标")
 
 接下来要做的就是把 `__playinfo__=` 后面的内容提取出来，然后通过 jq 格式化显示出来。
 
@@ -131,7 +131,7 @@ mv BV1Sg41137WR{,.gz}
 $ cat BV1Sg41137WR | sed -nr 's/.*__playinfo__=(.*)<\/script><script>.*/\1/gp'
 ```
 
-![获取需要的部分](http://101.200.84.36/images/2022/06/09/202206091254062.png "获取需要的部分")
+![获取需要的部分](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/09/202206091254062.png "获取需要的部分")
 
 这里解释一下，我们需要使用 `BV1Sg41137WR` 的内容，所以通过 `cat` 和管道符 `|` 把内容传递给 SED。SED 参数 `-n` 表示不打印，SED 一般匹配之后会直接打印出来，我们希望打不打印由自己控制，所以默认直接不打印；`-r` 表示后面我们会用到正则表达式（Regular Expression）。
 
@@ -139,7 +139,7 @@ $ cat BV1Sg41137WR | sed -nr 's/.*__playinfo__=(.*)<\/script><script>.*/\1/gp'
 
 获取内容之后，我们可以看到内容非常乱，简直不是人看的。使用 JQ 进行格式化就好看了：
 
-![格式化之后](http://101.200.84.36/images/2022/06/09/202206091305686.png "格式化之后")
+![格式化之后](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/09/202206091305686.png "格式化之后")
 
 现在我们需要的是视频的链接。B站 由于各种原因——谁都有自己的原因——为了防止别人下载自己的视频，把视频和音频分开存储，这样如果你使用具有嗅探功能的下载器也只能下载到没有音频的视频而已——没办法。
 
@@ -172,7 +172,7 @@ $ cat BV1Sg41137WR | sed -nr 's/.*__playinfo__=(.*)<\/script><script>.*/\1/gp' |
 "https://upos-sz-mirrorhw.bilivideo.com/upgcxcode/53/45/348384553/348384553_nb2-1-30280.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1654755278&gen=playurlv2&os=hwbv&oi=3723425079&trid=9f2d5b2f02c543e4919e6644832471cbu&mid=0&platform=pc&upsig=8b68ed8743e01fde1dc6ac48136b3bc4&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&bvc=vod&nettype=0&orderid=0,3&agrr=1&bw=23987&logo=80000000"
 ```
 
-![获取音、视频链接](http://101.200.84.36/images/2022/06/09/202206091318587.png "获取音、视频链接")
+![获取音、视频链接](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/09/202206091318587.png "获取音、视频链接")
 
 
 可以看到，获取的链接两边有引号，我们不需要这些引号，所以使用 SED 去除。方法如下：

@@ -21,7 +21,7 @@ CDN<ruby>（内容分发网络）<rt>Content Delivery Network</rt></ruby> 尽可
  
 通常我们使用的是 [JsDelivr](https://www.jsdelivr.com/ "JsDelivr")，一个免费、可靠的 CDN 加速。下面是官网，主页面直接放了大量的使用方法：
 
-![JsDelivr 官网主页](http://101.200.84.36/images/2022/05/23/202205231714065.png "JsDelivr 官网主页")
+![JsDelivr 官网主页](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/23/202205231714065.png "JsDelivr 官网主页")
  
 # 测试
 
@@ -63,7 +63,7 @@ https://cdn.jsdelivr.net/gh/github帐号名/仓库名@分支名/图片名
 https://cdn.jsdelivr.net/gh/GitHub帐号/仓库名@分支名
 ```
 
-![PicGo 中的 GitHub 设置](http://101.200.84.36/images/2022/05/23/202205231727605.png "PicGo 中的 GitHub 设置")
+![PicGo 中的 GitHub 设置](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/23/202205231727605.png "PicGo 中的 GitHub 设置")
 
 # Hexo 加速
 
@@ -76,7 +76,7 @@ $ cd Docment/NotePages/source/_posts # 进入源文件目录
 $ ls | xargs -i sed -i 's/cdn.jsdelivr.net/fastly.jsdelivr.net/g' {} # 修改文件内地址
 ```
 
-![SED 批量修改地址](http://101.200.84.36/images/2022/05/23/202205231740399.png "SED 批量修改地址")
+![SED 批量修改地址](http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/23/202205231740399.png "SED 批量修改地址")
 
 如果是其他系统的用户，可以使用文件编辑器打开文件，然后使用全局修改。
 
