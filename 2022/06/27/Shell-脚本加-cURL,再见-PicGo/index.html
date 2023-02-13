@@ -23,20 +23,11 @@
 <meta property="og:site_name" content="椿树与猫">
 <meta property="og:description" content="抛弃 PicGO，自己动手丰衣足食！">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206271741491.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206271808381.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272005261.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272146001.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272200431.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272247001.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272250411.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/27/202206272251341.png">
 <meta property="article:published_time" content="2022-06-27T10:30:23.000Z">
-<meta property="article:modified_time" content="2022-07-29T12:43:12.000Z">
+<meta property="article:modified_time" content="2023-02-13T08:22:36.860Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="Shell">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://101.200.84.36/images/2022/06/27/202206271741491.png">
   
   
   <title>Shell 脚本加 cURL, 再见 PicGo - 椿树与猫</title>
@@ -261,7 +252,8 @@ title="Sway">Sway</a>，适用于 <a target="_blank" rel="noopener" href="https:
 title="Wayland">Wayland</a> 的 i3。<a target="_blank" rel="noopener" href="https://manjaro.org/"
 title="Manjaro Linux">Manjaro Linux</a> 社区有在维护 Sway
 版，可惜我最开始的时候并没有选择 Sway。</p>
-<p><img src="http://101.200.84.36/images/2022/06/27/202206271741491.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/27/202206271741491.png" srcset="/img/loading.gif" lazyload
 title="官网截的图，因为我的 Sway 已经被我卸了。"
 alt="官网截的图，因为我的 Sway 已经被我卸了。" /></p>
 <p>平铺有利于桌面空间的利用，全快捷键操作也可以让人脱离键盘，看起来极富极客（Geek）风格，也就是装～。其实
@@ -286,7 +278,8 @@ title="学生认证">学生认证</a>其实好处多多（认证的邮箱建议�
 NeoVIM。如果感兴趣，也可以到<a
 target="_blank" rel="noopener" href="https://github.com/features/copilot/"
 title="GitHub Copilot">官网</a>瞄瞄这家伙如何工作。当然，如果进行学生认证的话还可以免费使用。</p>
-<p><img src="http://101.200.84.36/images/2022/06/27/202206271808381.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/27/202206271808381.png" srcset="/img/loading.gif" lazyload
 title="GitHub Copilot" alt="GitHub Copilot" /></p>
 <h2 id="picgo">PicGo</h2>
 <p><a target="_blank" rel="noopener" href="https://www.picgo.net/" title="PicGO">PicGo</a>
@@ -350,7 +343,8 @@ PicGo
 image/png），输出（out &gt;）到
 <code>image.png</code>。好家伙，完全不用解释哦！</p>
 <p>这样在脚本所在目录就会出现一个 <code>image.png</code> 文件。</p>
-<p><img src="http://101.200.84.36/images/2022/06/27/202206272005261.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/27/202206272005261.png" srcset="/img/loading.gif" lazyload
 title="从剪贴板获取图片" alt="从剪贴板获取图片" /></p>
 <p>可是这样不优雅，图片直接在脚本所在的地方生成非常恶心。好在我们可以做得更好！一个优雅的方式是，创建一个临时目录，把所有的临时文件放到这个目录中，等到任务完成之后再删去目录。好巧不巧，刚刚好有一个这样的命令符合我们的预期，它就是
 <code>mktemp</code>。通过查阅使用手册，我们可以知道，<code>mktemp</code>
@@ -401,7 +395,8 @@ GitHub。我们希望调用函数之后，函数返回上传成功后图片的�
 <p>这里就不介绍如何申请 GitHub
 仓库了，默认你建立了自己的仓库。这个仓库名一定要准确。例如我的仓库
 <code>202203</code>：</p>
-<p><img src="http://101.200.84.36/images/2022/06/27/202206272146001.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/27/202206272146001.png" srcset="/img/loading.gif" lazyload
 title="202203" alt="202203" /></p>
 <p>有了这个我们可以写函数了：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">upload2github</span></span>() &#123;<br><br>  <span class="hljs-comment">#################设置####################</span><br>  <span class="hljs-built_in">local</span> repo=<span class="hljs-string">&#x27;202203&#x27;</span><br>  <span class="hljs-built_in">local</span> username=<span class="hljs-string">&#x27;chunshuyumao&#x27;</span><br>  <span class="hljs-built_in">local</span> token=<span class="hljs-string">&#x27;xxxxxxxxxxxxxxxxxxxxxx&#x27;</span><br>  <span class="hljs-comment">#################可选####################</span><br>  <span class="hljs-built_in">local</span> cdn=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/gh/<span class="hljs-variable">$username</span>/<span class="hljs-variable">$repo</span>@master&quot;</span><br>  <span class="hljs-comment">#################设置####################</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
@@ -411,7 +406,8 @@ Network，内容分发网络），用于加速 GitHub
 加速就会快一点。除了设置网起来的配置，其他都不要动。</p>
 <p>参考 <a target="_blank" rel="noopener" href="https://docs.github.com/en/rest/repos/contents"
 title="GitHub API PUT">GitHub官方API使用说明</a> 上传图片。</p>
-<p><img src="http://101.200.84.36/images/2022/06/27/202206272200431.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/27/202206272200431.png" srcset="/img/loading.gif" lazyload
 title="GitHub API" alt="GitHub API" /></p>
 <p>语法如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">curl \<br>  -X <span class="hljs-string">&#x27;PUT&#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$github_url</span>&quot;</span> \<br>  -H <span class="hljs-string">&#x27;Accept: application/vnd.github.v3+json&#x27;</span> \<br>  -H <span class="hljs-string">&quot;Authorization: token <span class="hljs-variable">$token</span>&quot;</span> \<br>  -d <span class="hljs-string">&#x27;&#123; &quot;message&quot;: &quot;upload&quot;, &quot;content&quot;: &quot;&#x27;</span><span class="hljs-variable">$content</span><span class="hljs-string">&#x27;&quot; &#125;&#x27;</span><br></code></pre></div></td></tr></table></figure>
@@ -431,7 +427,7 @@ title="GitHub API" alt="GitHub API" /></p>
 <p>请求之后返回的结果是 JSON 格式，保存到一个变量，然后用 JQ
 进行处理：</p>
 <p><img
-src="http://101.200.84.36/images/2022/06/27/202206272209181.png" srcset="/img/loading.gif" lazyload /></p>
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/27/202206272209181.png" srcset="/img/loading.gif" lazyload /></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">local</span> message=<span class="hljs-string">&quot;<span class="hljs-subst">$(curl \</span></span><br><span class="hljs-subst"><span class="hljs-string">  -X &#x27;PUT&#x27; <span class="hljs-string">&quot;<span class="hljs-variable">$github_url</span>&quot;</span> \</span></span><br><span class="hljs-subst"><span class="hljs-string">  -H &#x27;Accept: application/vnd.github.v3+json&#x27; \</span></span><br><span class="hljs-subst"><span class="hljs-string">  -H <span class="hljs-string">&quot;Authorization: token <span class="hljs-variable">$token</span>&quot;</span> \</span></span><br><span class="hljs-subst"><span class="hljs-string">  -d &#x27;&#123; <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;upload&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>: <span class="hljs-string">&quot;&#x27;<span class="hljs-variable">$content</span>&#x27;&quot;</span> &#125;&#x27; \</span></span><br><span class="hljs-subst"><span class="hljs-string">  2&gt; /dev/null | jq &#x27;commit..message?&#x27; sed -r &#x27;s/\&quot;(.*)</span>\&quot;/\1/g&#x27;)&quot;</span><br><br><span class="hljs-keyword">if</span> [[ <span class="hljs-string">&quot;<span class="hljs-variable">$message</span>&quot;</span> != <span class="hljs-string">&quot;upload&quot;</span> ]]; <span class="hljs-keyword">then</span><br>  notify-send -t <span class="hljs-variable">$expire</span> -i <span class="hljs-string">&#x27;dialog-error&#x27;</span> <span class="hljs-string">&#x27;ERROR&#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$message</span>&quot;</span><br><span class="hljs-keyword">fi</span><br><span class="hljs-built_in">exit</span> 1<br></code></pre></div></td></tr></table></figure>
 <p>我们不需要使用返回的结果，只需要判断是否成功。文档说明，如果上传成功，返回的
 message 是我们之前的 message 的内容，我们只需要判断两个 message
@@ -457,7 +453,8 @@ title="SM.MS API">官网</a>。<code>-F</code> 参数是 <code>cURL</code>
 传递 <code>form-data</code>
 的方式，因为官网说了上传的是文件。一般上传文件直接使用
 <code>-F</code>。</p>
-<p><a target="_blank" rel="noopener" href="http://101.200.84.36/images/2022/06/27/202206272237441.png"
+<p><a
+target="_blank" rel="noopener" href="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/27/202206272237441.png"
 title="SM.MS上传">SM.MS上传</a></p>
 <p><code>jq '.data.url?'</code> 表示从 JSON 中获取 data 下的 url
 内容。大概是这样的布局：</p>
@@ -470,12 +467,15 @@ title="SM.MS上传">SM.MS上传</a></p>
 <h2 id="设置全局快捷键">设置全局快捷键</h2>
 <p>这里只说 GNOME
 的全局快捷键。打开<code>gnome-center-control</code>，或者直接找设置（settings）</p>
-<p><img src="http://101.200.84.36/images/2022/06/27/202206272247001.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/27/202206272247001.png" srcset="/img/loading.gif" lazyload
 title="设置" alt="设置" /></p>
 <p>选择<code>键盘（Keyboard）=&gt; 键盘快捷键（Keyboard Shortcuts）=&gt; 浏览与自定义快捷键（View and Custumize Shortcuts）=&gt; 自定义快捷键（Custom Shortcuts）</code>，点击<code>➕</code>：</p>
-<p><img src="http://101.200.84.36/images/2022/06/27/202206272250411.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/27/202206272250411.png" srcset="/img/loading.gif" lazyload
 title="添加" alt="添加" /></p>
-<p><img src="http://101.200.84.36/images/2022/06/27/202206272251341.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/27/202206272251341.png" srcset="/img/loading.gif" lazyload
 title="添加快捷键" alt="添加快捷键" /></p>
 <p><code>描述（Name）</code>
 只是描述，随便写啥；<code>命令（comamnd）</code>写你的脚本所在的路径，最后点击

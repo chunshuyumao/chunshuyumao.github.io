@@ -23,19 +23,11 @@
 <meta property="og:site_name" content="椿树与猫">
 <meta property="og:description" content="优化 Zettlr 编辑器的部分功能">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/09/202205100936007.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/09/202205100942279.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/09/202205101026625.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/09/202205101030724.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/10/202205101207897.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/09/202205101049346.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/09/202205101050726.png">
 <meta property="article:published_time" content="2022-05-10T01:28:40.000Z">
-<meta property="article:modified_time" content="2022-07-29T12:43:12.000Z">
+<meta property="article:modified_time" content="2023-02-13T08:22:36.870Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="Zettlr">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://101.200.84.36/images/2022/05/09/202205100936007.png">
   
   
   <title>Zettlr 编辑器部分功能优化 - 椿树与猫</title>
@@ -250,13 +242,15 @@
 <p>因为 Zettlr 编辑器支持在 Markdown 下的文献引用，自己逐步从 Tyopra
 转向 Zettlr。和 Tyopra 比，Zettlr 的体验确实不是很好。此外，Zettlr
 还存在图片默认左对齐、文章字数统计对中英文支持不好等问题。</p>
-<p><img src="http://101.200.84.36/images/2022/05/09/202205100936007.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205100936007.png" srcset="/img/loading.gif" lazyload
 title="图片左对齐，中英文（右上角）混合统计有问题。按理来说统计有 4 千字，这里的统计接近 8 千字。"
 alt="图片左对齐，中英文（右上角）混合统计有问题。按理来说统计有 4 千字，这里的统计接近 8 千字。" /></p>
 <p>我希望的是图片可以默认居中对齐，然后中英文混输的字数统计可以准确一点。前者可以通过自定义
 <ruby>CSS（层叠样式表）<rt>Cascading Style Sheets</rt></ruby>
 进行修改，后者只能修改源码了。</p>
-<p><img src="http://101.200.84.36/images/2022/05/09/202205100942279.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205100942279.png" srcset="/img/loading.gif" lazyload
 title="修改后的效果" alt="修改后的效果" /></p>
 <p>既然要修改源码，索性一并修改 <ruby>CSS（层叠样式表）<rt>Cascading
 Style Sheets</rt></ruby> 的源码。因此这就是接下来的工作。接下来的修改在
@@ -301,7 +295,7 @@ Shr2hst。进入文件夹中，并通过<ruby>克隆<rt>clone</rt></ruby>指令�
 <p>打开浏览器，输入 <code>https://github.com/zettlr/zettlr</code> 进入
 GitHub 界面，选择 Code 中的 Download ZIP 进行下载。</p>
 <p><img
-src="http://101.200.84.36/images/2022/05/09/202205101008484.png" srcset="/img/loading.gif" lazyload /></p>
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205101008484.png" srcset="/img/loading.gif" lazyload /></p>
 <p>下载完成之后可以进行解压。在 Windows
 ，随便使用一个压缩软件就可以解压。在 Linux 中可以使用 unzip
 命令解压，效果如下。</p>
@@ -317,9 +311,11 @@ src="http://101.200.84.36/images/2022/05/09/202205101008484.png" srcset="/img/lo
 <p>转到最后一行，把 44 到49
 行的代码删掉或注释掉，在后面添加以下代码。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">content = content.replace(/(\r\n+|\s+| +)/g, <span class="hljs-string">&quot;𰻝&quot;</span>);<br>content = content.replace(/[\x00-\xff]/g, <span class="hljs-string">&quot;w&quot;</span>);<br>content = content.replace(/w+/g, <span class="hljs-string">&quot;*&quot;</span>);<br>content = content.replace(/𰻝+/g, <span class="hljs-string">&quot;&quot;</span>);<br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/05/09/202205101026625.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205101026625.png" srcset="/img/loading.gif" lazyload
 title="未更改" alt="未更改" /></p>
-<p><img src="http://101.200.84.36/images/2022/05/09/202205101030724.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205101030724.png" srcset="/img/loading.gif" lazyload
 title="更改后" alt="更改后" /></p>
 <p>保存退出。这几行代码的统计方式虽然原始，但是十分高效——和 Word、WPS
 Word
@@ -330,7 +326,8 @@ Word
 w ，在把以生僻字隔离的一个至多个 w 替换成 *
 ，然后减去生僻字就是所有的字数了。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 举个例子，看下面的文字</span><br>我 Wǒ 是 shì 爱 aì 南 nán 开 kāi 的 de 。<br>俺也一样。<br><span class="hljs-comment"># 替换后</span><br>我𰻝Wǒ𰻝是𰻝shì𰻝爱𰻝aì𰻝南𰻝nán𰻝开𰻝kāi𰻝的𰻝de𰻝。𰻝俺也一样。𰻝<br><span class="hljs-comment"># 替换拉丁字母</span><br>我𰻝ww𰻝是𰻝www𰻝爱𰻝ww𰻝南𰻝www𰻝开𰻝www𰻝的𰻝w𰻝。𰻝俺也一样。𰻝<br><span class="hljs-comment"># 去掉拉丁字母</span><br>我𰻝*𰻝是𰻝*𰻝爱𰻝*𰻝南𰻝*𰻝开𰻝*𰻝的𰻝*𰻝。𰻝俺也一样。𰻝<br><span class="hljs-comment"># 去掉生僻字</span><br><span class="hljs-comment"># 1 2 3  4 5 6 7 8 9 10 11 12 13 14 15 16 17 18</span><br> 我 * 是 * 爱* 南* 开*  的 *  。 俺 也 一 样 。 <br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/05/10/202205101207897.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/10/202205101207897.png" srcset="/img/loading.gif" lazyload
 alt="以防出现方框" /></p>
 <h2 id="图片居中">图片居中</h2>
 <p>图片居中的源码位于 source/common/modules/markdown-editor/editor.less
@@ -338,9 +335,11 @@ alt="以防出现方框" /></p>
 里边的 img 添加
 <code>margin: 0 auto;</code>，表示居中对齐。保存退出。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ vim <span class="hljs-built_in">source</span>/common/modules/markdown-editor/editor.less<br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/05/09/202205101049346.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205101049346.png" srcset="/img/loading.gif" lazyload
 title="未修改" alt="未修改" /></p>
-<p><img src="http://101.200.84.36/images/2022/05/09/202205101050726.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/09/202205101050726.png" srcset="/img/loading.gif" lazyload
 title="修改后" alt="修改后" /></p>
 <p>这一部分是前端知识，知道这么回事就行。</p>
 <h1 id="编译">编译</h1>

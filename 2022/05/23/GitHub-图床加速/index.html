@@ -23,16 +23,12 @@
 <meta property="og:site_name" content="椿树与猫">
 <meta property="og:description" content="为自己的 Hexo Fluid 主题注入自动选择 CDN 加速的脚本，同时记录 GitHub 图床加速。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/23/202205231714065.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/23/202205231727605.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/23/202205231740399.png">
 <meta property="article:published_time" content="2022-05-23T10:23:50.000Z">
-<meta property="article:modified_time" content="2022-08-15T13:58:30.000Z">
+<meta property="article:modified_time" content="2023-02-13T08:22:36.830Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="图床">
 <meta property="article:tag" content="Fluid">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://101.200.84.36/images/2022/05/23/202205231714065.png">
   
   
   <title>GitHub 图床加速 - 椿树与猫</title>
@@ -252,7 +248,8 @@
 <p>通常我们使用的是 <a target="_blank" rel="noopener" href="https://www.jsdelivr.com/"
 title="JsDelivr">JsDelivr</a>，一个免费、可靠的 CDN
 加速。下面是官网，主页面直接放了大量的使用方法：</p>
-<p><img src="http://101.200.84.36/images/2022/05/23/202205231714065.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/23/202205231714065.png" srcset="/img/loading.gif" lazyload
 title="JsDelivr 官网主页" alt="JsDelivr 官网主页" /></p>
 <h1 id="测试">测试</h1>
 <p>首先找一张 GitHub 上的图片，我这里选了一张之前用过的 Zettlr
@@ -279,7 +276,8 @@ GitHub 的配置。打开 PicGo，转到 GitHub 设置，按照下面进行配�
 分支。其次写自定义域名，格式和上面说的一样。这样，PicGo
 上传后会自动返回加速后的地址。</p>
 <figure class="highlight markdown"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs markdown">https://cdn.jsdelivr.net/gh/GitHub帐号/仓库名@分支名<br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/05/23/202205231727605.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/23/202205231727605.png" srcset="/img/loading.gif" lazyload
 title="PicGo 中的 GitHub 设置" alt="PicGo 中的 GitHub 设置" /></p>
 <h1 id="hexo-加速">Hexo 加速</h1>
 <p><code>cdn.jsdelivr.net</code>
@@ -292,7 +290,8 @@ title="PicGo 中的 GitHub 设置" alt="PicGo 中的 GitHub 设置" /></p>
 全局修改：首先转到博客源文件（Markdown
 文件）目录，然后输入修改代码。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">cd</span> Docment/NotePages/source/_posts <span class="hljs-comment"># 进入源文件目录</span><br>$ <span class="hljs-built_in">ls</span> | xargs -i sed -i <span class="hljs-string">&#x27;s/cdn.jsdelivr.net/fastly.jsdelivr.net/g&#x27;</span> &#123;&#125; <span class="hljs-comment"># 修改文件内地址</span><br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/05/23/202205231740399.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/23/202205231740399.png" srcset="/img/loading.gif" lazyload
 title="SED 批量修改地址" alt="SED 批量修改地址" /></p>
 <p>如果是其他系统的用户，可以使用文件编辑器打开文件，然后使用全局修改。</p>
 <p>不过这只是权宜之计，我希望还是使用 <code>cdn.jsdelivr.net</code>

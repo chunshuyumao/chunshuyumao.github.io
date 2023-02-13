@@ -23,20 +23,12 @@
 <meta property="og:site_name" content="椿树与猫">
 <meta property="og:description" content="Linux rm 命令的救星">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://101.200.84.36/images/2022/04/29/202204291614948.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/08/202205081622531.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/08/202205081640928.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/08/202205081642542.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/08/202205081636770.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/08/202205081709669.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/05/08/202205082105652.png">
 <meta property="article:published_time" content="2022-04-29T07:41:55.000Z">
-<meta property="article:modified_time" content="2022-07-29T12:43:12.000Z">
+<meta property="article:modified_time" content="2023-02-13T08:22:36.890Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="脚本">
 <meta property="article:tag" content="技巧">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://101.200.84.36/images/2022/04/29/202204291614948.png">
   
   
   <title>在 Linux 上实现回收站 - 椿树与猫</title>
@@ -263,7 +255,8 @@ Windows 那样 —— 不直接删除数据，而是挪到一个地方。</p>
 。通过文件管理器删除一个文件，我们可以在回收站目录下看到两个文件:
 <code>info</code> 和 <code>files</code>
 。前者是被删文件的信息，例如路径和删除时间；后者是被删文件移动到的位置。</p>
-<p><img src="http://101.200.84.36/images/2022/04/29/202204291614948.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/04/29/202204291614948.png" srcset="/img/loading.gif" lazyload
 alt="空回收站" /></p>
 <p>图形界面删除一个文件之后，可以在回收目录下找到删除的文件和信息：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ tree<br>.<br>├── expunged<br>├── files<br>│   └── test.sh<br>└── info<br>    └── test.sh.trashinfo<br><br>3 directories, 2 files<br></code></pre></div></td></tr></table></figure>
@@ -348,7 +341,8 @@ File</rt></ruby>
 <code>ls</code> 列出当前目录下的文件，使用重定向符号试试：</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">ls</span> &gt; list.txt<br>$ <span class="hljs-built_in">ls</span><br>Desktop    Downloads  Music     Public     Videos<br>Documents  list.txt   Pictures  Templates  Zotero<br>$ <span class="hljs-built_in">cat</span> list.txt<br>Desktop<br>Documents<br>Downloads<br>list.txt<br>Music<br>Pictures<br>Public<br>Templates<br>Videos<br>Zotero<br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/05/08/202205081622531.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/08/202205081622531.png" srcset="/img/loading.gif" lazyload
 title="重定向之后 ls 输出的内容到了 list.txt 当中"
 alt="重定向之后 ls 输出的内容到了 list.txt 当中" /></p>
 <p>可以看到，使用 <code>&gt;</code> 重定向符号之后 <code>ls</code>
@@ -358,16 +352,19 @@ alt="重定向之后 ls 输出的内容到了 list.txt 当中" /></p>
 <p>上面说了，如果这个文件本来就有内容了，这个操作会抹除原始的内容，所以专门有个
 <code>&gt;&gt;</code> 符号（追加重定向）作为辅助 ——
 这个符号只是在文件末尾追加内容，而不是抹除然后再输入：</p>
-<p><img src="http://101.200.84.36/images/2022/05/08/202205081640928.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/08/202205081640928.png" srcset="/img/loading.gif" lazyload
 alt="使用输出重定向会直接抹除原来的内容" /></p>
-<p><img src="http://101.200.84.36/images/2022/05/08/202205081642542.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/08/202205081642542.png" srcset="/img/loading.gif" lazyload
 alt="使用追加重定向后 list.txt 的内容增加而不抹除原内容" /></p>
 <ol start="2" type="1">
 <li><code>&lt;</code>
 输入重定向符。语法：<code>command &lt; input_file</code>。读取右边的文件，并把结果传给左边的命令。下面借助
 <code>wc -l</code> 计算 <code>list.txt</code> 的行数：</li>
 </ol>
-<p><img src="http://101.200.84.36/images/2022/05/08/202205081636770.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/08/202205081636770.png" srcset="/img/loading.gif" lazyload
 title="输入重定向" alt="输入重定向" /></p>
 <p>同理，也有一个 <code>&lt;&lt;</code>
 不过这个一般不单独出现，而是出现在一个被称为 “Bash Here Document”
@@ -385,7 +382,8 @@ File</rt></ruby>，因为一般的文件末尾都使用它作为标识。到这�
 <code>"$trashinfofile"</code> 中，这就很直观了。</p>
 <p>我们的脚本基本已经完成，输入 <code>chmod u+x mv2trash.sh</code>
 赋予脚本可执行权限，然后尝试删除：</p>
-<p><img src="http://101.200.84.36/images/2022/05/08/202205081709669.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/08/202205081709669.png" srcset="/img/loading.gif" lazyload
 alt="使用我们的脚本" /></p>
 <p>现在 <code>.local/share/Trash</code>
 下面有两个文件夹，其中分别装着刚刚删除的文件 <code>list.txt</code> 和
@@ -395,7 +393,8 @@ alt="使用我们的脚本" /></p>
 <p>删除文件之后，我们希望可以做到一键恢复，这就不得不再写一个脚本 ——
 如果不愿意再写一个脚本，可以选择直接移动文件到原来的位置，然后删除
 <code>Trash Info</code> 文件。不过我这里还是实现一下自动恢复：</p>
-<p><img src="http://101.200.84.36/images/2022/05/08/202205082105652.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/05/08/202205082105652.png" srcset="/img/loading.gif" lazyload
 alt="恢复效果" /></p>
 <p>上面，我先创建了一个 <code>test.sh</code> 文件，然后删除它，再用
 <code>rrm</code> 恢复文件。其中的 <code>rm</code> 和 <code>rrm</code>

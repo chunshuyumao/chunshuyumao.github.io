@@ -23,19 +23,11 @@
 <meta property="og:site_name" content="椿树与猫">
 <meta property="og:description" content="Shell 脚本下载 B站 视频">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/08/202206082248087.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/08/202206082249382.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/08/202206082255543.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/09/202206091212163.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/09/202206091254062.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/09/202206091305686.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/06/09/202206091318587.png">
 <meta property="article:published_time" content="2022-06-08T13:55:27.000Z">
-<meta property="article:modified_time" content="2022-07-29T12:43:12.000Z">
+<meta property="article:modified_time" content="2023-02-13T08:22:36.840Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="脚本">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://101.200.84.36/images/2022/06/08/202206082248087.png">
   
   
   <title>Shell脚本下载B站视频 - 椿树与猫</title>
@@ -302,13 +294,15 @@ variable）就直接退出，<code>-o pipefail</code>
 <h2 id="使用-curl">使用 cURL</h2>
 <p>我们先用 cURL 请求目标网址试试：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ curl -O <span class="hljs-string">&quot;https://www.bilibili.com/video/BV1Sg41137WR&quot;</span><br>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current<br>                                 Dload  Upload   Total   Spent    Left  Speed<br>100 47405    0 47405    0     0  83409      0 --:--:-- --:--:-- --:--:-- 83312<br>$ <span class="hljs-built_in">ls</span><br>BV1Sg41137WR<br>$ file BV1Sg41137WR<br>BV1Sg41137WR: gzip compressed data, from Unix, original size modulo 2^32 259418<br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/06/08/202206082248087.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/08/202206082248087.png" srcset="/img/loading.gif" lazyload
 title="尝试请求" alt="尝试请求" /></p>
 <p><code>curl -O url</code>
 表示把请求网址的结果保存，我们看到，保存之后生成了一个
 <code>BV1Sg41137WR</code> 的 gZIP 压缩文件。解压这个文件试试：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">mv</span> BV1Sg41137WR&#123;,.gz&#125;<br>$ gzip -d BV1Sg41137WR.gz<br>$ file BV1Sg41137WR<br>BV1Sg41137WR: HTML document, Unicode text, UTF-8 text, with very long lines (63971), with no line terminators<br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/06/08/202206082249382.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/08/202206082249382.png" srcset="/img/loading.gif" lazyload
 title="解压文件" alt="解压文件" /></p>
 <p>可以看到，解压之后这个文件其实是一个 HTML
 文件，也就是网页的源码。我们要找的视频网址等内容都在里边，接下来就是我们解读了。解释解释上面的行为。</p>
@@ -321,7 +315,8 @@ title="解压文件" alt="解压文件" /></p>
 系统通过文件扩展名辨认文件， <code>BV1Sg41137WR</code> 没有文件名，在
 Linux 上使用 <code>gzip -d</code>
 它就分辨不出来这个文件是啥，自然就拒绝解压。</p>
-<p><img src="http://101.200.84.36/images/2022/06/08/202206082255543.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/08/202206082255543.png" srcset="/img/loading.gif" lazyload
 title="错误案例" alt="错误案例" /></p>
 <p><code>mv</code> 是 <code>move</code>
 的缩写，用于移动和重命名。按理来说我们的操作应该是</p>
@@ -338,7 +333,8 @@ Linux Shell 又有这种操作</p>
 尿性，所以我这里就不解释如何通过分析源码了解我们想要的内容。直接告诉大家：我们需要的部分在源码中的
 <code>window.__playinfo__</code>
 部分，可以通过浏览器查看源码然后查找得到。</p>
-<p><img src="http://101.200.84.36/images/2022/06/09/202206091212163.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/09/202206091212163.png" srcset="/img/loading.gif" lazyload
 title="目标" alt="目标" /></p>
 <p>接下来要做的就是把 <code>__playinfo__=</code>
 后面的内容提取出来，然后通过 jq 格式化显示出来。</p>
@@ -347,7 +343,8 @@ title="目标" alt="目标" /></p>
 源码，现在就是从源码中提取我们需要的部分。上面已经说过，<code>__playinfo__=</code>
 后面就是我们的目标内容。在命令行上输入</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> BV1Sg41137WR | sed -nr <span class="hljs-string">&#x27;s/.*__playinfo__=(.*)&lt;\/script&gt;&lt;script&gt;.*/\1/gp&#x27;</span><br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/06/09/202206091254062.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/09/202206091254062.png" srcset="/img/loading.gif" lazyload
 title="获取需要的部分" alt="获取需要的部分" /></p>
 <p>这里解释一下，我们需要使用 <code>BV1Sg41137WR</code> 的内容，所以通过
 <code>cat</code> 和管道符 <code>|</code> 把内容传递给 SED。SED 参数
@@ -366,7 +363,8 @@ title="获取需要的部分" alt="获取需要的部分" /></p>
 <code>\1</code> 代替。如果看不懂就算了，这就是提取内容罢了。</p>
 <p>获取内容之后，我们可以看到内容非常乱，简直不是人看的。使用 JQ
 进行格式化就好看了：</p>
-<p><img src="http://101.200.84.36/images/2022/06/09/202206091305686.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/09/202206091305686.png" srcset="/img/loading.gif" lazyload
 title="格式化之后" alt="格式化之后" /></p>
 <p>现在我们需要的是视频的链接。B站
 由于各种原因——谁都有自己的原因——为了防止别人下载自己的视频，把视频和音频分开存储，这样如果你使用具有嗅探功能的下载器也只能下载到没有音频的视频而已——没办法。</p>
@@ -384,7 +382,8 @@ FFmpeg 合并。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ jq <span class="hljs-string">&#x27;.data.dash.video[0].baseUrl, .data.dash.audio[0].baseUrl&#x27;</span> JSON<br></code></pre></div></td></tr></table></figure>
 <p>最后我们这样获取想要的数据：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> BV1Sg41137WR | sed -nr <span class="hljs-string">&#x27;s/.*__playinfo__=(.*)&lt;\/script&gt;&lt;script&gt;.*/\1/gp&#x27;</span> | jq <span class="hljs-string">&#x27;.data.dash.video[0].baseUrl, .data.dash.audio[0].baseUrl&#x27;</span><br><br><span class="hljs-string">&quot;https://upos-sz-mirrorhw.bilivideo.com/upgcxcode/53/45/348384553/348384553_nb2-1-30080.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1654755278&amp;gen=playurlv2&amp;os=hwbv&amp;oi=3723425079&amp;trid=9f2d5b2f02c543e4919e6644832471cbu&amp;mid=0&amp;platform=pc&amp;upsig=dfcbb72afadc553a5c83c23fcacb7148&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&amp;bvc=vod&amp;nettype=0&amp;orderid=0,3&amp;agrr=1&amp;bw=255483&amp;logo=80000000&quot;</span><br><span class="hljs-string">&quot;https://upos-sz-mirrorhw.bilivideo.com/upgcxcode/53/45/348384553/348384553_nb2-1-30280.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&amp;uipk=5&amp;nbs=1&amp;deadline=1654755278&amp;gen=playurlv2&amp;os=hwbv&amp;oi=3723425079&amp;trid=9f2d5b2f02c543e4919e6644832471cbu&amp;mid=0&amp;platform=pc&amp;upsig=8b68ed8743e01fde1dc6ac48136b3bc4&amp;uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&amp;bvc=vod&amp;nettype=0&amp;orderid=0,3&amp;agrr=1&amp;bw=23987&amp;logo=80000000&quot;</span><br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/06/09/202206091318587.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/09/202206091318587.png" srcset="/img/loading.gif" lazyload
 title="获取音、视频链接" alt="获取音、视频链接" /></p>
 <p>可以看到，获取的链接两边有引号，我们不需要这些引号，所以使用 SED
 去除。方法如下：</p>

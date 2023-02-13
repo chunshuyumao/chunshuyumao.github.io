@@ -23,35 +23,13 @@
 <meta property="og:site_name" content="椿树与猫">
 <meta property="og:description" content="哈哈，我居然忘了我还有一个服务器？">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311924121.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311928363.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311935014.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311940652.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311943548.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203311946674.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312009531.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312027429.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312033765.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312040197.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312043700.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312106787.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312107148.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312120424.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312121054.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312123309.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312127809.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312129523.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312135945.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312136390.png">
-<meta property="og:image" content="http://101.200.84.36/images/2022/03/31/202203312139840.png">
 <meta property="article:published_time" content="2022-03-31T08:24:12.000Z">
-<meta property="article:modified_time" content="2022-09-03T12:30:52.000Z">
+<meta property="article:modified_time" content="2023-02-13T08:22:36.820Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="图床">
 <meta property="article:tag" content="Chevereto">
 <meta property="article:tag" content="PicGo">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://101.200.84.36/images/2022/03/31/202203311924121.png">
   
   
   <title>Chevereto 配合 PicGo 搭建自己的图床 - 椿树与猫</title>
@@ -300,7 +278,8 @@ Linux 系统，有些时候编译某些东东的时间很长，长时间不操�
 一键安装脚本，然后解压，进入自己解压的文件夹：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">axel -n 32 http://soft.vpser.net/lnmp/lnmp1.8.tar.gz<br>tar zxf lnmp1.8.tar.gz<br>cd lnmp1.8<br></code></pre></div></td></tr></table></figure>
 <p>你可以选择自己喜欢的下载方式，我喜欢用 Axel 。</p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203311924121.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311924121.png" srcset="/img/loading.gif" lazyload
 alt="下载解压" /></p>
 <p>使用 <code>ls</code> 查看你的目录，输入 <code>./install.sh</code>
 进行安装。如果你用的和我一样，都是 Rocky Linux,
@@ -312,24 +291,29 @@ alt="下载解压" /></p>
 Get_Dist_Name 找到目标函数，如下。回车。</p>
 <p>在 <code>if</code> 后面添加</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">elif grep -Eqi &quot;Rocky Linux&quot; /etc/issue || grep -Eq &quot;Rocky Linux&quot; /etc/*-release ;then<br>    DISTRO=&#x27;CentOS&#x27;<br>    PM=&#x27;yum&#x27;<br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203311928363.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311928363.png" srcset="/img/loading.gif" lazyload
 alt="打开脚本" /></p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203311935014.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311935014.png" srcset="/img/loading.gif" lazyload
 alt="修改配置" /></p>
 <p>这其实是让脚本以为自己在 CentOS 系统上运行——我说过 Rocky Linux 兼容
 CentOS ，所以没必要担心。按 <kbd>Esc</kbd> ，输入 <code>:wq</code>
 ，回车，保存退出。重新执行脚本。</p>
 <p>重新执行之后脚本会让你选择自己的数据库，如果知道的话就选择，不懂的直接默认。我选择最新的
 MariaDB 10.4.19，所以输入 10. 后面设置数据库密码。</p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203311940652.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311940652.png" srcset="/img/loading.gif" lazyload
 alt="选择数据库类型" /></p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203311943548.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311943548.png" srcset="/img/loading.gif" lazyload
 alt="设置密码" /></p>
 <p>安装 PHP。这就不是版本越高越好了，暂且选择 7.1
 吧，因为我现在的数据库和 Chevereto
 支持的就是这个版本。后面的那个内存分配器随便选择，也可以默认不选，我选择
 2 。然后回车安装。</p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203311946674.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203311946674.png" srcset="/img/loading.gif" lazyload
 alt="PHP版本" /></p>
 <p>到这里，基本可以洗洗睡了——会安装很久。我的服务器在安装过程中 CPU
 使用率直接飙到 90% 以上，基本使劲浑身解数来解决编译问题，最后还是花了
@@ -345,7 +329,8 @@ PHP 高版本，但是需要的是低版本，可以是使用 <code>./upgrade.sh
 进行修改。手动的话，比较麻烦。同理，如果想要卸载，也可以使用我们下载的
 LNMP 中的脚本完成。也可以去 <a target="_blank" rel="noopener" href="https://www.lnmp.org/"
 title="LNMP">LNMP</a> 脚本官网查看教程。</p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312009531.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312009531.png" srcset="/img/loading.gif" lazyload
 alt="安装完成" /></p>
 <p>安装完成，使用了 22
 分钟，比服务器强多了。我没有域名，所以就不搞虚拟主机了，直接上 IP.</p>
@@ -358,14 +343,16 @@ wwwroot 目录下的 default
 就是我们的图床位置——可以随意改变位置，但是我只按照这个目录演示。</p>
 <p>可以看到 default 目录下有一个 phpmyadmin
 文件夹，待会我们会访问它。</p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312027429.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312027429.png" srcset="/img/loading.gif" lazyload
 alt="phpmyadmin" /></p>
 <p>打开配置文件，找到 server 有 <code>listen 80</code>
 的那一部分配置。在 <code>include enable-php.conf</code>
 后面添加以下配置：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">vim /usr/local/nginx/conf/nginx.conf<br></code></pre></div></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">location / &#123;<br>    try_files <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span>/ /index.php?<span class="hljs-variable">$query_string</span>;<br>&#125;	<br><br>location ~ [^/]\.php(/|$) &#123;<br>    fastcgi_pass unix:/tmp/php-cgi.sock;<br>    fastcgi_index index.php;<br>    include fastcgi.conf;<br>&#125;<br></code></pre></div></td></tr></table></figure>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312033765.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312033765.png" srcset="/img/loading.gif" lazyload
 alt="配置" /></p>
 <p>注意配置里的一些字段，例如后面有的图片格式后面的括号显示有效期 (
 expires ) 是 30 天。你可以修改自己的。</p>
@@ -377,9 +364,11 @@ chunshuyumao.</p>
 <p>http://ip/phpmyadmin 中的 IP 是指你的服务器公网
 IP，而不是这两个字符。</p>
 </blockquote>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312040197.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312040197.png" srcset="/img/loading.gif" lazyload
 alt="登陆选择数据库" /></p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312043700.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312043700.png" srcset="/img/loading.gif" lazyload
 alt="创建图床数据库" /></p>
 <p>创建数据库的时候，编码选择 utf8_general_ci .
 我对数据库不是很了解，不能给专业的解释，只能告诉你这样避免乱码。</p>
@@ -395,10 +384,12 @@ title="Chevereto官网">官网</a>了解教程。</p>
 <p>我下载的是 1.6
 版，解压的时候需要看自己下载的是第几版，不要照抄我的步骤。解压之后
 default 目录应该长这样：</p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312106787.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312106787.png" srcset="/img/loading.gif" lazyload
 alt="default 目录" /></p>
 <p>现在可以到浏览器直接输入你的服务器公网 IP 了：</p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312107148.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312107148.png" srcset="/img/loading.gif" lazyload
 alt="登陆 Chevereto" /></p>
 <p>当然，你最初看到的不是这个，而是一个初始界面。我没办法演示，但是你知道要填写这类信息就行：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">Database host --&gt; 这个不用动<br>Database name --&gt; 这个是你刚刚新建的数据库名字，我记得是 picbed<br>Database user --&gt; 填 root <br>Database user password --&gt; 上面你创建的密码，我的是 chunshuyumao<br></code></pre></div></td></tr></table></figure>
@@ -409,16 +400,21 @@ alt="登陆 Chevereto" /></p>
 <p>登陆 Chevereto, 右上角选择 Dashbord --&gt; Settings --&gt;
 Website，修改 Website privacy mode 为 private,
 这样你的网站就不会被别人接触到了。</p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312120424.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312120424.png" srcset="/img/loading.gif" lazyload
 alt="设置" /></p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312121054.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312121054.png" srcset="/img/loading.gif" lazyload
 alt="设置" /></p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312123309.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312123309.png" srcset="/img/loading.gif" lazyload
 alt="修改为Website privacy mode 为 priavte" /></p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312127809.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312127809.png" srcset="/img/loading.gif" lazyload
 alt="上传的图片" /></p>
 <p>你点击右上角的上传按钮进行上传——这个应该可以调成中文，我只是不想调而已。</p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312129523.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312129523.png" srcset="/img/loading.gif" lazyload
 alt="上传" /></p>
 <p>图床安装完毕。你的服务器里，图床在 /home/wwwroor/default/images
 下边。</p>
@@ -434,13 +430,16 @@ http://ip/api/1/upload . 例如我的：</p>
 <p>http://888.777.666:8080/api/1/upload 就是 IP 为 888.777.666 ，端口为
 8080</p>
 </blockquote>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312135945.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312135945.png" srcset="/img/loading.gif" lazyload
 alt="搜索 Chevereto 插件" /></p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312136390.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312136390.png" srcset="/img/loading.gif" lazyload
 alt="配置" /></p>
 <p>还缺一个 Key. 打开我们的 Chevereto --&gt; Dash Board --&gt; Settings
 --&gt; Website --&gt; API，把你的 Key 复制一份填写即可。</p>
-<p><img src="http://101.200.84.36/images/2022/03/31/202203312139840.png" srcset="/img/loading.gif" lazyload
+<p><img
+src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/03/31/202203312139840.png" srcset="/img/loading.gif" lazyload
 alt="Key" /></p>
 <p>最后你就可以使用 PicGo 开心地上传自己的图床了！</p>
 <p>——当然，你得记得在 PicGo 中把 Chevereto 设置为默认图床。</p>
