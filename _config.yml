@@ -118,5 +118,3 @@ deploy:
   - type: git
     repo: git@github.com:chunshuyumao/chunshuyumao.github.io 
     branch: main
-  - type: git
-    repo: ssh://chunshuyumao@101.200.84.36:45239/~/NotePages/blog.git
