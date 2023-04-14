@@ -62,7 +62,7 @@ Linux 作为主力机感觉和 Windows 差不多，那是不是可以无缝转�
 
 ## Linux 桌面
 
-Linux 桌面不够稳定是事实，但主要还是看使用的人。我使用的是 Arch Linux，感觉还是很稳定的，特别是使用 Manjaro 期间，基本没有遇上什么问题。Linux 系统最怕的就是 Nvidia 卡（N卡）和游戏。如果在这方面没有什么特殊追求，一般而言还是很稳定的。上面介绍过，Linux 桌面主要是 GNOME 和 KDE, 还有各种分化的桌面 XFCE、Cinnamon、LXDE、Mate 等妖魔鬼怪和直接使用窗口管理器的平铺窗口 [i3wm](https://i3wm.org "i3")、[Swaywm](https://swaywm.org) 等。给桌面选择添加几个过滤条件，其实也就 GNOME 和 KDE 两种。GNOME 和 KDE 所占份额最大，其中 GNOME 有 RHEL 背书，KDE 背靠 Qt，没啥后顾之忧，其余的不是用爱发电就是高手的进阶桌面，不适合日常使用。当然，一些 GNOME 衍生的版本，例如 Mate 还是很值得玩味的。有人说 GNOME、KDE 太重。其实正常情况下，他们也没多少占用。
+Linux 桌面不够稳定是事实，但主要还是看使用的人。我使用的是 Arch Linux，感觉还是很稳定的，特别是使用 Manjaro 期间，基本没有遇上什么问题。Linux 系统最怕的就是 Nvidia 卡（N卡）和游戏。如果在这方面没有什么特殊追求，一般而言还是很稳定的。上面介绍过，Linux 桌面主要是 GNOME 和 KDE, 还有各种分化的桌面 XFCE、Cinnamon、LXDE、Mate 等妖魔鬼怪和直接使用窗口管理器的平铺窗口 [i3wm](https://i3wm.org "i3")、[Swaywm](https://swaywm.org "swaywm") 等。给桌面选择添加几个过滤条件，其实也就 GNOME 和 KDE 两种。GNOME 和 KDE 所占份额最大，其中 GNOME 有 RHEL 背书，KDE 背靠 Qt，没啥后顾之忧，其余的不是用爱发电就是高手的进阶桌面，不适合日常使用。当然，一些 GNOME 衍生的版本，例如 Mate 还是很值得玩味的。有人说 GNOME、KDE 太重。其实正常情况下，他们也没多少占用。
 
 我的 Arch 使用的是 GNOME 桌面。Linux 桌面不论是 GNOME 还是 KDE 其实可能都做不到开始直接使用，因为每个人的审美都是不一样的，难免要进行一些调整。GNOME 的调整一般通过 [GNOME Shell 插件](https://extensions.gnome.org "GNOME Shell Extension") 调整，KDE 自带的样式调整就够了。调整桌面一般也会整桌面主题，就像手机的主题一样，这些微调会给人一种满足感，就像整自己手机一样。同样的，这种快乐一般诱发时间的流逝，所以很多刚接触 Linux 的人会莫名其妙花很多时间打扮自己的系统，然后有一种分享欲。一开始大家肯定不知道怎么调整才好，会自然而然地搜各种美化教程。不过说实话，习惯之后会觉得，其实这些没必要。但是这两个系统如果是从头搭建，一般都需要装插件或者调整。KDE 桌面调整的需要少一点，GNOME 不调整会觉得桌面很丑。
 
@@ -94,7 +94,7 @@ Linux 桌面不够稳定是事实，但主要还是看使用的人。我使用�
 
 对于使用 QEMU 虚拟 Windows 系统我后面打算也写一个教程。不过对 QEMU 的使用仅限于皮毛，因为不是科班出生，计算机硬件了解不多。除了这些，也可以在 Windows7 虚拟机上运行一些 Windows 独占的软件，给点内存就行。至于打游戏这种东西，Linux 确实带不动，所以最好给电脑来个双系统，以防万一想打游戏。
 
-对于文字处理，例如 Microsoft WORD，可以用 WPS for Linux替代，我则使用 [VIM ](https://github.com/vim/vim "VIM") + [Pandoc](https://pandoc.org/ "VIM"), 先用 Markdown 写下文字，然后用 Pandoc 将 Markdown 转为 DOCX 格式，所以对 WPS for Linux 也就图个能看就行。对于 PDF 文件，一般使用 zathura 查看就行了。
+对于文字处理，例如 Microsoft WORD，可以用 WPS for Linux替代，我则使用 [VIM ](https://github.com/vim/vim "VIM") + [Pandoc](https://pandoc.org/ "Pandoc"), 先用 Markdown 写下文字，然后用 Pandoc 将 Markdown 转为 DOCX 格式，所以对 WPS for Linux 也就图个能看就行。对于 PDF 文件，一般使用 zathura 查看就行了。
 
 ![VIM 用 Markdown 写文章，通过 Pandoc 转换然后在浏览器中查看。左侧是 VIM 写的 Markdown 格式，右边是 Pandoc 转换的 HTML 格式](https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/202304/20230413194332.png)
 
