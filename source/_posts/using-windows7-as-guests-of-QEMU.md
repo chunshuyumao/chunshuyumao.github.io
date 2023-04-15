@@ -12,7 +12,7 @@ date: 2023-04-14 14:25:13
 
 # 前言
 
-{% post_link after-a-year-of-using-linux-as-the-main-computer "使用 Linux 作为主力机一年后"%} 提到可以使用[QEMU](https://www.qemu.org) 虚拟一个 Windows 系统，在里边使用国产毒瘤，干净又卫生，今天它来了。
+{% post_link after-a-year-of-using-linux-as-the-main-computer '使用 Linux 作为主力机一年后' %} 提到可以使用 [QEMU](https://www.qemu.org "QEMU") 虚拟一个 Windows 系统，在里边使用国产毒瘤，干净又卫生，今天它来了。
 
 本次教程主要虚拟的是 Windows7，因为 WindowsXP 太老了，自己不知道怎么安装；Windows10 太高级了，装了卡得不要不要的；至于 Windows8 这种系统单纯就是觉得太垃圾了，没必要安装。
 
@@ -295,7 +295,7 @@ $./setup.sh
 
 ### 激活 Windows7 系统
 
-准备完毕后可以选择激活系统。我的分享目录下有一个 `win7active.zip` 文件，里边有激活环境需要的东西。可以直接在共享目录下双击打开，但是有些文件不幸，可以通过复制到虚拟机的其他位置再解压或者安装。
+准备完毕后可以选择激活系统。我的分享目录下有一个 `win7active.zip` 文件，里边有激活环境需要的东西。可以直接在共享目录下双击打开，但是有些文件不行，可以通过复制到虚拟机的其他位置再解压或者安装。
 
 ![直接在共享目录打开压缩包](https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2023042/20230414195121.png)
 
@@ -369,7 +369,7 @@ $ qemu-img snapshot -a ID windows7.qcow2
 
 ```bash
 {
-  /bin/taskset /bin/qemu-system-x86_64 ${options}
+  /bin/taskset -c 9-11 /bin/qemu-system-x86_64 ${options}
 }&
 ```
 
