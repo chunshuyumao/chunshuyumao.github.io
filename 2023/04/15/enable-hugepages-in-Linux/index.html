@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言 上篇文章 说到，使用 QEMU&#x2F;KVM 可以开启大内存页（Hugepages），以获得更好的虚拟机性能。不过当时篇幅太长没有继续写下去，今天打算补一下。 本篇文章基本参照 Arch KVM Wiki 的步骤进行配置，说句不好听的，可能只是翻译成了中文，如果有能力可以直接看原文的请按提供的网址查看。 启用大内存页 大内存页允许操作系统提供更大的内存申请，一般大内存页大小在 2M 以上，默认的内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 中开启大内存页">
+<meta property="og:url" content="https://chunshuyumao.github.io/2023/04/15/enable-hugepages-in-Linux/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="前言 上篇文章 说到，使用 QEMU&#x2F;KVM 可以开启大内存页（Hugepages），以获得更好的虚拟机性能。不过当时篇幅太长没有继续写下去，今天打算补一下。 本篇文章基本参照 Arch KVM Wiki 的步骤进行配置，说句不好听的，可能只是翻译成了中文，如果有能力可以直接看原文的请按提供的网址查看。 启用大内存页 大内存页允许操作系统提供更大的内存申请，一般大内存页大小在 2M 以上，默认的内">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-15T00:26:28.000Z">
+<meta property="article:modified_time" content="2023-04-15T02:34:07.277Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="Hugepages">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Linux 中开启大内存页 - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Linux 中开启大内存页">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-04-15 08:26" pubdate>
+        2023年4月15日 早上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux 中开启大内存页</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言">前言</h1>
+<p><a
+href="https://chunshuyumao.github.io/2023/04/14/using-windows7-as-guests-of-QEMU/">上篇文章</a>
+说到，使用 QEMU/KVM
+可以开启大内存页（Hugepages），以获得更好的虚拟机性能。不过当时篇幅太长没有继续写下去，今天打算补一下。</p>
+<p>本篇文章基本参照 <a
+target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/KVM#Enabling_huge_pages"
+title="Arch KVM">Arch KVM Wiki</a>
+的步骤进行配置，说句不好听的，可能只是翻译成了中文，如果有能力可以直接看原文的请按提供的网址查看。</p>
+<h1 id="启用大内存页">启用大内存页</h1>
+<p>大内存页允许操作系统提供更大的内存申请，一般大内存页大小在 2M
+以上，默认的内存页是 4K。<a
+target="_blank" rel="noopener" href="https://docs.oracle.com/database/121/UNXAR/appi_vlm.htm#UNXAR391"
+title="Hugepages in Kernel">大内存页在 Linux2.6
+之后就默认编入内核，只要内核不太老，一般没啥需要担心的</a>。</p>
+<h2 id="什么时候用大内存页">什么时候用大内存页</h2>
+<p>进程向操作系统申请内存不是用多少申请多少而是有一个申请原子值，也就是最小的申请值。比如有一个
+0.9K 大小的文件，不是说它在内存中就占用
+0.9K，而是系统直接给它分配默认值大小的空间，一般是
+4K。因此很多时候，0.9K 和 3K
+占用的空间是一样的。现在的操作系统在使用上肯定有所优化，但是基本道理如此。</p>
+<p>进程对内存操作的时候也会返回一部分内存给操作系统。假设有一个进程占了
+4K，下一个进程就要从 4K 开始使用内存，第一个进程又申请了
+4K。此时如果第二个进程将内存返还给了操作系统，系统的内存不会自动对齐，而是保留原来的状态，即第一个
+4K 和第三个 4K 被第一个进程使用，第二个 4K
+则为空闲。这就是内存不连续。</p>
+<p>第一个进程怎么知道自己使用的内存在哪里？这就涉及到寻址，为了找到自己使用的空间，第一个进程需要慢慢找到。怎么找？按照一个字节一个字节找也可以，但是太慢了。这时人为规定，内存页以
+4K 对齐，按照 4K
+找！然后进程只需要走两步就找到了自己使用的第二块内存，这比一个一个字节快很多。这里的
+4K 是人为规定的，是经验值。</p>
+<p>如果进程需要进行大规模的内存申请和释放，例如现在的人工智能学习和虚拟机运行，就会造成大量的内存不连续。内存不连续寻址会变慢，而且由于内存频繁申请和释放，操作系统也会更加繁忙。</p>
+<p>为了应对这种内存频繁申请和释放的情况，一个比较好的方法是，一开始就划分一个大内存，叫做内存池，比如
+16K,
+直接分配给进程，这样进程的内存就连续了，也不会花太多时间进行寻址。那上面的例子来说，第一个进程第一次只需要
+4K, 我们给了 16K。第二个进程需要 4K, 我们也给另外的
+16K。等到第一个进程需要另外的 4K
+时就不需要分配内存了，因为我们给它的够多了，它可以继续在自己的 16K
+里使用另外所需的
+4K。这样第二个进程申请和释放内存和第一个关系不大，没啥影响也就避免了内存断裂和频繁将计算机算力用在寻址上。</p>
+<p>这样虽好，但是我们也看到，第一个进程只用到 8K，第二个
+4K，合起来也就是 12K，但是我们总共分配出去
+32K，很多内存根本用不到！因此大内存页一般只用于对内存操作频繁的地方，这正是虚拟机的用武之地。</p>
+<h2 id="检查大内存页是否已经启用">检查大内存页是否已经启用</h2>
+<p>在启用之前，我们需要确认自己的电脑是否已经启用了大内存页。一般是没有的，但过程还是要走。打开控制台输入
+<code>file /dev/hugepages</code>。如果出现</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ file /dev/hugepages<br>/dev/hugepages: sticky, directory<br></code></pre></div></td></tr></table></figure>
+<p>则表明你的 Linux 系统已经启用了大内存页，后面不必折腾了，直接跳到<a
+href="#分配内存大小">分配内存页个数</a></p>
+<p>如果出现</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ file /dev/hugepages<br>/dev/hugepages: cannot open `/dev/hugepages<span class="hljs-string">&#x27; (No such file or directory)</span><br></code></pre></div></td></tr></table></figure>
+<p>那就说明没有启用，我们需要创建这个目录，输入</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ sudo <span class="hljs-built_in">mkdir</span> -v /dev/hugepages<br><span class="hljs-built_in">mkdir</span>: created directory <span class="hljs-string">&#x27;/dev/hugepages&#x27;</span><br>$ <span class="hljs-built_in">ls</span> -l /dev<br>drwxr-xr-x   2 root         root           40 Apr 15 09:08 hugepages<br></code></pre></div></td></tr></table></figure>
+<p>创建好目录看到目录权限是第一排的 0755，属于 root 用户和 root
+用户组，我们需要修改权限。</p>
+<p>用自己喜欢的编辑器打开 <code>/etc/fstab</code> ，添加：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ vim /etc/fstab<br>hugetblfs  /dev/hugepages  hugetblfs  mode=01770,gid=kvm  0  0<br></code></pre></div></td></tr></table></figure>
+<p>这是让系统开机之后自动帮你挂载这个目录并修改权限，目录属于 kvm
+组，<code>gid</code> 表示目录所属的组 ID。</p>
+<p>查看电脑是否有 kvm 组，输入 <code>grep kvm /etc/group</code>:</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ grep kvm /etc/group<br>kvm:x:992:qemu,chunshuyumao<br></code></pre></div></td></tr></table></figure>
+<p>出现这样的信息说明有 kvm
+组，如果没有出现，那就是没有，我们需要新建一个 kvm
+组，然后把自己的账号加入其中。</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ sudo groupadd kvm<br>$ sudo usermod -aG kvm chunshuyumao<br>$ <span class="hljs-built_in">groups</span> chunshuyumao<br>wheel kvm chunshuyumao<br></code></pre></div></td></tr></table></figure>
+<p>第一行是添加新的组，第二行是把用户（chunshuyumao）添加（a）到 kvm
+组（G），第三行是查看用户（chunshuyumao）所在的组（groups）。我的用户属于三个组，分别是
+wheel、kvm 和同名组 chunshuyumao。</p>
+<h2 id="挂载大内存页">挂载大内存页</h2>
+<p>上面设置好后，在命令行上输入：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ sudo umount /dev/hugepages<br>$ sudo mount /dev/hugepages<br>$ mount | grep hugepages<br>hugetlbfs on /dev/hugepages <span class="hljs-built_in">type</span> hugetlbfs (rw,relatime,gid=992,mode=1770,pagesize=2M)<br></code></pre></div></td></tr></table></figure>
+<p>看到上面的结果就说明没啥问题了。可能输出和我的不大一样，但有输出就说明没问题。</p>
+<p>接下来可以看看大内存页的信息，输入</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ grep -i hugepages /proc/meminfo<br>AnonHugePages:    731136 kB<br>ShmemHugePages:        0 kB<br>FileHugePages:    256000 kB<br>HugePages_Total:    2050<br>HugePages_Free:     2050<br>HugePages_Rsvd:        0<br>HugePages_Surp:        0<br>Hugepagesize:       2048 kB<br></code></pre></div></td></tr></table></figure>
+<p>可以看到，内存页大小（Hugepagesize）是 2M，总共有 2050
+个内存页，也就是 2 x 2050 / 1024 ⋍ 4G，大内存页总共有 4G。这是当初运行
+Windows10 虚拟机的内存大小的两倍。因为电脑已经设置了大内存页个数，所以
+<code>HugePages_Total</code> 是 2050
+个大内存。如果之前电脑没有开启过大内存页，这里应该是 0。</p>
+<p>一般来说，给自己的虚拟机几个 G 内存，内存页就应该是其两倍。我给了 4G
+是以前虚拟机所需内存的两倍。现在使用 Windows7 可以把内存页缩小到
+2G，但是保留着也没啥。</p>
+<p>分配内存的时候也不要太死板，不是 2G 就铁定了 1024,
+可以稍微扩大一点，例如 1030 取个整，因此我的 4G 原本应该是
+2048，但我取了整，选择 2050。</p>
+<h2 id="分配内存页个数">分配内存页个数</h2>
+<p>上面我们挂载了内存页，现在需要给内存页分配大小了。比如我分配 4G，就是
+2050 个 2M。在控制台上输入：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ <span class="hljs-built_in">echo</span> 2050 | sudo <span class="hljs-built_in">tee</span> /proc/sys/vm/nr_hugepages<br></code></pre></div></td></tr></table></figure>
+<p>Linux 上无法使用 <code>sudo echo</code>，所以我们用 <code>tee</code>
+作为中介，这是一个技巧。完成后可以输入</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ grep hugepages /proc/meminfo<br>AnonHugePages:    731136 kB<br>ShmemHugePages:        0 kB<br>FileHugePages:    256000 kB<br>HugePages_Total:    2050<br>HugePages_Free:     2050<br>HugePages_Rsvd:        0<br>HugePages_Surp:        0<br>Hugepagesize:       2048 kB<br></code></pre></div></td></tr></table></figure>
+<p>查看。原本应该是 0 的 <code>HugePages_Total</code> 此时应该是 2050
+了。</p>
+<h2 id="在-qemu-中使用大内存页">在 QEMU 中使用大内存页</h2>
+<p>打开自己的虚拟机启动脚本 setup.sh，在选项处添加:</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ vim setup.sh<br>...<br>...<br><br>options=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;options&#125;</span> -mem-path /dev/hugepages&quot;</span><br>&#123;<br>  /bin/taskset -c 9-11 /bin/qemu-system-x86_64 <span class="hljs-variable">$&#123;options&#125;</span><br>&#125;&amp;<br><span class="hljs-built_in">unset</span> options<br></code></pre></div></td></tr></table></figure>
+<p>打开虚拟机，查看是不是刚好用了那么多内存。</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ grep -i hugepages /proc/meminfo<br>AnonHugePages:    757760 kB<br>ShmemHugePages:        0 kB<br>FileHugePages:    256000 kB<br>HugePages_Total:    2050<br>HugePages_Free:     1542<br>HugePages_Rsvd:        4<br>HugePages_Surp:        0<br>Hugepagesize:       2048 kB<br></code></pre></div></td></tr></table></figure>
+<p>可以看到，我的虚拟机开机后使用的 2M 大内存页 2050 - 1542 = 508
+个，差不多是 1G 内存。</p>
+<h2 id="大内存页持久化">大内存页持久化</h2>
+<p>直接修改 <code>/proc/sys/vm/nr_hugepages</code>
+只会影响现在的电脑状态，重新开机后内存页又变成
+0。为了让内存页持久化，我们需要让系统开机的时候自己设置内存页个数，也就是所谓的持久化。</p>
+<p>用编辑器打开 <code>/etc/sysctl.d/40-hugepage.conf</code>，如果没有
+40-hugepage.conf 就创建一个:</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ vim /etc/sysctl.d/40-hugepage.conf<br>vm.nr_hugepages = 2050<br></code></pre></div></td></tr></table></figure>
+<h1 id="后语">后语</h1>
+<p>我发现自己发的博客，科普占了很大的内容，好像真正操作蛮简单的样子。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Linux/">Linux</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Hugepages/">Hugepages</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/04/14/using-windows7-as-guests-of-QEMU/">
+                        <span class="hidden-mobile">在 QEMU 中安装 Windows7 虚拟机</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
