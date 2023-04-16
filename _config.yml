@@ -102,7 +102,7 @@ theme: fluid
 
 pandoc:
   filters:
-    - cite_etal.lua
+    - /home/chunshuyumao/Documents/Pandoc/filters/cite_etal.lua
   extra:
     - data-dir: /home/chunshuyumao/Documents/Pandoc
     - resource-path: /home/chunshuyumao/Documents/Pandoc
