@@ -1,6 +1,6 @@
 ---
-title: 布努文入门：第一篇 总揽
-hide: true
+title: 布努文介绍
+hide: false
 tags:
   - SherBuvNuh
 categories:
@@ -10,13 +10,13 @@ mermaid: false
 date: 2023-04-16 15:11:21
 ---
 
-# 前言 Shav ha deh
+# 前言 Shav-Ha-Deh
 
-原本想着先写 Arch Linux 系统里的双显卡和五笔教学，但是后来发现双显卡内容太复杂了，自己要是真写，可能篇幅很大；而我又一直没有一个属于自己的五笔字根图，用别人的总是有水印，又不能去掉。因此这两者我打算先搁置，直接切入布努文。
+原是本想着先写 Arch Linux 系统里的双显卡和五笔教学，但是后来发现双显卡内容太复杂了，自己要是真写，可能篇幅很大；而我又一直没有一个属于自己的五笔字根图，用别人的总是有水印，又不能去掉。因此这两者我打算先搁置，直接切入布努文。
 
-Ha deh shiangv shiv Arch Linux hih dungv waic shuang sienv kav rongh zu bil jauh yol, danz zhax gul nggongx shuang sienv kav waic shav hungv ndaux, yav sen shiv kov nerngl sher njerc hai mungz; jungv yic ga mongh mongh ga waic dul uv bil, yungc muh waic hnyi mongh sheiv yinl, yic mah daux daiv ov. nu hu, shav nauv jungv shiangv nzol nzeuz, sheuc sheuz guox beuc sher buv nuh.
+Ha-deh shiangv-shiv Arch Linux hih-dungv waic shuang-sienv-kav rongh zu-bil jauh-yol. Zhax-gul nggongx shuang-sienv-kav waic shav hungv-ndaux, yav sen shiv kov-nerngl sher njerc hai mungz; jungv yic gav mongh-mongh gav waic dul-zu-bil, yungc muh waic hnyi-mongh sheiv-yinl, yic mah-daux daiv-ov. Nu-hu, shav-nauv jungv shiangv nzol-nzeuz, sheuc-sheuz gox-beuc sher-buv-nuh.
 
-# 布努文的发展 Sher buv nuh waic fal sienv
+# 布努文的发展 Sher-Buv-Nuh Waic Fal-Sienv
 
 原先是打算好好收集布努语的资料，然后写一篇类似于综述的文章对布努语做一个简要的概述，但是现在没有时间了，只能打消这个计划。
 
@@ -34,96 +34,100 @@ Ha deh shiangv shiv Arch Linux hih dungv waic shuang sienv kav rongh zu bil jauh
 
 壮文在改武鸣音之前使用的是都安音，导致很多壮族人的口音都趋向都安口音。结果不知何时汉人专家介入标准音的制定，将标准音扯到了离首府比较近的武鸣地区，导致现在的标准壮话说起来像官话、白话，因为武鸣音实际上受官话影响很大。
 
-武鸣音标准化有汉人介入的，也就导致了很多想当然的壮文对话。举个例子，壮文教程会告诉你，两个壮族人见面会说“Mwngz ndei”，这相当于什么呢？很简单，两个英国人见面说“You good”，这是“你好”的直译。“医院”壮文写作 yihyen，这是西南官话“医院”的音译，而与壮语类似的泰语是合成词，写成壮文是 ranzmo，训成汉字即为“家巫（医）”，也就是“巫医的家”。壮族有生病找魔公（boujmo）的习惯，所以魔公一般懂医。
+武鸣音标准化有汉人介入，也就导致了很多想当然的壮文对话。举个例子，壮文教程会告诉你，两个壮族人见面会说“Mwngz ndei”，这相当于什么呢？很简单，两个英国人见面说“You good”，这是“你好”的直译。“医院”壮文写作 yihyen，这是西南官话“医院”的音译，而与壮语类似的泰语是合成词，写成壮文是 ranzmo，训成汉字即为“家巫（医）”，也就是“巫医的家”。壮族有生病找魔公（boujmo）的习惯，所以魔公一般懂医。
 
 直接使用汉语方言不是不行，只是没必要。有些人说，翻译成 ranzmo，民间也不会使用，因为民间已经习惯了使用转音。我觉得不然。中国一直以来都有官方修史、修典的习惯，清末刚开始接触西方物件的时候，清政府没有时间重新为洋人修一本字典，所以当时人们直接把 telephone 叫做“德律风”。难道现在也要有人反驳我说：就算翻译成“电话”，民间也不会使用，因为民间已经习惯了使用音译？
 
 如果新中国修字典的时候只写“德律风”，大家肯定都不会使用“电话”一词。我们改变不了，但可以给予它更多的选择，例如在编写壮文字典的时候标注“医院”可以写成 yihyen 和 ranzmo 两种形式，就像字典把“德律风”和“电话”都标注出来一样。
 
-说到这里我就想到布努语中一个很奇葩的现象，就是布努人面对新事物的无奈之举。在布努语中，白菜叫做 va berl shaih，训做“菜 白 菜”。也就是说，白菜一词进入布努语时，当地人不知道“白菜”中的“菜”是什么意思，就以为是个名字，所以出现这种标注式汉词借入。
+说到这里我就想到布努语中一个很奇葩的现象，就是布努人面对新事物的无奈之举。在布努语中，白菜叫做 va berl-shaih，训做“菜 白 菜”。也就是说，白菜一词进入布努语时，当地人不知道“白菜”中的“菜”是什么意思，就以为是个名字，所以出现这种标注式汉词借入。
 
 花很大篇幅讲壮文，其实就是想说，音节文字拼音化不是一个好选项。越南文能够拼音化是因为越南语没有我们想象中的那么多多音字。然而壮语不同，壮语比汉语还倾向于使用单音节词，这种时候拼音化区别真的很大 —— 你得读出来才知道是啥意思，基本就和日本音译外语假名一样。同样，作为比壮语还要奇葩的布努语 —— 可以多达 12、13 个声调 —— 拼音化的后果更加严重。即使是学了布努文并用来写字的我，在看自己的字时都觉得根本不能跳读，得从头看完整句话。
 
 截至目前，我基本还是没有谈到太多关于布努语、布努文的事，下面我会说说拉丁布努文的缺点，而且是自己切实感觉到的。
 
-## 同义不同音 Yih sheu hlaiv ga hu ndux hlaiv
+## 同义不同音 Yih-Sheu Hlaiv Ga-Heu Ndux-Hlaiv
 
-布努语三大标准音：弄呈、弄京和梅珠。前两者离得比较近，自称 bov noh(包瑙)，梅珠音才是 buv nuh(布努)，所以布努瑶以前的标准音之首是梅珠。只是后来有人觉得梅珠口音受壮语影响大，所以又觉得两弄更适合作为布努人的标准音。
+布努语三大标准音：弄呈、弄京和梅珠。前两者离得比较近，自称 bov-noh(包瑙)，梅珠音才是 buv-nuh(布努)，所以布努瑶以前的标准音之首是梅珠。只是后来有人觉得梅珠口音受壮语影响大，所以又觉得两弄更适合作为布努人的标准音。
 
-个人的看法，梅珠音还是应该是标准音，这就要从音变说起。今天的第一个词：buv。buv 在布努语中是“父”的意思，属于词头，用来和一些字组合，例如 buv njerngc(男性)，buv mpal(女性)，buv nggah(走兽)，buv yerngx(飞禽)。同时，buv 也可以弱化成 bu，所以上的词都可以说成 bu njerngc, bu mpal, bu nggah 和 bu yerngx。然后问题就出现了，来源相同，但是拼音化后却成了不同的词，这就像汉语中的“子”“儿”一样，拼音化后成了 z 和 r, 不同于 zi, er。
+个人的看法，梅珠音还是应该是标准音，这就要从音变说起。今天的第一个词：buv。buv 在布努语中是“父”的意思，属于词头，用来和一些字组合，例如 buv-njerngc(男性)，buv-mpal(女性)，buv-nggah(走兽)，buv-yerngx(飞禽)。同时，buv 也可以弱化成 bu，所以上的词都可以说成 bu-njerngc, bu-mpal, bu-nggah 和 bu-yerngx。然后问题就出现了，来源相同，但是拼音化后却成了不同的词，这就像汉语中的“子”“儿”一样，拼音化后成了 z 和 r, 不同于 zi, er。
 
-这是单一标准音内的问题，可以理解。接下来就是不同标准音了。在两弄地区，bu(v) 不是发这个音，而是出现音变：u -> o。所以他们会把自己叫做 bov noh，就是音变了。同时音变的还有 o -> a。因此原本的 bu(v) 就变成了 bo(v) 和 ba(v)。这三个音都是一个源头，但是写起来都不一样。虽然西南官话把“介”读作 gai, 但是写下的仍是“介”，这是汉字真正的书同文。
+这是单一标准音内的问题，可以理解。接下来就是不同标准音了。在两弄地区，bu(v) 不是发这个音，而是出现音变：u -> o。所以他们会把自己叫做 bov-noh，就是音变了。同时音变的还有 o -> a。因此原本的 bu(v) 就变成了 bo(v) 和 ba(v)。这三个音都是一个源头，但是写起来都不一样。虽然西南官话把“介”读作 gai, 但是写下的仍是“介”，这是汉字真正的书同文。
 
 u -> a(o) 是一个现象，还有 eu -> u。例如 deuh(说)，在两弄地区叫做 duh。这种一个音一个字的现象应该被避免，但是实际上拉丁化就存在这样的问题。两弄地区也有区别，例如 o 和 or，因为弄呈有长元音，所以 or 代表长元音。因此用弄呈的 shuu(书) 与弄京的 shu 是不同的字但是一个东西。因此拉丁文字的创造实际上没有解决文字的问题，最后还只是使用国际音标记音。相反看汉字，你可以随便怎么读它，它都那么写。汉字是实现文字统一最好的方式。
 
-## 多音 Hu njerc
+## 多音 Heu-Njerc
 
 除了上面无缘无故产生的多字，还有一个问题是汉藏语系的痛点：多音。布努语所属的苗瑶语族是非常复杂的语族，世界上声调最多的语言就是苗瑶语族的分支。梅珠布努语有 8 + 3 = 11 个声调。8 个基本声调，3 个变调。与汉语的轻声调不同，3 个变调实际上是独立存在的。壮话有 8 个声调，但是有两个声调很少使用，所以教学的时候基本不会独立强调，然而布努语中的 11 个声调是实打实的声调。
 
-举个例子，berv(碗) 和 berv(死) 书写上同属于第三调 v，但前者实际上是 3' 调，也就是第三变调。根据瑶文方案，它们都写作 berv，这样在书写上是无法区分它们的。你需要先拼出 berv 的音，然后根据句子猜出它的意思是 碗，最后得出 berv(碗) 的音。原本多音字就多，现在还来个同调不同声，难度可想而知。
+举个例子，berv(碗) 和 berv(死) 书写上同属于第三调 v，但前者实际上是 3ٰ 调，也就是第三变调。根据瑶文方案，它们都写作 berv，这样在书写上是无法区分它们的。你需要先拼出 berv 的音，然后根据句子猜出它的意思是 碗，最后得出 berv(碗) 的音。原本多音字就多，现在还来个同调不同声，难度可想而知。
 
 >
 > 布努语中的“死”，一般用 doc 不用 berv。berv 是戏谑用语，例如 :
-> 1: Yang nyiv ei, gaux yav doc mungz. 慢点走好不好，累得要死。
-> 2: Berv go laih? ndux berv sheuc mungz hai nyiv. 死了没？没死就走快点。
+> 1: Yang-nyiv ei, gaux yav-doc mungz. 慢点走好不好，累得要死。
+>
+> 2: Berv go laih? ndux-berv sheuc mungz-hai-nyiv. 死了没？没死就走快点。
+>
 > 一般只在调侃中使用，真正的“死”还是使用 doc。
 >
 
 不过虽然布努语的声调很多，但由于布努人历来没有文字，所以能保留下的音很少，很多时候是一个字一两个音而已，这倒是没有文字的优点 —— 呵呵。
 
-## 拉丁文辨识度不高 Sher la ding nggongx mah dec ov
+## 拉丁文辨识度不高 Sher-La-Ding Nggongx Mah-Dec-Ov
 
 国人普遍接受汉文教育，因此很多人都会习惯用看汉文的技巧看文字，比如直接扫读。国人看文字只需要抓住几个关键字就知道意思了，然而拉丁文民族则需要整体认读才明白 —— 这不是说使用拉丁文的民族不能扫读，只是说通习汉字的民族看拉丁文字的时候会以看汉字的习惯阅读，这种时候对文字的辨识度就不高。
 
 我用布努文写过一些东西，但是事后即使是自己的文字，脑子里已经有了大体意思，看的时候还是很吃力。一个是确实不习惯文字的拼写，另一个是，我们习惯了汉字思维。
 
 
-## 用什么文字？ Yungc sher bi siv ?
+## 用什么文字？ Yungc Sher Bi-Siv ?
 
 拉丁文字不行，那有没有其他选择，比如直接使用汉字训读？这是可以的，但不好。举个例子：
 
-布努：Lerc werngc fal mongc, nuh ung ta nyi njerc dang ndux dec rongc.
-训文：蓦然回面，人那却在处灯不太明。
+布努：Lerc-werngc fal-mongc, nuh ung ta nyi njerc dang ndux-dec-rongc.
+
+训文：蓦然 回面，人 那 却 在 处 灯 不太明。
+
 汉文：蓦然回首，那人却在灯火阑珊处。
 
-可以看到，如果使用训读，训文可读性要高很多，但问题是，这会和汉语冲突。举个例子，一个布努瑶看到“我”，他是应该读作 wo 还是 jungv？如果使用汉字并训读，那他会认为那是 jungv, 然后和汉人交流。汉人肯定听不懂 jungv 是什么意思，但布努瑶不知道，因为他受到的教育告诉他，“我”读作 jungv。这就只能进行笔谈了。而由于语序不同 —— 布努语一般修饰词在后 —— 要进行笔谈也很困难。
+可以看到，如果使用训读，训文可读性要高很多，但问题是，这会和汉语冲突。举个例子，一个布努瑶看到“我”，他是应该读作 wŏ 还是 jungv？如果使用汉字并训读，那他会认为那是 jungv, 然后和汉人交流。汉人肯定听不懂 jungv 是什么意思，但布努瑶不知道，因为他受到的教育告诉他，“我”读作 jungv。这就只能进行笔谈了。而由于语序不同 —— 布努语一般修饰词在后 —— 要进行笔谈也很困难。
 
-举个例子，水沸(ang mbax) 在汉语中是“水沸了”，但是在布努语中是“沸水”。因此使用汉字训读会造成混乱。这也就是为什么广西在编写古壮文字典的时候会尽量使用与汉字不同的字作为正体，不是什么提高民族自信或者觉得羞耻，而是使用汉语常用字会造成混乱，所以尽量避免使用汉语常用字。在方块布努文中，“仲(jungv)”是“我”的意思，如果使用方块瑶文，那就会出现瑶文的 仲 和汉文的 仲 冲突的现象。因此，汉字可以用来训读，但是不好，容易产生混乱。
+举个例子，水沸(ang-mbax) 在汉语中是“水沸了”，但是在布努语中是“沸水”。因此使用汉字训读会造成混乱。这也就是为什么广西在编写古壮文字典的时候会尽量使用与汉字不同的字作为正体，不是什么提高民族自信或者觉得羞耻，而是使用汉语常用字会造成混乱，所以尽量避免使用汉语常用字。在方块布努文中，“仲(jungv)”是“我”的意思，如果使用方块瑶文，那就会出现瑶文的“仲”和汉文的“仲”冲突的现象。因此，汉字可以用来训读，但是不好，容易产生混乱。
 
-布努语很多结构与汉语相似，例如 jih nggungh lav dic(训：下天大地) 就是天下大地的意思，所以使用汉字不大合适，但可以使用汉字的近亲，如其他汉字变体。一个比较好的选择，我觉得是女书。女书在书写上来源于汉字，只是字形有所改变。如果可以用女书来书写布努文，那多音的事便可以迎刃而解。不管大家读的是什么，写起来都一样，且苗人本就有使用女书。
+布努语很多结构与汉语相似，例如 jih-nggungh lav-dic(训：下天大地) 就是天下大地的意思，所以使用汉字不大合适，但可以使用汉字的近亲，如其他汉字变体。一个比较好的选择，我觉得是女书。女书在书写上来源于汉字，只是字形有所改变。如果可以用女书来书写布努文，那多音的事便可以迎刃而解。不管大家读的是什么，写起来都一样，且苗人本就有使用女书。
 
 这里为什么提到苗族人？因为布努瑶和苗族其实更接近，勉瑶和布努瑶基本没有相似之处。布努语在分支上属于苗瑶语族的苗语支，而勉语属于瑶语支。
 
-## 今后的计划 Uoc nauv waic jih uah
+## 今后的计划 Uoc-Nauv Waic Jih-Uah
 
-今天只是大概聊聊布努语的闲事，甚至没有标明出处。此后我的打算是，先把整理的梅珠布努语的声母和韵母列出，今后再慢慢写基本的教程。
+今天只是大概聊聊布努语的闲事，甚至没有标明出处。此后我的打算是，先把整理的布努语的声母和韵母列出，今后再慢慢写基本的教程。
 
 
-# 后语 Shav jiv njerng
+# 后语 Shav Jiv-Njerng
 
 修正一门文字不是一件简单的事，但是我希望自己能够把这东西记录下来，也许等到以后还可以回头看看自己都干了些什么。后面附上李白的一首诗：
 
-| Vos jungv mungz waic, mil hnong da nongz ndux hungv nzol;
-|  弃   我    去    者 , 之  日   时  昨    不    可   留
-| Lunc jungv shienv waic, mil hnong da nauv heuv njerc ndaux.
-|  乱   我     心    者 , 之   日   时  今   烦   多    甚
-| Jix langl wangc liv shongx nangc shiau,
-|  风   大   万    里   送    雁    秋
-| dex nauv daux nyi lauz heul njuv.
-|  对  此   可  于   楼   畅   酒
-| Shav sher gauh hlaiv shungv Jien'ngan,
-|  章   文   你    似    骨    建   安
-| sheu jungv ta hlaiv shingv yeh yaul.
-|  诗   我   又  似    清     谢  朓
-| Nju mongh buv angx ngiz langl jerngx,
-|  俱   怀   者  兴   思   壮    飞
-| yav njix nggungh nzeuh nggueiz hlux rongc.
-|  欲  上    天      青    揽     月  明
+| Vos jungv mungz waic, mil-hnong da-nongz ndux hungv nzol;
+| 弃 我 去 者 , 之日 时昨 不 可 留
+| Lunc jungv shienv waic, mil-hnong da-nauv heuv njerc ndaux.
+| 乱 我 心 者 , 之日 时今 烦 多 甚
+| Jix-langl wanc-liv shongx nangc-shiau,
+| 风大 万里 送 雁秋
+| dex nauv daux nyi lauz heul-njuv.
+| 对 此 可 于 楼 畅酒
+| Shav-sher gauh hlaiv shungv Jienh-ngan,
+| 章文 你 似 骨 建安
+| sheu jungv ta hlaiv shingv Yeh Yaul.
+| 诗 我 又 似 清 谢朓
+| Nju-mongh bu-angx ngiz-langl jerngx,
+| 俱怀 者兴 思壮 飞
+| yav njix nggungh-nzeuh nggweiz hlux-rongc.
+| 欲 上 天青 揽 月明
 | Chos deu mbul ang ang hnyungv doh,
-|  抽   刀  断   水  水    更   流
+| 抽 刀 断 水 水 更 流
 | songx bei shiau heuv heuv hnyungv njerc.
-|  举    杯   消   愁   愁    更     多
-| Nuh mongh nyi sac shav ndux ngaic,
-|  人  生   在   世  事   不  易
-| da guz shanx dla nyungx ja reuz.
-| 时  醒  散    发  坐    扁  舟
+| 举 杯 消 愁 愁 更 多
+| Nuh mongh nyi-sac shav ndux-ngaic,
+| 人 生 在世 事 不易
+| da-guz shanx-dla nyungx ja-reuz.
+| 时醒 散发 坐 扁舟
