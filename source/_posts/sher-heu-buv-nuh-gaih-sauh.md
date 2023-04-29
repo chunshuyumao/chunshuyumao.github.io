@@ -114,16 +114,16 @@ date: 2023-04-27 15:35:38
 
 韵母二十五个，如：
 
-|   i   |          |          |   in   |   ing   |
-| :---- | :------- | :------- | :----- | :------ |
-|   e   |    ei    |          |   en   |         |
-|       |          |          |  ien   |         |
-|   a   |    ai    |    au    |   an   |   ang   |
-|       |          |   iau    |        |  iang   |
-|   o   |    oi    |          |   on   |   ong   |
-|   u   |          |          |        |   ung   |
-|       |          |          |        |  uang   |
-|  er   |          |    eu    |  ern   |  erng   |
+|  i  |     |     | in  | ing  |
+| :-- | :-- | :-- | :-- | :--- |
+|  e  | ei  |     | en  |      |
+|     |     |     | ien |      |
+|  a  | ai  | au  | an  | ang  |
+|     |     | iau |     | iang |
+|  o  | oi  |     | on  | ong  |
+|  u  |     |     |     | ung  |
+|     |     |     |     | uang |
+| er  |     | eu  | ern | erng |
 
 : 韵母
 
@@ -313,6 +313,7 @@ date: 2023-04-27 15:35:38
 1. 句子和诗歌行首，首字母大写。
 
 1. 标点符号用英文标点，书名、刊名斜体，同英语。如：
+
     - *Sher-Buv-Nuh Shauv-Ngan* waic nyiv gwei-dingh ndux hlaiv giv-nauv. 
 
         《布努文草案》的一些规定与本文不同。
