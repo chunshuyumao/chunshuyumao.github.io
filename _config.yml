@@ -102,13 +102,13 @@ theme: fluid
 
 pandoc:
   filters:
-    - cite_etal.lua
+    - /home/chunshuyumao/Documents/Pandoc/filters/cite_etal.lua
   extra:
     - data-dir: /home/chunshuyumao/Documents/Pandoc
     - resource-path: /home/chunshuyumao/Documents/Pandoc
     - metadata-file: meta.yml
     - bibliography: ZoteroLibrary.json
-    - csl: csl/chinese-gb7714-2005-numeric.csl
+    - csl: csl/china-national-standard-gb-t-7714-2005.csl
   extensions:
     - '-implicit_figures'
 

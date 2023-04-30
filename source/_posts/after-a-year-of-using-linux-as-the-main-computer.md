@@ -18,7 +18,7 @@ date: 2023-04-13 14:06:29
 
 # 使用 Linux 作为主力机感觉如何？
 
-首先的评价，Linux 作为主力机其实和 Windows 是差不多的。很多人总是在比较 Windows 和 Linux 的优缺点，但是很少注意到一点：普通人使用电脑从来不是单单使用系统。论操作系统，BDS 系统可以说是最完美、最优雅的，和 Linux 比没有那么分裂，没有成千上万的发行版动不动就互掐；和 Windows 比则更加优雅，而且还是开源的。但现在个人电脑基本没有几个用 BSD 系，甚至 BSD 系的大哥 FreeBSD 还是 MacOS 的免费小白鼠，靠全世界的资本家豪掷几千美元糊弄日子。所以在内核、系统设计上比较操作系统的优劣是没有任何意义的，否则 FreeBSD 不会活的比使用它内核的 MacOS 还差。大多数人使用电脑用的是电脑软件，也就是系统的生态，这方面 Windows 有绝对的优势。
+首先的评价，Linux 作为主力机其实和 Windows 是差不多的。很多人总是在比较 Windows 和 Linux 的优缺点，但是很少注意到一点：普通人使用电脑从来不是单单使用系统。论操作系统，BSD 系统可以说是最完美、最优雅的，和 Linux 比没有那么分裂，没有成千上万的发行版动不动就互掐；和 Windows 比则更加优雅，而且还是开源的。但现在个人电脑基本没有几个用 BSD 系，甚至 BSD 系的大哥 FreeBSD 还是 MacOS 的免费小白鼠，靠全世界的资本家豪掷几千美元糊弄日子。所以在内核、系统设计上比较操作系统的优劣是没有任何意义的，否则 FreeBSD 不会活的比使用它内核的 MacOS 还差。大多数人使用电脑用的是电脑软件，也就是系统的生态，这方面 Windows 有绝对的优势。
 
 Windows 对计算机图形化的影响是革命性的，极大的降低了普通人使用电脑的门槛。Linux 则先天不足，因为它继承了老的 Unix 传统，并没有发展出合理、实用、稳定的图形界面。现在的 Linux 系统使用的两大图形界面，[KDE(Kool Desktop Environment)](https://kde.org/ "KDE") 和 [GNOME(The GNU Network Object Model Environment)](https://www.gnome.org/ "GNOME") 基于比 Linux 还要古老的 [X.org](https://www.x.org/wiki/ "X.org")，在设计上可能没有什么大问题，但是在实践中表现确实不好。Linux 中的桌面系统是属于软件行列，是可选择的，如果你不喜欢可以使用其他桌面，所以 Linux 的自由、开源带来的分裂也延续到了桌面系统上。在 KDE 和 GNOME 基础上创造的桌面又不可胜数。为了解决 Linux 桌面的短板，[Wayland](https://wayland.freedesktop.org/ "Wayland") 被创造出来作为 X.org 的替代品，但是纯靠爱发电让 Wayland 经过十几年的发展也没有从 Windows 口中撕下一块肉，反倒是和 X11 争原本就少得可怜的桌面份额，而且表现不是很好。
 
