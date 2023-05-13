@@ -16,15 +16,15 @@
   <meta name="author" content="椿树与猫">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这是第 n 次写这篇博客了。前面都是写了几次之后又删掉，因为主题不明，终于也有觉 得自己写作主题不明的那天了。其实这篇文章也不全是关于 VIM，因为我确实不好定性。  以前自己使用的 Markdown 编辑器是 [Typora](https:&#x2F;&#x2F;typoraio.cn &quot;Typora&quot;)，不得 不说，Typora 是真的优雅。虽然自己不再使用，但尝试过其他编辑器后，总是觉得没有 一款可以比得上 T">
+    <meta name="description" content="这是第 n 次写这篇博客了。前面都是写了几次之后又删掉，因为主题不明，终于也有觉 得自己写作主题不明的那天了。其实这篇文章也不全是关于 VIM，因为我确实不好定性。  以前自己使用的 Markdown 编辑器是 Typora，不得不说，Typora 是真的优雅。虽然自 己不再使用，但尝试过其他编辑器后，总是觉得没有一款可以比得上 Typora。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用 VIM 写 Markdown">
 <meta property="og:url" content="https://chunshuyumao.github.io/2023/05/13/write-markdown-with-vim/">
 <meta property="og:site_name" content="椿树与猫">
-<meta property="og:description" content="这是第 n 次写这篇博客了。前面都是写了几次之后又删掉，因为主题不明，终于也有觉 得自己写作主题不明的那天了。其实这篇文章也不全是关于 VIM，因为我确实不好定性。  以前自己使用的 Markdown 编辑器是 [Typora](https:&#x2F;&#x2F;typoraio.cn &quot;Typora&quot;)，不得 不说，Typora 是真的优雅。虽然自己不再使用，但尝试过其他编辑器后，总是觉得没有 一款可以比得上 T">
+<meta property="og:description" content="这是第 n 次写这篇博客了。前面都是写了几次之后又删掉，因为主题不明，终于也有觉 得自己写作主题不明的那天了。其实这篇文章也不全是关于 VIM，因为我确实不好定性。  以前自己使用的 Markdown 编辑器是 Typora，不得不说，Typora 是真的优雅。虽然自 己不再使用，但尝试过其他编辑器后，总是觉得没有一款可以比得上 Typora。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-05-13T06:25:46.000Z">
-<meta property="article:modified_time" content="2023-05-13T12:59:49.467Z">
+<meta property="article:modified_time" content="2023-05-13T13:29:24.565Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="Markdown">
 <meta property="article:tag" content="Pandoc">
@@ -298,14 +298,14 @@ VIM 使用方向键或者 <code>j</code> 就会直接跳到第 47
 <p><img
 src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513152439.png" srcset="/img/loading.gif" lazyload
 alt="重新映射按键" /></p>
-<p>上面是把两种按键对换了：物理行使用 <code>gj</code> 和 <code>gk</code>
-、<code>g&lt;Up&gt;</code> 和 <code>g&lt;Down&gt;</code>
+<p>上面是把两种按键对换了：物理行使用 <code>gj</code> 和
+<code>gk</code>、<code>g&lt;Up&gt;</code> 和 <code>g&lt;Down&gt;</code>
 进行移动，逻辑行使用 <code>j</code> 和 <code>k</code>
 或者方向键即可。</p>
 <p>至于为什么使用的是 <code>nnoremap</code> 而不是简单的
 <code>map</code>，这得涉及到 VIM
 的一些语法，一两句话说不清。<code>nnoremap</code> 是
-<code>normal not recursivelly map</code>
+<code>normal not recursively map</code>
 的缩写，表示普通模式下对按键进行非递归映射。</p>
 <h2 id="长段落">长段落</h2>
 <p>第一个问题，物理行和逻辑行解决了，但是没有彻底解决：它只是解决了如何在物理行和逻辑行直接移动，没有解决逻辑行和物理行的问题。</p>
@@ -419,7 +419,7 @@ Python 处理：</p>
 src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513195712.gif" srcset="/img/loading.gif" lazyload
 alt="生成随机数" /></p>
 <p>这个示例调用了 Python 和 Linux 的 <code>sort</code>
-命令。选择范围我做了两次演示：第一次是使用行数范围，从第 257 到第259
+命令。选择范围我做了两次演示：第一次是使用行数范围，从第 257 到第 259
 行；第二次是使用可视（块）模式，直接选定区域。</p>
 <p>不过对于很多人来说，这可能没什么用，毕竟写代码的人才会意淫这种用法，是吧？其实不然，举个例子，我现在要画一个图，只需要在
 Markdown 内写下这个图的流程，然后调用外部命令处理即可：</p>
