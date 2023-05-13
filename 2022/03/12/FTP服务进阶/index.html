@@ -24,7 +24,7 @@
 <meta property="og:description" content="初步搭建FTP服务之后更进一步的学习。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-12T01:42:00.000Z">
-<meta property="article:modified_time" content="2023-04-13T14:06:06.824Z">
+<meta property="article:modified_time" content="2023-05-07T01:48:33.555Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="FTP">
 <meta name="twitter:card" content="summary_large_image">
@@ -258,7 +258,7 @@
 端口。随后客户端通过自己的另一个随机端口 W 连接到服务器的 Z 端口。</li>
 </ol>
 <p>这样看来，被动模式似乎更麻烦，实际确实如此，但这种麻烦是有原因的。大多数人的电脑使用的是
-Windows 系统， Windows
+Windows 系统，Windows
 系统的防火墙一般默认开启。防火墙通常会阻止各种端口的接入。主动模式下，服务器用
 20 端口连接客户端的 Y 端口，如果防火墙开启，就会阻止 20 端口和 Y
 端口连接。下面演示一下：</p>
@@ -300,14 +300,13 @@ alt="开启被动模式" /></p>
 <p><img
 src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121049175.png" srcset="/img/loading.gif" lazyload
 alt="修改配置文件" /></p>
-<p>解释一下，<code>pasv_enable</code> 配置<ruby>被动模式
-<rt>passive</rt></ruby>( PASV)
-是否开启。默认情况下被动模式是开启的，但是不起作用。</p>
+<p>解释一下，<code>pasv_enable</code>
+配置<ruby>被动模式<rt>passive</rt></ruby>（PASV）是否开启。默认情况下被动模式是开启的，但是不起作用。</p>
 <p><code>pasv_addr_resolve</code>
 配置的是域名解析。虽然不一定用到，但是还是写下吧。</p>
 <p><code>pasv_address</code> 配置返回的 IP 。如果你的 vsFTPd
 服务器是安装在局域网，例如自己家庭使用、虚拟机练习，那这个 IP
-就填你的局域网 IP ；如果 vsFTPd 部署在自己服务器，那就使用服务器公网 IP
+就填你的局域网 IP；如果 vsFTPd 部署在自己服务器，那就使用服务器公网 IP
 。</p>
 <blockquote>
 <p>公网 IP 是你购买服务器后，云服务商手机告诉你的公网
@@ -323,7 +322,7 @@ alt="取消公网 IP" /></p>
 <p><img
 src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121059035.png" srcset="/img/loading.gif" lazyload
 alt="没有配置公网 IP" /></p>
-<p>因为被动模式开启但没有配置公网 IP ，服务器就使用局域网 IP
+<p>因为被动模式开启但没有配置公网 IP，服务器就使用局域网 IP
 作为被动模式的 IP，例如我服务器的局域网 IP
 <code>172.27.163.6</code>。因此使用云服务器一定要改
 <code>pasv_address</code>。</p>
@@ -340,9 +339,9 @@ alt="再次测试" /></p>
 <p>一般来说，被动模式和主动模式可以同时开启：以备不时之需。</p>
 <p>Windows 的 FTP
 客户端一般都会选择被动模式登陆，如果服务端没有开启被动模式，客户端就无法获取服务端的文件。这种时候可以查看客户端的设置，通常可以选择连接模式。如果是
-Linux ,一般都是手动操作。保不准自己进入了被动模式，那怎么退出？大多数的
-FTP 客户端会提供一些指令，可以使用 <code>help</code> 或者
-<code>?</code>进行查询：</p>
+Linux，一般都是手动操作。保不准自己进入了被动模式，那怎么退出？大多数的
+FTP 客户端会提供一些指令，可以使用 <code>help</code> 或者 <code>?</code>
+进行查询：</p>
 <p><img
 src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121115309.png" srcset="/img/loading.gif" lazyload
 alt="FTP 客户端命令" /></p>
@@ -366,7 +365,7 @@ alt="服务器目录结构" /></p>
 <p>虚拟用户只是一个系统权限映射的用户，没有必要让它登陆服务器，所以设置使用
 <code>-s</code> 指定它不可登陆。</p>
 <blockquote>
-<p><code>-s</code>一般是创建用户时指定使用的 <code>shell</code> ， Linux
+<p><code>-s</code> 一般是创建用户时指定使用的 <code>shell</code>，Linux
 中通过把 <code>shell</code> 指定到 <code>nologin</code> 实现禁止登陆</p>
 </blockquote>
 <p>创建之后可以使用</p>
@@ -377,8 +376,7 @@ src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121143056.pn
 alt="查看虚拟用户信息" /></p>
 <p>3.2. 添加虚拟用户</p>
 <p>进入 <code>/etc/vsftpd</code> 添加一个文件，我这里是
-<code>vuser.cfg</code>
-，在里边填入虚拟用户的信息。注意，单行是用户名，双行是用户密码：</p>
+<code>vuser.cfg</code>，在里边填入虚拟用户的信息。注意，单行是用户名，双行是用户密码：</p>
 <p><img
 src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121148543.png" srcset="/img/loading.gif" lazyload
 alt="添加虚拟用户" /></p>
@@ -395,17 +393,17 @@ alt="转化为 db 格式" /></p>
 <p><img
 src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/202203121253782.png" srcset="/img/loading.gif" lazyload
 alt="修改权限" /></p>
-<p>让 vsFTPd 读取自己配置的 <code>db</code>
-，需要配置<ruby>可插入认证模块<rt>Pluggable Authentication
-Modules</rt></ruby>( PAM )文件。</p>
+<p>让 vsFTPd 读取自己配置的
+<code>db</code>，需要配置<ruby>可插入认证模块<rt>Pluggable
+Authentication Modules</rt></ruby>（PAM）文件。</p>
 <p>创建 PAM 文件：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo vim /etc/pam.d/vsftpd.vuser<br></code></pre></div></td></tr></table></figure>
 <p>输入</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">auth sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vuser<br>account sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vuser<br></code></pre></div></td></tr></table></figure>
 <p><code>db</code> 之后的配置文件是我们上面写的 vuser.db 文件。</p>
 <p>3.3. 修改 vsFTPd 配置文件</p>
-<p>进入 <code>/etc/vsftpd</code> 目录，如果没有
-<code>vuserconfig</code>目录，则创建一个新的目录。</p>
+<p>进入 <code>/etc/vsftpd</code> 目录，如果没有 <code>vuserconfig</code>
+目录，则创建一个新的目录。</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">cd /etc/vsftpd/<br>sudo mkdir vuserconfig<br></code></pre></div></td></tr></table></figure>
 <p>然后进入 vuserconfig
 目录，目录里边是我们的虚拟用户的权限文件。想要限制谁的权限，就在这个目录创建同名的文件。我配置一个用户的权限：</p>
@@ -414,7 +412,7 @@ Modules</rt></ruby>( PAM )文件。</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">local_root=/var/ftp<br>write_enable=YES<br>anon_umask=022<br>anon_world_readable_only=NO<br>anon_upload_enable=YES<br>anon_mkdir_write_enable=YES<br>anon_other_write_enable=YES<br>download_enable=YES<br></code></pre></div></td></tr></table></figure>
 <p>修改 /etc/vsftpd/vsftpd.conf 文件：注释掉
 pam_service_name=vsftpd，这是默认的用户配置文件，我们添加了虚拟用户，所以改成我们自己的
-vsftpd.vuser ，这里的 guest_username=vuser 的 vuser 与我们在服务器建立的
+vsftpd.vuser，这里的 guest_username=vuser 的 vuser 与我们在服务器建立的
 vuser 用户名字一样。</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">guest_enable=YES<br>guest_username=vuser<br>user_config_dir=/etc/vsftpd/vuserconfig<br>allow_writeable_chroot=YES<br>pam_service_name=vsftpd.vuser<br></code></pre></div></td></tr></table></figure>
 <p><img

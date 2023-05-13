@@ -1,0 +1,665 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是第 n 次写这篇博客了。前面都是写了几次之后又删掉，因为主题不明，终于也有觉 得自己写作主题不明的那天了。其实这篇文章也不全是关于 VIM，因为我确实不好定性。  以前自己使用的 Markdown 编辑器是 [Typora](https:&#x2F;&#x2F;typoraio.cn &quot;Typora&quot;)，不得 不说，Typora 是真的优雅。虽然自己不再使用，但尝试过其他编辑器后，总是觉得没有 一款可以比得上 T">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 VIM 写 Markdown">
+<meta property="og:url" content="https://chunshuyumao.github.io/2023/05/13/write-markdown-with-vim/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="这是第 n 次写这篇博客了。前面都是写了几次之后又删掉，因为主题不明，终于也有觉 得自己写作主题不明的那天了。其实这篇文章也不全是关于 VIM，因为我确实不好定性。  以前自己使用的 Markdown 编辑器是 [Typora](https:&#x2F;&#x2F;typoraio.cn &quot;Typora&quot;)，不得 不说，Typora 是真的优雅。虽然自己不再使用，但尝试过其他编辑器后，总是觉得没有 一款可以比得上 T">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-05-13T06:25:46.000Z">
+<meta property="article:modified_time" content="2023-05-13T12:59:49.467Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="Markdown">
+<meta property="article:tag" content="Pandoc">
+<meta property="article:tag" content="VIM">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>用 VIM 写 Markdown - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="用 VIM 写 Markdown">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-05-13 14:25" pubdate>
+        2023年5月13日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">用 VIM 写 Markdown</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言">前言</h1>
+<p>这是第 n
+次写这篇博客了。前面都是写了几次之后又删掉，因为主题不明，终于也有觉得自己写作主题不明的那天了。其实这篇文章也不全是关于
+VIM，因为我确实不好定性。</p>
+<p>以前自己使用的 Markdown 编辑器是 <a target="_blank" rel="noopener" href="https://typoraio.cn"
+title="Typora">Typora</a>，不得不说，Typora
+是真的优雅。虽然自己不再使用，但尝试过其他编辑器后，总是觉得没有一款可以比得上
+Typora。</p>
+<p>Typora 收费后各种替代品涌现，打算占据这片高地，比较有名的是 <a
+target="_blank" rel="noopener" href="https://github.com/marktext/marktext"
+title="MarkText">MarkText</a>。可惜有些东西还真替代不了，虽然 MarkText
+真的很简洁，走了 Typora 风格，但是使用起来总觉得不够丝滑。</p>
+<p>我还使用过 <a target="_blank" rel="noopener" href="https://zettlr.org"
+title="Zettlr">Zettlr</a>，主要用于论文写作，因为 Typora
+不支持文献引用。后面 Zettlr 出现小
+bug，导致表格录入的数据都无法保存。这个问题很快就被修复了，但是当时我正在赶论文，根本没有时间等待，直接使用
+VIM 写。</p>
+<p>俺是万万没想到，原来 VIM 写 Markdown 一样可以很顺手。当时不知道 <a
+target="_blank" rel="noopener" href="https://retorque.re/zotero-better-bibtex/"
+title="Bettle BibText">Better BibText</a> 可以直接在 VIM 内调用 Zotero
+的引用框，为了完成文献的插入，我用 vimscript，VIM
+的脚本语言，写了一个引用文献的脚本，然后完成了自己的论文。</p>
+<p>事后想想，好像没有使用 Zettlr
+的道理了：原本它的优势是文献引用，现在自己写了一个小脚本也解决问题了。此外，当时为了交叉引用引入新语法，Zettlr
+也渲染不了，于是我就彻底抛弃 Zettlr 扎根 VIM。</p>
+<p>使用 VIM 写作还是碰到了很多问题，很多都是自己并不完全了解 VIM
+导致的，但有些问题 VIM
+到现在还是没有解决。这也是我写这篇博客的原因：把自己碰到的一些问题总结到一起。</p>
+<h1 id="用-vim-写-markdown">用 VIM 写 Markdown</h1>
+<h2 id="物理行和逻辑行">物理行和逻辑行</h2>
+<p>物理行指的是没有回车符断开的一行，或者叫做“段落”，逻辑行指的是段落内部可以分成的行。这很抽象，下面一张图解释一下物理行和逻辑行：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513150009.png" srcset="/img/loading.gif" lazyload
+alt="物理行和逻辑行" /></p>
+<p>上图中，第 50、54 行属于物理行，一般只占一（逻辑）行。第 46、48
+行也是物理行，但是由于字数太多进行了段内分行，所以出现了逻辑行。简而言之，图片中标有行号的就是物理行。</p>
+<p>逻辑行的行数是随着窗口大小改变的，比如我把窗口变大之后，逻辑行就变少了，因为一行可以容纳的字符变多了。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513150313.png" srcset="/img/loading.gif" lazyload
+alt="逻辑行变少了" /></p>
+<p>一般的编辑器不区分物理行和逻辑行，也就是光标或者鼠标把肉眼能见到的行，都算作一行，不幸的是
+VIM 不这样。</p>
+<p>VIM 的 j 和 k 是物理行的移动，逻辑行使用 <code>gj</code> 和
+<code>gk</code>。写文章的时候，一行包含的字符太多是没法用
+<code>j</code>、<code>k</code> 进行逻辑行移动的。</p>
+<p>举个例子：上面第一张图，想要从第 46
+行的“镜像之后”移动到下面的“但是可以”。其他编辑器最笨也可以使用方向键往下移动，但是
+VIM 使用方向键或者 <code>j</code> 就会直接跳到第 47
+行，要移动到下一逻辑行必须使用 <code>gj</code> 或者
+<code>g&lt;Down&gt;</code>，否则就需要使用 <code>l</code>
+键一直往右移动，直到碰到自己想到的位置。</p>
+<p>使用 <code>gj</code>
+也不是不行，只是需要敲两次按键，对我们来说太麻烦了。解决办法是使用 VIM
+的按键映射（map）。在 VIM 配置文件 <code>~/.vimrc</code> 添加：</p>
+<figure class="highlight vim"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vim"><span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;silent&gt;</span> <span class="hljs-keyword">j</span> gj<br><span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;silent&gt;</span> <span class="hljs-keyword">k</span> gk<br><span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;silent&gt;</span> <span class="hljs-symbol">&lt;Up&gt;</span> g<span class="hljs-symbol">&lt;Up&gt;</span><br><span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;silent&gt;</span> <span class="hljs-symbol">&lt;Down&gt;</span> g<span class="hljs-symbol">&lt;Down&gt;</span><br><span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;silent&gt;</span> gj <span class="hljs-keyword">j</span><br><span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;silent&gt;</span> gk <span class="hljs-keyword">k</span><br><span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;silent&gt;</span> g<span class="hljs-symbol">&lt;Up&gt;</span> <span class="hljs-symbol">&lt;Up&gt;</span><br><span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;silent&gt;</span> g<span class="hljs-symbol">&lt;Down&gt;</span> <span class="hljs-symbol">&lt;Down&gt;</span><br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513152439.png" srcset="/img/loading.gif" lazyload
+alt="重新映射按键" /></p>
+<p>上面是把两种按键对换了：物理行使用 <code>gj</code> 和 <code>gk</code>
+、<code>g&lt;Up&gt;</code> 和 <code>g&lt;Down&gt;</code>
+进行移动，逻辑行使用 <code>j</code> 和 <code>k</code>
+或者方向键即可。</p>
+<p>至于为什么使用的是 <code>nnoremap</code> 而不是简单的
+<code>map</code>，这得涉及到 VIM
+的一些语法，一两句话说不清。<code>nnoremap</code> 是
+<code>normal not recursivelly map</code>
+的缩写，表示普通模式下对按键进行非递归映射。</p>
+<h2 id="长段落">长段落</h2>
+<p>第一个问题，物理行和逻辑行解决了，但是没有彻底解决：它只是解决了如何在物理行和逻辑行直接移动，没有解决逻辑行和物理行的问题。</p>
+<p>物理行指的是一个段落，为方便叙述统一使用“段落”替代，请看下面的物理行：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513160025.png" srcset="/img/loading.gif" lazyload
+alt="长长的物理行" /></p>
+<p>在段落里移动只能使用 <code>h</code> 和 <code>l</code>，因为 VIM
+最引以为豪的文本对象（text-object）对东亚文字不起作用。英语或者说拉丁字母的词是通过空格来区分的，但是中文、韩文、日文、喃字、字生（中日韩越壮字符）是没有空格的。</p>
+<p>VIM 可以使用 <code>w</code> 进行字词的移动，或者 <code>f</code>
+快速跳转，那是借助了拉丁文字的空格判断。中文没有空格，这些文本操作只能识别标点符号。所以上面那些长长的段落，在
+VIM 中只能非常笨拙地一个字符一个字符移动。</p>
+<p>至于解决办法，没有，VIM 到现在都没有解决这个问题。</p>
+<p>不过使用 Markdown 就有点好处了。Markdown
+有一条规则：回车符不是分段的标志，空行才是段落的标志。举个例子：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs markdown">不过使用 Markdown 就有点好处了。Markdown 有一条规则：回车符不是分段的标志，空<br>行才是段落的标志。举个例子：<br></code></pre></div></td></tr></table></figure>
+<p>看起来是两行，毕竟有一个回车嘛，在“空”之后。但 Markdown
+中，这被当作一行看待， Markdown
+会把这两行合成一个段落，然后在两行之间添加一个空格，对于拉丁文字来说很方便。渲染后成为：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs markdown">不过使用 Markdown 就有点好处了。Markdown 有一条规则：回车符不是分段的标志，空 行才是段落的标志。举个例子：<br></code></pre></div></td></tr></table></figure>
+<p>那 Markdown 如何插入一个真正的段落？使用一个空行就行：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs markdown">不过使用 Markdown 就有点好处了。Markdown 有一条规则：回车符不是分段的标志，空<br><br>行才是段落的标志。举个例子：<br></code></pre></div></td></tr></table></figure>
+<p>正是 Markdown 的特性，我们不用让 VIM
+的段落太长，可以在自己想要断开的地方断开，反正渲染之后都会被当作一行对待。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513162005.png" srcset="/img/loading.gif" lazyload
+alt="直接在一定字数后断开，不必一行内全写整个段落" /></p>
+<p>那应该在哪里断开？写代码一般都会有个不成文的规定：一行代码的字符数不多于
+78 个。所以我们可以限定自己的一段只有 78
+个字符。写文章的时候不可能去数自己一行到底写了多少字符，可以用 VIM
+的功能辅助：<code>colorcolumn</code>。</p>
+<p><code>colorcolumn</code>
+可以高亮特定的列。如果我们希望自己的字符数不超过 78 这个列，可以在
+<code>~/.vimrc</code> 配置文件中添加
+<code>set colorcolumn=79</code>。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513162605.gif" srcset="/img/loading.gif" lazyload
+alt="高亮第 79 列，字数超过这列就断行" /></p>
+<p>这样，只要写到这一列就可以换行了。上面的配色有点难看，但只是为了演示。</p>
+<p>上面说了，Markdown
+会把回车断开的行拼成一个段落，然后在它们之间添加一个空格。问题就出在这里了：添加一个空格。对拉丁文字来说好处多多，毕竟这样就不用在分段的地方添加空格，但是对中文来说就多了一个不必要的空格。例如在
+<code>回</code> 之后分段，下一个字符是 <code>家</code>，合并成一行后成为
+<code>回 家</code>。</p>
+<p>这个解决办法还算简单：使用 Pandoc 的功能。Pandoc 扩展里有一个
+<code>east_asian_line_breaks</code>
+功能，可以自动判断如果是东亚字符就不添加空格。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513163705.png" srcset="/img/loading.gif" lazyload
+alt="东亚文字断行" /></p>
+<p>想要使用这个功能需要如此：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">pandoc -f markdown+east_asian_line_breaks -t docx paper.md<br></code></pre></div></td></tr></table></figure>
+<p>或者在 YAML 配置中输入：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">from:</span> <span class="hljs-string">markdown+east_asian_line_breaks</span><br><span class="hljs-comment"># 或者</span><br><span class="hljs-attr">reader:</span> <span class="hljs-string">markdown+east_asian_line_breaks</span><br></code></pre></div></td></tr></table></figure>
+<p>下面是使用这个扩展和不使用的效果展示：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513164646.png" srcset="/img/loading.gif" lazyload
+alt="原始文件，一个段落分两行" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513165034.png" srcset="/img/loading.gif" lazyload
+alt="不使用 east_asian_line_breaks 扩展，可以看到“一”和“点”之间有空格" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513164919.png" srcset="/img/loading.gif" lazyload
+alt="使用 east_asian_line_breaks 扩展，“一”和“点”之间的空格没有了" /></p>
+<p>至此，好像解决了逻辑行和物理行的问题了</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513165311.png" srcset="/img/loading.gif" lazyload
+alt="看看这篇文章的效果" /></p>
+<h2 id="空格">空格</h2>
+<p>写作的时候经常会碰到中英文混合输入。一般而言，如果碰到这种情况，应该在中英文之间保留一个空格
+— 中文、英文和阿拉伯数字之间应该有空格。</p>
+<p>不过一般是看不到这些控制符号的。有些时候写的太快忘了在中英文之间放空格，回头检查就很麻烦。可以给空格、制表符等这类控制符一个标识，这样检查时就能一眼看出。比如下图使用一个点号（·）代替空格（可视化），检查的时候可以一眼看出空格在哪里：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513154337.png" srcset="/img/loading.gif" lazyload
+alt="空格使用一个点号替代" /></p>
+<p>上图中出现了一个中文句号后接英文（<code>nnoremap</code>），它们之间是没有空格的，那里出现空白只是因为中文句号是全角符号，占用两格。如果不让空格可视化，我们可能以为是一个英文标点加一个空格
+— 没错，我改论文的时候被这东西害惨了。</p>
+<p>可视化的方式是在 <code>~/.virmc</code> 配置文件添加：</p>
+<figure class="highlight vim"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vim"><span class="hljs-keyword">set</span> listchars=space:·<br></code></pre></div></td></tr></table></figure>
+<p>同理还可以设置其他的控制符，例如 <code>Tabular</code> 这类，可以在
+VIM 中输入 <code>:help listchars</code> 回车查看。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513155301.png" srcset="/img/loading.gif" lazyload
+alt="listchars 可以设置的部分" /></p>
+<h2 id="平滑滚动">平滑滚动</h2>
+<p>还是物理行和逻辑行的衍生问题：因为 VIM
+只认物理行，所以滚动的时候会出现这种问题：如果一行很长，例如
+JavaScript、JSON 文件，那滚动非常难受。</p>
+<p>比如下面的演示：长段落滚动直接整段消失，重新绘制，太变态了。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513165912.gif" srcset="/img/loading.gif" lazyload
+alt="不设置平滑滚动" /></p>
+<p>同样是上面的例子，这次看下图。这种时候，长段落不会整段消失，而是尽量铺满屏幕，用
+<code>&lt;&lt;&lt;</code> 表示和上面的文字是一个段落。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513170335.png" srcset="/img/loading.gif" lazyload
+alt="平滑滚动" /></p>
+<p>这就是“平滑滚动”，在 <code>~/.vimrc</code> 中添加
+<code>set smoothscroll</code> 即可。</p>
+<h2 id="使用-vim-的过滤功能filter">使用 VIM 的过滤功能（Filter）</h2>
+<p>过滤功能（Filter）其实翻译不是很准确，本质上就是文本和外部命令的交互。VIM
+中可以通过 <code>!</code> 与调用外部命令。举个例子，在命令行模式输入
+<code>:!ls</code> 就可以列出当前文件所在目录下的所有文件了：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513194753.gif" srcset="/img/loading.gif" lazyload
+alt="使用过滤功能列出当前文件所在目录的所有文件" /></p>
+<p>然后 VIM
+还可以把文件的文本传出去，调用外部命令处理。例如我要在下面随机生成 10 个
+100 以内的整数，然后再从大到小排序。可以写下 Python 代码，再传给外部
+Python 处理：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513195712.gif" srcset="/img/loading.gif" lazyload
+alt="生成随机数" /></p>
+<p>这个示例调用了 Python 和 Linux 的 <code>sort</code>
+命令。选择范围我做了两次演示：第一次是使用行数范围，从第 257 到第259
+行；第二次是使用可视（块）模式，直接选定区域。</p>
+<p>不过对于很多人来说，这可能没什么用，毕竟写代码的人才会意淫这种用法，是吧？其实不然，举个例子，我现在要画一个图，只需要在
+Markdown 内写下这个图的流程，然后调用外部命令处理即可：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513200609.gif" srcset="/img/loading.gif" lazyload
+alt="演示画图" /></p>
+<p>上面使用的命令是
+<code>&#123;range&#125;w !&#123;command&#125;</code>：想看自己写的画图代码如何，只需要传出代码，不需要读入，所以使用
+<code>w !&#123;comamnd&#125;</code>（write），如果只是读入则使用
+<code>r !&#123;command&#125;</code>（read），传出又读入使用
+<code>!&#123;command&#125;</code>。</p>
+<p>觉得画得不错，可以在当前目录直接生成图片
+<code>test.png</code>，然后引用：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513201038.gif" srcset="/img/loading.gif" lazyload
+alt="生成并引用图片" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/test.png" srcset="/img/loading.gif" lazyload
+alt="生成的图片" /></p>
+<p>何如？这其实有点像 VS Code 的 <code>Code Runner</code>
+（好像是这个名字，忘了），但是更灵活。</p>
+<p>没办法，字数有点多了，下次再写。</p>
+<h1 id="后语">后语</h1>
+<p>其实之前我想写写自己写的 Zotero 引用插件，但是那时候使用 vimscript
+比较年轻，有点迷信 Lambda 表达式，导致自己的代码充斥着大量的 Lambda
+表达式，后面自己都看不懂。</p>
+<p>下面可以看看我之前写的
+Lambda，都要走火入魔了。因为自己也看不懂代码，所以就一直没写。主要是那时候以我的知识知道，调用函数其实会拖慢速度，觉得
+Lambda 可能快一点，其实也不然。最近用 vim9script
+对自己的插件进行了重构（高大上的词），可能会真的写一篇文章讲讲 VIM
+的插件怎么写。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230513202246.png" srcset="/img/loading.gif" lazyload
+alt="上古时代还年轻，大量使用 Lambda 表达式" /></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/VIM/">VIM</a>
+                    
+                      <a class="hover-with-bg" href="/categories/VIM/Markdown/">Markdown</a>
+                    
+                      <a class="hover-with-bg" href="/categories/VIM/Markdown/Pandoc/">Pandoc</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Markdown/">Markdown</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Pandoc/">Pandoc</a>
+                    
+                      <a class="hover-with-bg" href="/tags/VIM/">VIM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/04/30/installation-of-rosettafold/">
+                        <span class="hidden-mobile">安装 RoseTTAFold</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
