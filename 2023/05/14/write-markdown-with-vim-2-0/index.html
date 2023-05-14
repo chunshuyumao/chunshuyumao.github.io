@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="只是对《用 VIM 写 Markdown》的补充">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 VIM 写 Markdown 2.0">
+<meta property="og:url" content="https://chunshuyumao.github.io/2023/05/14/write-markdown-with-vim-2-0/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="只是对《用 VIM 写 Markdown》的补充">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-05-14T07:02:53.000Z">
+<meta property="article:modified_time" content="2023-05-14T08:26:49.449Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="Markdown">
+<meta property="article:tag" content="Pandoc">
+<meta property="article:tag" content="VIM">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>用 VIM 写 Markdown 2.0 - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="用 VIM 写 Markdown 2.0">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-05-14 15:02" pubdate>
+        2023年5月14日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      6 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">用 VIM 写 Markdown 2.0</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言">前言</h1>
+<p>昨天<a
+href="https://chunshuyumao.github.io/2023/05/13/write-markdown-with-vim/">《用
+VIM 写
+Markdown》</a>写的急，字数一多就停了下来，后面再看发现少了些东西。今天特地补充一下。</p>
+<h1 id="vim-中的中文输入法">VIM 中的中文输入法</h1>
+<p>自己使用的是 Linux 系统，所以只说 Linux 上的输入法。Linux
+上常用的输入法有 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/IBus"
+title="IBus">Ibus（Intelligent Input Bus）</a>和 <a
+target="_blank" rel="noopener" href="https://fcitx-im.org/wiki" title="Fcitx">Fcitx/Fcitx5（Free
+Chinese Input Toy of X）</a>。</p>
+<p>Ibus 和 Fcitx5 没有太大的区别，无非是顺不顺手罢了。我用的桌面协议是
+<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Wayland"
+title="Wayland">Wayland</a>，据说 Fcitx5 对 Wayland
+的支持比较好、不是很卡顿，因此我一直使用的是 Fcitx5。解决在 VIM
+中的中文输入法也是以 Fcitx5 为例子。</p>
+<p>VIM
+有多种模式，模式的切换使用的都是英文键盘。当自己正在疯狂打字输出的时候突然切换模式（按
+<code>Esc</code> 键），VIM 收到命令会退回正常模式（Normal
+Mode）。这时候进行其他操作，例如进入命令行模式处理文本或者移动光标，此时键盘仍是中文键盘，VIM
+识别不了命令，想要让 VIM 正确识别命令需要手动切换键盘。</p>
+<p>我们可以让 VIM 在退出插入模式（Insert Mode）或者在进入 VIM
+时自动切换到英文键盘，减少手动的次数。</p>
+<p>Fcitx5 提供了一个命令 <code>fcitx5-remote</code> 对 Fcitx5
+进行控制，在终端上输入 <code>fcitx5-remote -h</code> 查看帮助。</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ fcitx5-remote -h<br>Usage: fcitx5-remote [OPTION]<br>        -c              inactivate input method<br>        -o              activate input method<br>        -r              reload fcitx config<br>        -t,-T           switch Active/Inactive<br>        -e              Ask fcitx to <span class="hljs-built_in">exit</span><br>        -a              <span class="hljs-built_in">print</span> fcitx<span class="hljs-string">&#x27;s dbus address</span><br><span class="hljs-string">        -m &lt;imname&gt;     print corresponding addon name for im</span><br><span class="hljs-string">        -g &lt;group&gt;      set current input method group</span><br><span class="hljs-string">        -q              Get current input method group name</span><br><span class="hljs-string">        -n              Get current input method name</span><br><span class="hljs-string">        -s &lt;imname&gt;     switch to the input method uniquely identified by &lt;imname&gt;</span><br><span class="hljs-string">        [no option]     display fcitx state, 0 for close, 1 for inactive, 2 for active</span><br><span class="hljs-string">        -h              display this help and exit</span><br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230514152706.png" srcset="/img/loading.gif" lazyload
+alt="fcitx5-remote 命令的帮助" /></p>
+<p>如果输出不是这个，那就说明自己使用的不是 Fcitx5，找其他方法吧。</p>
+<p>接下来在 VIM 的配置文件 <code>~/.vimrc</code>
+里边添加下面的配置。这里表示离开插入模式（
+InsertLeave）、创建/进入/离开缓冲区（Buf/Create/Enter/Leave）的时候，注销输入法。</p>
+<figure class="highlight vim"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vim"><span class="hljs-keyword">if</span> <span class="hljs-built_in">executable</span>(<span class="hljs-string">&quot;fcitx5-remote&quot;</span>)<br>  <span class="hljs-keyword">autocmd</span> InsertLeave,BufCreate,BufEnter,BufLeave *<br>  \ :silent! !fcitx5-remote -<span class="hljs-keyword">c</span> <br><span class="hljs-keyword">endif</span><br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230514154105.png" srcset="/img/loading.gif" lazyload
+alt="在 VIM 配置文件中设置 fcitx5-remote" /></p>
+<p>如上配置不会自动切换输入法如：使用中文输入法，退出运行命令时自动进入英文，进入插入模式时再自动进入中文输入法。这样太麻烦了，我觉得只要满足退出自动切换英文输入法即可。</p>
+<h1 id="markdown-换行问题">Markdown 换行问题</h1>
+<p>上一篇文章说到，可以使用回车符把长行分成多段，然后用 Pandoc 的
+<code>east_asian_line_breaks</code> 处理
+Markdown。不知道有没有人发现，我昨天的公众号文章有些中文莫名其妙出现空格？那是我使用的公众号
+Markdown 格式渲染工具不支持类似 Pandoc 自动识别东亚文字的功能。</p>
+<p>Markdown 会把回车符分开的段落合并成一行，并在它们之间添加空格 —
+所有的 Markdown 语言都支持这个操作，只是 Pandoc
+还支持自动识别东亚文字，然后去掉空格。我使用的公众号渲染工具没有 Pandoc
+的类似功能，识别不了东亚文字，于是它自动给合并的段落添加了空格，文章看起来就怪怪的。</p>
+<p>这就引申出了另一个问题：如果我写
+Markdown，为了不让段落太长进行了分段，是不是只能使用 Pandoc
+进行渲染，用其他的工具仍然有东亚文字出现空格的现象？</p>
+<p>这个问题解决办法很简单，还是通过 Pandoc 来处理：只需要设置 Markdown
+的导出格式为 Markdown 即可。这是很容易忽略的点：很多人只知道 Pandoc
+可以从格式一转换到格式二，但是忘了也可以从格式一转换到格式一。</p>
+<p>看下面的两个字，使用回车符分开，正常 Markdown 的渲染和 Pandoc
+的渲染为 Markdown 如下：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs markdown">中<br>文<br><span class="hljs-section"># 正常渲染如下：</span><br>中 文<br><span class="hljs-section"># Pandoc 使用 -f markdown+east<span class="hljs-emphasis">_asian_</span>line<span class="hljs-emphasis">_breaks 渲染如下</span></span><br><span class="hljs-emphasis"><span class="hljs-section">中文</span></span><br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230514160059.png" srcset="/img/loading.gif" lazyload
+alt="渲染" /></p>
+<p>因此，当我准备通过专门的公众号工具渲染我的 Markdown
+文章时，我只需要用 Pandoc 将我写的断行 Markdown
+转换成非断行即可，比如这篇文章可以这样：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ pandoc \<br>  -f markdown+east_asian_line_breaks \<br>  -t markdown \<br>  write-markdown-with-vim-2-0.md \<br>  -o write-markdown-with-vim-2-0-with_east_asian_line_breaks.md<br></code></pre></div></td></tr></table></figure>
+<p><code>write-markdown-with-vim-2-0-with_east_asian_line_breaks.md</code>
+版本的中文就都合成一段，并且没有空格，可以拿去渲染发到公众号。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230514161932.png" srcset="/img/loading.gif" lazyload
+alt="断行的 Markdown 文件" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230513/20230514162134.png" srcset="/img/loading.gif" lazyload
+alt="转换成非断行 Markdown 文件" /></p>
+<h1 id="后语">后语</h1>
+<p>这篇文章只是个小补充 —
+主要是公众号不能大修改，不然直接修改上一篇文章算了，毕竟也没多少字。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/VIM/">VIM</a>
+                    
+                      <a class="hover-with-bg" href="/categories/VIM/Markdown/">Markdown</a>
+                    
+                      <a class="hover-with-bg" href="/categories/VIM/Markdown/Pandoc/">Pandoc</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Markdown/">Markdown</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Pandoc/">Pandoc</a>
+                    
+                      <a class="hover-with-bg" href="/tags/VIM/">VIM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/13/write-markdown-with-vim/">
+                        <span class="hidden-mobile">用 VIM 写 Markdown</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
