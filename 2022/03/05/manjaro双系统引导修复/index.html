@@ -24,7 +24,7 @@
 <meta property="og:description" content="人生苦短，何必折腾？">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-05T08:40:30.000Z">
-<meta property="article:modified_time" content="2023-04-13T14:06:06.867Z">
+<meta property="article:modified_time" content="2023-05-22T08:47:52.000Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="引导修复">
 <meta name="twitter:card" content="summary_large_image">
@@ -239,13 +239,13 @@
             
             <div class="markdown-body">
               <h1 id="前言">前言</h1>
-<p>人在江湖飘，哪有不挨刀。我装双系统之前，电脑只安装了 Manjaro
-，后来以防万一装了 windows 。因为引导 Windows11 一直失败，所以我先安装了
-Windows10 。后来把所有的问题都搞定之后，我就给我的 Windows10 升级。升到
-Windows11 本来是好事，结果启动 Manjaro 的时候，直接进入了 grub rescue
-模式。</p>
+<p>人在江湖飘，哪有不挨刀。我装双系统之前，电脑只安装了
+Manjaro，后来以防万一装了 Windows。因为引导 Windows11
+一直失败，所以我先安装了 Windows10。后来把所有的问题都搞定之后，我就给
+Windows10 升级。升到 Windows11 本来是好事，结果启动 Manjaro
+的时候，直接进入了 grub rescue 模式。</p>
 <p>在此之前，我完全不相信双系统会出现这种问题。毕竟我给我的硬盘分好了区，两个系统井水不犯河水。当时觉得别人出现问题是因为他们没有正确处理这些问题。当我的
-linux 系统的 grub 被 Windows 弄坏的时候，我知道我也中招了。</p>
+Linux 系统的 grub 被 Windows 弄坏的时候，我知道我也中招了。</p>
 <p>这种问题按理来说不是难事，可是当我跑到网上去查的时候，发现能查出来的都是不知所云的。果然百度不能信。求天求地不如求己，因此又有了这篇引导修复的文章。</p>
 <hr />
 <h1 id="引导修复">引导修复</h1>
@@ -254,66 +254,69 @@ rescue
 界面，所以如果你可以进入正常的引导界面，只是启动后黑屏的话，多半是驱动问题，这篇文章自然就不用看了。</p>
 <p>引导修复有两种办法：</p>
 <ol type="1">
-<li>Live CD修复</li>
+<li>Live CD 修复</li>
 <li>手动修复</li>
 </ol>
-<p>第一种方法对于 Windows 玩机大家来说很简单了，就是各类的 PE机
-做的事。不过我还是说说。</p>
-<h2 id="live-cd修复">Live CD修复</h2>
+<p>第一种方法对于 Windows 玩机大家来说很简单了，就是各类的 PE
+机做的事。不过我还是说说。</p>
+<h2 id="live-cd-修复">Live CD 修复</h2>
 <p>这种方式要求你有一个 Manjaro
-启动盘或者和你系统一样的启动盘。为什么使用 Manjaro Live CD ？因为
-Manjaro 本身支持 LiveCD 。启动盘不难制作，按我之前说，直接用 Ventoy
-<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span
+启动盘或者和你系统一样的启动盘。为什么使用 Manjaro Live CD？因为 Manjaro
+本身支持 LiveCD。启动盘不难制作，按我之前说，直接用
+Ventoy<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span
 class="hint--top hint--rounded" aria-label="https://ventoy.net/
-">[1]</span></a></sup>制作即可。</p>
+">[1]</span></a></sup> 制作即可。</p>
 <p>启动电脑进入 BIOS 或者 UEFI 界面，选择U盘启动，就像安装 Manjaro
 一样直到进入图形界面。</p>
 <p>进入图形界面之后，打开控制台，输入</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo fdisk -l<br></code></pre></div></td></tr></table></figure>
 <p>查看你的硬盘分区，通常你是可以知道自己的硬盘分区的。例如分区如下，我的
 Manjaro 安装在 Windows 之后，所以倒数一二块分区应该就是我的 Manjaro 的
-EFI 和 根(root) 分区:</p>
+EFI 和根（root）分区:</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">Disk /dev/nvme0n1: 476.94 GiB, 512110190592 bytes, 1000215216 sectors<br>Disk model: INTEL SSDPEKNW512G8                     <br>Units: sectors of 1 * 512 = 512 bytes<br>Sector size (logical/physical): 512 bytes / 512 bytes<br>I/O size (minimum/optimal): 512 bytes / 512 bytes<br>Disklabel type: gpt<br>Disk identifier: 2CBB82D2-DA15-824E-A9B0-AF96C6143278<br><br>Device             Start        End   Sectors   Size Type<br>/dev/nvme0n1p1      2048     616447    614400   300M EFI System<br>/dev/nvme0n1p2    616448     649215     32768    16M Microsoft reserved<br>/dev/nvme0n1p3    649216  159879167 159229952  75.9G Microsoft basic data<br>/dev/nvme0n1p4 159879168  161349631   1470464   718M Windows recovery environmen<br>/dev/nvme0n1p5 161351680  161966079    614400   300M EFI System<br>/dev/nvme0n1p6 161966080 1000215182 838249103 399.7G Linux filesystem<br></code></pre></div></td></tr></table></figure>
 <p>接下来是挂载我的 Manjaro 两个分区，同时转换到挂载的目录：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo mount /dev/nvme0n1p6 /mnt<br>sudo mount /dev/nvme0n1p5 /mnt/boot/efi<br>manjaro-chroot /mnt<br></code></pre></div></td></tr></table></figure>
 <p>转换之后，命令提示符应该从原本的 Manjaro
 格式变成其他格式，我的变成了这样</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sh-5.1#<br></code></pre></div></td></tr></table></figure>
-<p>这时候，我们需要更新我们的 grub ，然后再次安装它：</p>
+<p>这时候，我们需要更新我们的 grub，然后再次安装它：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">update-grub<br>grub-install /dev/nvme0n1p5<br></code></pre></div></td></tr></table></figure>
-<p>当然，你要是不放心，还可以再次生成 grub ：</p>
+<p>当然，你要是不放心，还可以再次生成 grub：</p>
 <figure class="highlight awk"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs awk">grub-mkconfig -o <span class="hljs-regexp">/boot/g</span>rub/grub.cfg<br></code></pre></div></td></tr></table></figure>
 <p>然后退出，卸载，然后重启</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">exit<br>sudo umount -R /mnt<br>reboot<br></code></pre></div></td></tr></table></figure>
 <p>正常情况下，你的系统应该可以启动了。</p>
 <h2 id="手动修复">手动修复</h2>
-<p>这种情况是你手中没有 Live CD ，或者没有合适的 Live CD
-。这种就很难受了。</p>
+<p>这种情况是你手中没有 Live CD，或者没有合适的 Live
+CD。这种就很难受了。</p>
 <p>首先你会看到这个提示</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">eorror: unkown filesystem<br>Entering rescue mode...<br>grub rescue &gt; <br></code></pre></div></td></tr></table></figure>
 <p>如果没有这个提示，很好，你的问题我不能解决，你可以另往它处了。</p>
-<p>第一步，我们先看一下自己的 Manjaro
-系统在哪里，使用<code>ls</code>。</p>
+<p>第一步，我们先看一下自己的 Manjaro 系统在哪里，使用
+<code>ls</code>。</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">ls<br></code></pre></div></td></tr></table></figure>
 <p>我的提示如下</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">(hd0) (hd1) (hd1,gpt4) (hd1,gpt3) (hd1,gpt2) (hd1,gpt1) (hd2,gpt6) (hd2,gpt5) (hd2,gpt4) (hd2,gpt3) (hd2,gpt2) (hd2,gpt1) <br></code></pre></div></td></tr></table></figure>
 <p>你的分区可能不会这么多，所以不用担心。</p>
-<p>接下来就是烦人的操作了，使用<code>ls</code>一个个查看这些分区，例如</p>
+<p>接下来就是烦人的操作了，使用 <code>ls</code>
+一个个查看这些分区，例如</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">ls (hd0)/<br>ls (hd1,gpt4)/<br>...<br></code></pre></div></td></tr></table></figure>
-<p>注意，hd1和gpt4之间除了逗号，什么也没有，括号之后还需要加上<code>/</code>，除此之外不要添加别的东西。</p>
+<p>注意，hd1 和 gpt4 之间除了逗号，什么也没有，括号之后还需要加上
+<code>/</code>，除此之外不要添加别的东西。</p>
 <p>一个一个地试，你可以会得到这类消息</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">error: unkown filesystem<br></code></pre></div></td></tr></table></figure>
 <p>恭喜你，你成功排除了一个选项，请继续排除。</p>
 <p>等到你找到类似下面这个</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">ls (hd2,gpt6)<br>./ ../ lost+found/ boot/ dev/ home/ opt/ proc/ run/ sys/<br></code></pre></div></td></tr></table></figure>
-<p>的提示的时候，这说明你找对了，只要看到<code>boot/</code>就说明已经正确了。记住你的卷标，我的是<code>(hd2,gpt6)</code></p>
+<p>的提示的时候，这说明你找对了，只要看到 <code>boot/</code>
+就说明已经正确了。记住你的卷标，我的是 <code>(hd2,gpt6)</code>。</p>
 <p>接下來输入</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">set root=(hd2,gpt6)<br>set prefix=(hd2,gpt6)/boot/grub<br>insmod normal<br>normal<br></code></pre></div></td></tr></table></figure>
 <p>至此，你的引导系统算是正确了。它会自己重启。</p>
-<p>不急，等你进入系统之后打开控制台(终端),输入</p>
+<p>不急，等你进入系统之后打开控制台（终端）,输入</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">fdisk -l<br></code></pre></div></td></tr></table></figure>
-<p>查找你的 Manjaro 的 EFI
-在哪里，我的是<code>/dev/nvme0n1p5</code>，我知道，上面我就试过了。然后输入</p>
+<p>查找你的 Manjaro 的 EFI 在哪里，我的是
+<code>/dev/nvme0n1p5</code>，我知道，上面我就试过了。然后输入</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">sudo update-grub<br>sudo grub-install /dev/nvme0n1p5<br></code></pre></div></td></tr></table></figure>
 <p>重启一下，你的系统又变好！！</p>
 <hr />

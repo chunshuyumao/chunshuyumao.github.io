@@ -18,19 +18,19 @@
   
     <meta name="description" content="Shell 脚本下载 B站 视频">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Shell脚本下载B站视频">
+<meta property="og:title" content="Shell 脚本下载B站视频">
 <meta property="og:url" content="https://chunshuyumao.github.io/2022/06/08/Shell%E8%84%9A%E6%9C%AC%E4%B8%8B%E8%BD%BDB%E7%AB%99%E8%A7%86%E9%A2%91/">
 <meta property="og:site_name" content="椿树与猫">
 <meta property="og:description" content="Shell 脚本下载 B站 视频">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-06-08T13:55:27.000Z">
-<meta property="article:modified_time" content="2023-04-13T14:06:06.850Z">
+<meta property="article:modified_time" content="2023-05-22T12:03:51.000Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="脚本">
 <meta name="twitter:card" content="summary_large_image">
   
   
-  <title>Shell脚本下载B站视频 - 椿树与猫</title>
+  <title>Shell 脚本下载B站视频 - 椿树与猫</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -176,7 +176,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Shell脚本下载B站视频">
+            <span class="h2" id="subtitle" title="Shell 脚本下载B站视频">
               
             </span>
 
@@ -235,13 +235,13 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Shell脚本下载B站视频</h1>
+            <h1 style="display: none">Shell 脚本下载B站视频</h1>
             
             <div class="markdown-body">
               <h1 id="前言">前言</h1>
 <p>前一阵子想在 B站
-下载点东西，可没有登陆各种网站的习惯。网上存在一些在线解析 B站
-视频的网站提供下载，不过我当时需要的是批量下载——可能是有洁癖吧，什么东西都觉得本地保留一份才是最安全的。这样一来，线上解析的网站就难找了。再说了，有些网站为了维持运营，不得不添加一些广告，这就很烦人了——好吧，白嫖没理由抱怨。</p>
+下载点东西，可没有登陆各种网站的习惯。网上存在一些在线解析 B
+站视频的网站提供下载，不过我当时需要的是批量下载——可能是有洁癖吧，什么东西都觉得本地保留一份才是最安全的。这样一来，线上解析的网站就难找了。再说了，有些网站为了维持运营，不得不添加一些广告，这就很烦人了——好吧，白嫖没理由抱怨。</p>
 <p>后来不得不使用了 <a
 target="_blank" rel="noopener" href="https://github.com/soimort/you-get">You-get</a>
 这个堪称下载神器的东西。You-get
@@ -253,20 +253,19 @@ Shell 也可以实现，何必多此一举？</p>
 <p>有了想法开始动手实现自己的 B站 视频下载脚本。这里要说说，You-get
 的功能太强大，一般我用不上，所以自己的脚本自然看起来简单多了，但是和
 You-get
-比还是功能太少。自己写的脚本不支持列表下载，不过可以配合自己之前写的多线程实现下载——适合自己的就是最好的。</p>
+比还是功能太少。自己写的脚本不支持列表下载，不过可以配合自己之前写的多线程实现下载---适合自己的就是最好的。</p>
 <h1 id="准备">准备</h1>
 <p>使用 Shell 脚本自然不可能是 Windows 系统，所以 Windows
 系统的同志可以散了。想要自己写写的可以随便上网搜搜 Python
 语言的，运气好可能搜到一篇真的在教你怎么用 Python
-下载的。一般而言，使用国内的搜索引擎会非常痛苦——你不会找到自己想要的东西，你只会找到别人开钱给你看的东西。下面是基本工具：</p>
+下载的。一般而言，使用国内的搜索引擎会非常痛苦---你不会找到自己想要的东西，你只会找到别人开钱给你看的东西。下面是基本工具：</p>
 <ol type="1">
 <li>Unix/Linux 系统，也就是除了 Windows 外的系统。</li>
 <li><a target="_blank" rel="noopener" href="https://ffmpeg.org/">FFmpeg</a>
 一个跨平台的音视频框架。其实就一句话，合并音视频用的。</li>
 <li>Shell，形形色色的 Shell 都行，为了最大的兼容性，一般是 Bash。</li>
 <li>JQ，一个 Shell 上处理 <a target="_blank" rel="noopener" href="https://www.json.org">JSON</a>
-数据的工具。通常 Unix/Linux
-系统不会自带，是用包管理器直接可以下载。</li>
+数据的工具。通常 Unix/Linux 系统不会自带，用包管理器直接可以下载。</li>
 </ol>
 <p>除此之外还使用到 SED、<a target="_blank" rel="noopener" href="https://curl.se">cURL</a> 等工具，一般
 Unix/Linux 系统都自带了，所以不单独列出。</p>
@@ -284,9 +283,8 @@ Unix/Linux 系统都自带了，所以不单独列出。</p>
 ，总觉得无论如何还是写一个主函数逻辑上才清楚，不喜欢一上来就是各种奇葩语句和乱入的函数堆叠。</p>
 <p><code>set -euo pipefail</code> 设置脚本的一些功能，其中
 <code>-e</code> 表示遇到报错直接退出（EXIT），<code>-u</code>
-表示使用没有声明的变量（undecleared
-variable）就直接退出，<code>-o pipefail</code>
-表示使用管道符失败就报错退出。</p>
+表示使用没有声明的变量（undecleared variable）就直接退出，
+<code>-o pipefail</code> 表示使用管道符失败就报错退出。</p>
 <p>设置上面的功能源于我的一些理念：只要没有得到正确执行就是错误，错误没有必要存在，没必要存在就没必要执行，程序直接算失败。这是一种习惯，有些人就喜欢和警告（warning、info）、错误（error）共存，咱也没办法。</p>
 <p>为了进行检验，下面会以
 <code>https://www.bilibili.com/video/BV1Sg41137WR</code>
@@ -312,7 +310,7 @@ title="解压文件" alt="解压文件" /></p>
 <code>BV1Sg41137WR</code> 文件，通过判断可以得知是 gZIP 文件。在 FreeBSD
 中可以直接使用 <code>gzip -d</code>
 解压，因为通过内容可以轻松辨认出来；但是 Linux
-系统通过文件扩展名辨认文件， <code>BV1Sg41137WR</code> 没有文件名，在
+系统通过文件扩展名辨认文件，<code>BV1Sg41137WR</code> 没有文件名，在
 Linux 上使用 <code>gzip -d</code>
 它就分辨不出来这个文件是啥，自然就拒绝解压。</p>
 <p><img
@@ -329,8 +327,8 @@ Linux Shell 又有这种操作</p>
 <p><code>gzip -d</code> 中的 <code>-d</code> 是
 <code>--decompress</code> 的缩写，也就是解压咯。</p>
 <p>接下来可以使用文本编辑器查看下载的 HTML
-源码，其实最好的方式是通过浏览器直接查看源码。因为已经搞清楚了 B站
-尿性，所以我这里就不解释如何通过分析源码了解我们想要的内容。直接告诉大家：我们需要的部分在源码中的
+源码，其实最好的方式是通过浏览器直接查看源码。因为已经搞清楚了 B
+站尿性，所以我这里就不解释如何通过分析源码了解我们想要的内容。直接告诉大家：我们需要的部分在源码中的
 <code>window.__playinfo__</code>
 部分，可以通过浏览器查看源码然后查找得到。</p>
 <p><img
@@ -340,8 +338,8 @@ title="目标" alt="目标" /></p>
 后面的内容提取出来，然后通过 jq 格式化显示出来。</p>
 <h2 id="获取目标内容">获取目标内容</h2>
 <p>已经有了 HTML
-源码，现在就是从源码中提取我们需要的部分。上面已经说过，<code>__playinfo__=</code>
-后面就是我们的目标内容。在命令行上输入</p>
+源码，现在就是从源码中提取我们需要的部分。上面已经说过，
+<code>__playinfo__=</code> 后面就是我们的目标内容。在命令行上输入</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> BV1Sg41137WR | sed -nr <span class="hljs-string">&#x27;s/.*__playinfo__=(.*)&lt;\/script&gt;&lt;script&gt;.*/\1/gp&#x27;</span><br></code></pre></div></td></tr></table></figure>
 <p><img
 src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/09/202206091254062.png" srcset="/img/loading.gif" lazyload
@@ -367,15 +365,15 @@ title="获取需要的部分" alt="获取需要的部分" /></p>
 src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/09/202206091305686.png" srcset="/img/loading.gif" lazyload
 title="格式化之后" alt="格式化之后" /></p>
 <p>现在我们需要的是视频的链接。B站
-由于各种原因——谁都有自己的原因——为了防止别人下载自己的视频，把视频和音频分开存储，这样如果你使用具有嗅探功能的下载器也只能下载到没有音频的视频而已——没办法。</p>
+由于各种原因——谁都有自己的原因——为了防止别人下载自己的视频，把视频和音频分开存储，这样如果你使用具有嗅探功能的下载器也只能下载到没有音频的视频而已---没办法。</p>
 <p>分析我们抓取到内容可以看出，数据中存在视频（video）和音频（audio）两个部分，我们需要做的就是抓取音、视频，然后通过
 FFmpeg 合并。</p>
 <p>通过格式化后的 JSON 数据可以看到，视频在 <code>data</code> 标签下的
-<code>dash</code> 下的 <code>video</code> 下的 <code>baseUrl</code>
-。我们可以通过 JQ 回去，格式是：</p>
+<code>dash</code> 下的 <code>video</code> 下的
+<code>baseUrl</code>。我们可以通过 JQ 回去，格式是：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ jq <span class="hljs-string">&#x27;.data.dash.video[0].baseUrl&#x27;</span> JSON<br></code></pre></div></td></tr></table></figure>
 <p><code>video</code> 加 <code>[0]</code>
-是因为视频有多种清晰度，我们只需要获取第一个清晰度就行——在编程中，第一个往往从
+是因为视频有多种清晰度，我们只需要获取第一个清晰度就行---在编程中，第一个往往从
 0 开始数。同理，音频如此获取：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ jq <span class="hljs-string">&#x27;.data.dash.audio[0].baseUrl&#x27;</span> JSON<br></code></pre></div></td></tr></table></figure>
 <p>JQ 可以一次性获取多个值，所以我们可以简单写成：</p>
@@ -400,12 +398,12 @@ title="获取音、视频链接" alt="获取音、视频链接" /></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">curl --referer <span class="hljs-string">&quot;<span class="hljs-variable">$url</span>&quot;</span> --user-agent <span class="hljs-string">&quot;va[0]&quot;</span> --output <span class="hljs-string">&quot;视频.mp4&quot;</span><br>curl --referer <span class="hljs-string">&quot;<span class="hljs-variable">$url</span>&quot;</span> --user-agent <span class="hljs-string">&quot;va[1]&quot;</span> --output <span class="hljs-string">&quot;音频.mp4&quot;</span><br></code></pre></div></td></tr></table></figure>
 <p>所以脚本现在是：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">  <span class="hljs-built_in">local</span> va=($(<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$raw_html</span>&quot;</span> | sed -nr <span class="hljs-variable">$reg_data</span> | jq <span class="hljs-string">&quot;<span class="hljs-variable">$reg_video_audio</span>&quot;</span> | sed -nr <span class="hljs-string">&#x27;s/\&quot;(.*)\&quot;/\1/gp&#x27;</span>))<br>  <span class="hljs-built_in">local</span> tempfile=$(mktmpfile) || <span class="hljs-built_in">exit</span> 1<br>  curl --referer <span class="hljs-string">&quot;<span class="hljs-variable">$url</span>&quot;</span> --user-agent <span class="hljs-string">&quot;va[0]&quot;</span> --output <span class="hljs-string">&quot;<span class="hljs-variable">$tmpfile</span>-video.mp4&quot;</span><br>  curl --referer <span class="hljs-string">&quot;<span class="hljs-variable">$url</span>&quot;</span> --user-agent <span class="hljs-string">&quot;va[1]&quot;</span> --output <span class="hljs-string">&quot;<span class="hljs-variable">$tmpfile</span>-audio.mp4&quot;</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
-<p>其中 我们创建（mktmpfile）了一个临时文件（temporary file,
+<p>其中我们创建（mktmpfile）了一个临时文件（temporary file,
 tmpfile），并确保只有创建成功才执行下面的语句，否则退出（exit 1）。</p>
 <p>然后我们把音、视频的文件名改为临时文件的文件名加 <code>video</code>
 和 <code>audio</code>
 等字样，这是防止文件名重复，导致多线程下载失败。</p>
-<p>接下来就是合并我们的音、视频。不过我们还没有获取视频的标题——这里我直接给出获取视频标题的正则表达式：</p>
+<p>接下来就是合并我们的音、视频。不过我们还没有获取视频的标题---这里我直接给出获取视频标题的正则表达式：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">declare</span> -r reg_title=<span class="hljs-string">&#x27;s/.*&lt;h1 title=.*&gt;(.*)&lt;\/h1&gt;.*/\1/gp&#x27;</span><br><br><span class="hljs-comment"># 获取标题</span><br>title=<span class="hljs-string">&quot;<span class="hljs-subst">$(echo <span class="hljs-string">&quot;<span class="hljs-variable">$raw_html</span>&quot;</span> | sed -nr <span class="hljs-string">&quot;<span class="hljs-variable">$reg_title</span>&quot;</span>)</span>&quot;</span><br></code></pre></div></td></tr></table></figure>
 <p>最后使用 FFmpeg 进行合并：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">ffmpeg -i <span class="hljs-string">&quot;<span class="hljs-variable">$tmpfile</span>-video.mp4&quot;</span> -i <span class="hljs-string">&quot;<span class="hljs-variable">$tmpfile</span>-audio.mp4&quot;</span> -c copy <span class="hljs-string">&quot;<span class="hljs-variable">$title</span>.mp4&quot;</span> -y -loglevel quiet<br></code></pre></div></td></tr></table></figure>
@@ -416,7 +414,7 @@ tmpfile），并确保只有创建成功才执行下面的语句，否则退出�
 <li><code>-c</code> 是 <code>codec</code>
 的缩写，编码的方式——这里直接使用复制。</li>
 <li><code>-y</code> 是 <code>yes</code>
-的缩写，其实就是直接覆盖文件，它会覆盖之前合并的文件，懒人专用。</li>
+的缩写，直接覆盖文件，它会覆盖之前合并的文件，懒人专用。</li>
 <li><code>-loglevel</code> 是日志打印的等级，这里是 <code>quiet</code>
 ，也就是不打印任何日志。</li>
 </ol>
@@ -445,10 +443,10 @@ tmpfile），并确保只有创建成功才执行下面的语句，否则退出�
 <p>Python 解析 JSON 非常慢，原本我写了一个进度条，结果发现解析 JSON
 就很慢了，进度条基本等于没用，所以这里就没有加上。</p>
 <p>即使是 Python 也需要使用 FFmpeg。如果使用的是 Windows 系统，需要设置
-FFmpeg 的环境变量——或者把 <code>ffmpeg</code> 改为
+FFmpeg 的环境变量---或者把 <code>ffmpeg</code> 改为
 <code>ffmpeg 的路径</code> 也行。例如，我使用 Windows 系统，并且下载的
-FFmpeg 在 <code>C:\User\chunshuyumao\Downloads\ffmpeg.exe</code>，
-Python 脚本倒数第六行从</p>
+FFmpeg 在 <code>C:\User\chunshuyumao\Downloads\ffmpeg.exe</code>，Python
+脚本倒数第六行从</p>
 <figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">os.system(<span class="hljs-string">f&#x27;ffmpeg -i......&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
 <p>改为</p>
 <figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">os.system(<span class="hljs-string">f&#x27;C:\\User\\chunshuyumao\\Downloads\\ffmpeg.exe -i.....&#x27;</span>)<br></code></pre></div></td></tr></table></figure>

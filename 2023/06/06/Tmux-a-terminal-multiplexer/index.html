@@ -1,0 +1,644 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head><!-- hexo injector head_begin start --><script src="/chage_cdn.js"></script><!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/csym.png">
+  <link rel="icon" href="/img/csym.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="椿树与猫">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言 前一阵子因为某种不可抗力因素，我封笔了一会。今天重新写写博客，记录自己使用 Linux 过程中碰到的有用的工具。这可能是后面写博客的主要方向。 本次要写的是 Tmux，一个 Linux 终端复用器。接下来会写 FFMPEG 和 ImageMagick，两个音视频和图片处理工具。至于何时，那就听天由命了。 Tmux Tmux（Terminal Multiplexer）是一个 Linux 终端复">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tmux: 终端复用器">
+<meta property="og:url" content="https://chunshuyumao.github.io/2023/06/06/Tmux-a-terminal-multiplexer/">
+<meta property="og:site_name" content="椿树与猫">
+<meta property="og:description" content="前言 前一阵子因为某种不可抗力因素，我封笔了一会。今天重新写写博客，记录自己使用 Linux 过程中碰到的有用的工具。这可能是后面写博客的主要方向。 本次要写的是 Tmux，一个 Linux 终端复用器。接下来会写 FFMPEG 和 ImageMagick，两个音视频和图片处理工具。至于何时，那就听天由命了。 Tmux Tmux（Terminal Multiplexer）是一个 Linux 终端复">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-06T06:34:24.000Z">
+<meta property="article:modified_time" content="2023-06-06T14:44:58.365Z">
+<meta property="article:author" content="椿树与猫">
+<meta property="article:tag" content="Tmux">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Tmux: 终端复用器 - 椿树与猫</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/shades-of-purple.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chunshuyumao.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>椿树与猫</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/chunshuyumao/202203bf@master/2021-07-24.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Tmux: 终端复用器">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-06-06 14:34" pubdate>
+        2023年6月6日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Tmux: 终端复用器</h1>
+            
+            <div class="markdown-body">
+              <h1 id="前言">前言</h1>
+<p>前一阵子因为某种不可抗力因素，我封笔了一会。今天重新写写博客，记录自己使用
+Linux 过程中碰到的有用的工具。这可能是后面写博客的主要方向。</p>
+<p>本次要写的是 <a target="_blank" rel="noopener" href="https://github.com/tmux/tmux"
+title="Tmux">Tmux</a>，一个 Linux 终端复用器。接下来会写 <a
+target="_blank" rel="noopener" href="https://ffmpeg.org" title="FFMPEG">FFMPEG</a> 和 <a
+target="_blank" rel="noopener" href="https://imagemagick.org"
+title="ImageMagick">ImageMagick</a>，两个音视频和图片处理工具。至于何时，那就听天由命了。</p>
+<h1 id="tmux">Tmux</h1>
+<p>Tmux（Terminal Multiplexer）是一个 Linux 终端复用器。根据官网的介绍，
+<a target="_blank" rel="noopener" href="https://github.com/tmux/tmux/wiki"
+title="Tmux 定义">“它可以让使用者在一个终端内轻松切换多个程序，分离终端（后台运行），和重新连接（已经分离的）终端”</a>。</p>
+<p>听不懂没关系，简单来说就是以下几个特点：</p>
+<ol type="1">
+<li>终端分屏</li>
+<li>终端分身</li>
+<li>后台运行</li>
+</ol>
+<p>终端分屏，现在很多比较高级的 Linux 终端都配备，比如 <a
+target="_blank" rel="noopener" href="https://github.com/gnome-terminator/terminator"
+title="Terminator">Terminator</a>
+。不过这些都算是外力，对于没有桌面或者没有管理员权限的 Linux
+系统来说，想要安装 Terminator 是不可能的。Tmux
+可以作为一个可执行软件直接放到用户目录下就能完成它的使命。</p>
+<p>终端分身，这是我生造的词。其实就是 Tmux
+官网上说的，可以在一个终端内运行、切换多个程序。在某程度上和“分屏”是一个意思，但是“分屏”暗含一个窗口的意思，“分身”则表明不仅可以有一个窗口。</p>
+<p>后台运行，就是“不挂起”（no hang
+up）。有些时候使用命令行下载或者执行某个命令需要的时间比较长，我们就会选择把命令放到后台运行但不挂起，俗称”后台运行“。</p>
+<h2 id="安装">安装</h2>
+<p>根据自己使用的 Linux 的版本管理器进行安装：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-comment"># Arch Linux 系列</span><br>$ pacman -S tmux<br><span class="hljs-comment"># CentOS/REHL 系列</span><br>$ dnf install tmux <span class="hljs-comment"># 或者 yum install tmux</span><br><span class="hljs-comment"># Debien/Ubuntu 系列</span><br>$ apt install tmux<br></code></pre></div></td></tr></table></figure>
+<p>安装完毕输入
+<code>tmux --version</code>，查看是否安装成功。如果出现下面的提示，说明安装成功。</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ tmux --version<br>usage: tmux [-2CDlNuvV] [-c shell-command] [-f file] [-L socket-name]<br>            [-S socket-path] [-T features] [<span class="hljs-built_in">command</span> [flags]]<br></code></pre></div></td></tr></table></figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230606/20230606150852.png" srcset="/img/loading.gif" lazyload
+alt="检查是否安装成功 Tmux" /></p>
+<p>如果是其他输出，那就得自己解决了，因为我没有遇到过问题，提供不了解决的方法。</p>
+<h2 id="基础用法">基础用法</h2>
+<p>打开一个终端，然后键入 <code>tmux</code> 并回车就可以进入 Tmux
+了。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230606/20230606151352.png" srcset="/img/loading.gif" lazyload
+alt="成功进入 Tmux 可以看到终端底部多了一段状态栏" /></p>
+<p>进入 Tmux
+后可以看到终端底部多了一段状态栏，除此之外，它和你的普通终端没有任何区别。</p>
+<p>首先介绍一下 Tmux 的快捷键。Tmux
+所有的快捷键都有一个“引导键”（prefix），默认是
+<code>ctrl + b</code>，但可以更改。由于每个人可能使用不同的引导键，出于习惯我会使用
+<code>&lt;prefix&gt;</code> 代替引导键。后面见到
+<code>&lt;prefix&gt;</code> 默认是 <code>ctrl + b</code>
+或者自己的引导键。</p>
+<p>举个例子，如果我表示键入 <code>&lt;prefix&gt;a</code>，则表示按下
+<code>ctrl + b + a</code>。依次按下即可，不需要以迅雷不及掩耳之势快速同时毫无延时地按下
+--- 没有哪个程序那么变态。</p>
+<h3 id="配置文件">配置文件</h3>
+<p>Tmux 是可配置的，配置文件一般在下面两个地方：</p>
+<ul>
+<li><code>~/.tmux.conf</code></li>
+<li><code>~/.config/tmux/tmux.conf</code></li>
+</ul>
+<p>我不是很喜欢很多隐藏文件，即以 <code>.</code>
+开头的文件，放到用户目录，所以一般放到第二个文件。上面的文件目录如果不存在可以直接创建，无伤大雅。</p>
+<p>比如我使用的引导键是
+<code>alt + 1</code>，我只需要在配置文件中写入：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-comment"># tmux.conf</span><br><br>set-option -g prefix <span class="hljs-string">&#x27;m-1&#x27;</span><br></code></pre></div></td></tr></table></figure>
+<p>其他的配置可以通过 <code>man tmux</code> 查看。</p>
+<h3 id="分屏">分屏</h3>
+<ul>
+<li>左右分屏：<code>&lt;prefix&gt;%</code></li>
+<li>上下分屏：<code>&lt;prefix&gt;"</code></li>
+</ul>
+<p><code>&lt;prefix&gt;%</code>，是按
+<code>ctrl + b + shift + 5</code>，因为 <code>%</code>
+在主键盘（不是数字键盘） <code>5</code> 的位置。同理
+<code>&lt;prefix&gt;"</code> 是
+<code>ctrl + b + shift + '</code>，单引号。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230606/20230606153425.gif" srcset="/img/loading.gif" lazyload
+alt="分屏演示" /></p>
+<h3 id="创建窗口">创建窗口</h3>
+<ul>
+<li>创建窗口：<code>&lt;prefix&gt;c</code></li>
+</ul>
+<p>下图是 Tmux 的结构，启动 Tmux
+会自动创建一个会话（session），会话里可以创建多个窗口（window），每个窗口又可以通过分屏（split）创建多个窗格（pane）。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230606/20230606195628.png" srcset="/img/loading.gif" lazyload
+alt="Tmux 结构" /></p>
+<p>创建窗口的快捷键是 <code>&lt;prefix&gt;c</code>，<code>c</code> 是
+create 的缩写。</p>
+<p>创建窗口后可以通过 <code>&lt;prefix&gt;w</code>
+查看所有窗口，<code>w</code> 是 window 的缩写，同时借助方向键和回车键
+<code>Enter</code> 选择窗口。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/20230606/20230606200352.gif" srcset="/img/loading.gif" lazyload
+alt="Tmux 窗口的使用切换" /></p>
+<h3 id="脱离会话">脱离会话</h3>
+<ul>
+<li>脱离会话：<code>&lt;prefix&gt;d</code></li>
+</ul>
+<p><code>d</code> 是 detach
+的缩写。在控制台运行的程序在控制台退出（exit）后都会自动销毁，所以 Linux
+终端后台运行一般使用 <code>nohup &lt;command&gt; &amp;</code>。</p>
+<p>使用了 Tmux 就不用这么麻烦，可以通过快捷键脱离（detach）会话，Tmux
+会在 <code>/tmp</code> 目录保留一个通信文件，位于
+<code>/tmp/tmux-xxxx</code> 目录下，<code>xxxx</code>
+代表数字。除非电脑除非电脑重启或者关机，否则这个会话会一直驻留后台。</p>
+<p>脱离会话之后，在 Tmux
+中运行的程序不会自动终止，而是继续运行，所以起到和后台运行一样的效果。</p>
+<p>那如何结束会话？注意，是结束会话，不是脱离会话。结束会话可以直接在终端输入
+<code>exit</code> 即可。</p>
+<h3 id="重新连接会话">重新连接会话</h3>
+<ul>
+<li>重连会话：<code>tmux attach -t &lt;id&gt;</code></li>
+</ul>
+<p>上面的命令是在终端输入的，<code>&lt;id&gt;</code> 是会话的数字。Tmux
+可以创建多个会话，所以需要使用 <code>-t</code>
+指定连接的会话。比如我的电脑一般都只会启用一个会话，所以重连的时候只需要使用
+<code>tmux attach -t 0</code> 即可。</p>
+<h3 id="查看-tmux-快捷键">查看 Tmux 快捷键</h3>
+<p>进入 Tmux 后可以使用 <code>&lt;prefix&gt;?</code> 查看 Tmux
+的快捷键。</p>
+<h2 id="tmux-的用处">Tmux 的用处</h2>
+<h3 id="保持服务器连接避免任务中断">保持服务器连接，避免任务中断</h3>
+<p>上面简单介绍了 Tmux 的操作，但没说它的作用。Tmux
+的一个用处是：服务器连接。一般在服务器操作都需要使用 <a
+target="_blank" rel="noopener" href="https://www.ssh.com/academy/ssh" title="SSH">SSH</a>
+登陆服务器。</p>
+<p>SSH
+默认一段时间不操作就会断开，这是为了服务器的安全着想。有些管理人员为了避免登陆服务器的人频繁重连，会把
+SSH 闲置（IDL）时间设置长一点。</p>
+<p>不过这是治标不治本，如果下载的东西花的时间很久，SSH
+还是会断开，然后得重新登陆，重新下载，周而复始。一个办法是使用
+<code>nohup</code>
+后台运行下载程序。不过后台运行是没有输出信息的，所以使用
+<code>nohup</code>
+又要查看输出信息的话，一般需要各种输出重定向，非常麻烦。</p>
+<p>使用
+Tmux，就算真的长时间不操作，服务器自动断开了连接，也不需要担心自己的命令终止，因为这相当于自动脱离了
+Tmux 会话。只要后面登陆服务器，就可以再次连接 Tmux
+会话，而且所有的输出信息都会保留作为记录。</p>
+<h3 id="复用-ssh-会话减少连接数">复用 SSH 会话，减少连接数</h3>
+<p>Linux 会限制同一地址的 SSH 连接数，默认是 10
+个连接。也就是说如果使用普通的终端直接连接 Linux 服务器，最多只能开 10
+个标签（Tab）。</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ grep -i maxsessions /etc/ssh/sshd_config<br><span class="hljs-comment">#MaxSessions 10</span><br></code></pre></div></td></tr></table></figure>
+<p>然而如果使用 Tmux，理论上 Tmux
+可以创建任意多的会话和窗口，但它只会占用一个连接数，而且还不需要重新输入密码。</p>
+<p>打开另一个终端标签重新连接服务器，需要重新输入密码。如果使用
+Tmux，它会复用当前的连接，所以不需要输入密码。</p>
+<p>上面的所有前提是：服务器上安装了 Tmux。</p>
+<p>如果自己在服务器上没有安装软件的权限怎么办？可以下载一个 Tmux
+可执行程序，然后放到 <code>~/.local/bin</code> 目录下。</p>
+<p>把软件放到这个目录下和安装到根目录没有太大区别。而且 Tmux 本身就有 <a
+target="_blank" rel="noopener" href="https://github.com/nelsonenzo/tmux-appimage"
+title="Tmux AppImage">AppImage</a> 打包，可以更简便得使用。</p>
+<p>把 Tmux AppImage 可执行文件放到 <code>~/.local/bin</code>
+目录后，需要给予 Tmux 可执行权限，即：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ <span class="hljs-built_in">mkdir</span> -vp ~/.local/bin<br>$ <span class="hljs-built_in">cp</span> tmux.appimage ~/.local/bin<br>$ <span class="hljs-built_in">cd</span> ~/.local/bin<br>$ <span class="hljs-built_in">pwd</span><br>/home/chunshuyumap/.local/bin<br>$ <span class="hljs-built_in">ln</span> -sf tmux.appiamge tmux<br></code></pre></div></td></tr></table></figure>
+<p>然后在自己的 Shell 配置文件添加
+<code>export PATH=$HOME/.local/bin:$&#123;PATH&#125;</code>
+环境变量就可以像安装在系统目录一样使用 Tmux 了。</p>
+<p>比如自己用的是 ZSh，所以配置这样写：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-built_in">typeset</span> -U path PATH<br>path=(<span class="hljs-variable">$HOME</span>/.local/bin <span class="hljs-variable">$path</span>)<br><br><span class="hljs-built_in">typeset</span> -U fpath FPATH<br>fpath=(<span class="hljs-variable">$HOME</span>/.config/zsh/functions <span class="hljs-variable">$fpath</span>)<br><br><span class="hljs-built_in">export</span> PATH FPATH<br></code></pre></div></td></tr></table></figure>
+<p>如果是 Bash，可以在 <code>~/.bash_profile</code> 或者
+<code>~/.bashrc</code> 中添加
+<code>export PATH=$HOME/.local/bin:$&#123;PATH&#125;</code>。</p>
+<h2 id="配置-tmux">配置 Tmux</h2>
+<p>上面说了 Tmux 的用法，接下来说说 Tmux
+的配置。配置主要是一些快捷键，适合自己的就行。所有的配置都放到
+<code>~/.tmux.conf</code> 或者
+<code>~/.config/tmux/tmux.conf</code>，二选一。</p>
+<h3 id="引导键prefix">引导键（prefix）</h3>
+<p>Tmux 的引导键是 <code>ctrl + b</code>。一般终端使用的是 <a
+target="_blank" rel="noopener" href="https://www.gnu.org/software/emacs" title="Emacs">Emacs</a>
+键位，所以 <code>ctrl + b</code>
+是向后移动一个字母。如此就产生键位冲突。因此我建议修改引导键，修改为不常用的键。</p>
+<p>我的引导键是
+<code>alt + 1</code>，主要是不常用。在配置文件中写下如下配置：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-comment"># tmux.conf</span><br><br>set-option -g prefix <span class="hljs-string">&#x27;m-1&#x27;</span><br></code></pre></div></td></tr></table></figure>
+<p><code>alt</code> 键一般也叫做 <code>meta</code> 键，所以缩写是
+<code>m</code>。</p>
+<h3 id="其他配置">其他配置</h3>
+<p>以下是我的配置。</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-comment"># 设置 Tmux 的启动 Shell 为默认 Shell</span><br>set-option -g default-command <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;SHELL&#125;</span>&quot;</span><br><span class="hljs-comment"># 这是 Tmux 支持 256 色</span><br>set-option -g default-terminal <span class="hljs-string">&quot;tmux-256color&quot;</span><br><span class="hljs-comment"># 放着就行，不用管</span><br>set-option -g terminal-overrides <span class="hljs-string">&quot;,xterm*:Tc&quot;</span><br><br><span class="hljs-comment"># 关闭鼠标操作</span><br>set-option -g mouse off<br><span class="hljs-comment"># 选择 VIM 键位，而不是 Emacs 键位，可选</span><br><span class="hljs-comment">#set-option -g mode-keys vi</span><br><span class="hljs-comment"># 这里配置状态栏的键位是 Emacs 键位</span><br>set-option -g status-keys emacs<br><span class="hljs-comment"># 设置历史命令限制</span><br>set-option -g history-limit 10000<br><br><span class="hljs-comment"># &lt;prefix&gt;r 重新加载配置</span><br><span class="hljs-built_in">bind</span> r source-file ~/.config/tmux/tmux.conf <span class="hljs-string">&#x27;;&#x27;</span> \<br>           display-message <span class="hljs-string">&quot;Reloading config...&quot;</span><br><br><span class="hljs-comment"># 设置时间的颜色，时间使用 &lt;prefix&gt;t 查看</span><br>set-option -g clock-mode-colour cyan<br><span class="hljs-comment"># 设置窗格边框为单线</span><br>set-option -g pane-border-lines single<br><span class="hljs-comment"># 设置窗格边框指示为颜色和箭头两种格式</span><br>set-option -g pane-border-indicators both<br><span class="hljs-comment"># 设置窗格边框颜色</span><br>set-option -ag pane-active-border-style <span class="hljs-built_in">fg</span>=cyan<br><span class="hljs-comment">#set-option -g pane-border-style fg=black</span><br><br><span class="hljs-comment"># 使用 &lt;prefix&gt;h/j/k/l 选择左/上/下/右边窗格，</span><br><span class="hljs-comment"># 这里使用 VIM 键位</span><br><span class="hljs-built_in">bind</span> h select-pane -L<br><span class="hljs-built_in">bind</span> j select-pane -D<br><span class="hljs-built_in">bind</span> k select-pane -U<br><span class="hljs-built_in">bind</span> l select-pane -R<br><br><span class="hljs-comment"># 可以使用 &lt;prefix&gt;H/J/K/L（&lt;prefix&gt;&lt;Shift&gt;h/j/k/l）</span><br><span class="hljs-comment"># 向左/上/下/右扩大窗格</span><br><span class="hljs-built_in">bind</span> -r H resize-pane -L 5<br><span class="hljs-built_in">bind</span> -r J resize-pane -D 5<br><span class="hljs-built_in">bind</span> -r K resize-pane -U 5<br><span class="hljs-built_in">bind</span> -r L resize-pane -R 5<br><br><span class="hljs-comment"># 设置扩大窗格的时间间隔。也就是在 1 秒内，只要键入</span><br><span class="hljs-comment"># 一次 &lt;prefix&gt;H/J/K/L，然后就可以键入 H/J/K/L 就可</span><br><span class="hljs-comment"># 以不停键入 H/J/K/L 进行窗格扩展</span><br>set-option -g repeat-time 1000<br><span class="hljs-comment"># 自动根据窗格命令重命名窗格</span><br>set-option -g automatic-rename on<br><span class="hljs-comment"># 设置颜色</span><br>set-option -g status-style <span class="hljs-built_in">fg</span>=grey,<span class="hljs-built_in">bg</span>=black<br><br><span class="hljs-comment"># 设置创建新窗口和分割窗口的时候，窗口/窗格的目录在当前</span><br><span class="hljs-comment"># 目录，否则会是家目录 `$HOME`</span><br><span class="hljs-built_in">bind</span> c new-window -c <span class="hljs-string">&quot;#&#123;pane_current_path&#125;&quot;</span><br><span class="hljs-built_in">bind</span> % split-window -v -c <span class="hljs-string">&quot;#&#123;pane_current_path&#125;&quot;</span><br><span class="hljs-built_in">bind</span> <span class="hljs-string">&#x27;&quot;&#x27;</span> split-window -h -c <span class="hljs-string">&quot;#&#123;pane_current_path&#125;&quot;</span><br></code></pre></div></td></tr></table></figure>
+<p>我已经在上面写好了备注，所以就不再介绍每个命令的作用。不过最后的水平分割和垂直分割命令被我调换了。不是我记错，而是是经常使用的是水平分割，所以换成
+<code>&lt;prefix&gt;%</code>
+用作水平分割，这样左手直接可以完成分割命令。</p>
+<p>对于水平分割和垂直分割，有些人会使用 <code>-</code> 和 <code>|</code>
+代替，觉得这样比较直观，所以上面的配置也可以写成：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-built_in">bind</span> - split-window -v -c <span class="hljs-string">&quot;#&#123;pane_current_path&#125;&quot;</span><br><span class="hljs-built_in">bind</span> | split-window -h -c <span class="hljs-string">&quot;#&#123;pane_current_path&#125;&quot;</span><br></code></pre></div></td></tr></table></figure>
+<p>不过我现在都养成肌肉记忆了，无所谓。</p>
+<p>如果还想玩得花一点，可以使用 <code>man tmux</code> 查看其他配置。</p>
+<h1 id="后语">后语</h1>
+<p>之前觉得 Tmux
+太简单了，写个教程没必要，但是今天写了之后发现字数还是蛮多的。这篇博客的
+GIF 动图的标注都是使用 ImageMagick 添加的，其中转换成 GIF 使用的是
+FFMPEG，所以后面我会讲讲这两个命令行工具的使用。</p>
+<p>除此之外，我也会写一下 Graphviz
+画流程图的介绍，纯当记录。至于谁先谁后，目前还不知道。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Linux/">Linux</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Linux/Tmux/">Tmux</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Tmux/">Tmux</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/14/write-markdown-with-vim-2-0/">
+                        <span class="hidden-mobile">用 VIM 写 Markdown 2.0</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

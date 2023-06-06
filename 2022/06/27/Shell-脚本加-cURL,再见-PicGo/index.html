@@ -24,7 +24,7 @@
 <meta property="og:description" content="抛弃 PicGO，自己动手丰衣足食！">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-06-27T10:30:23.000Z">
-<meta property="article:modified_time" content="2023-04-13T14:06:06.847Z">
+<meta property="article:modified_time" content="2023-05-22T12:21:39.000Z">
 <meta property="article:author" content="椿树与猫">
 <meta property="article:tag" content="Shell">
 <meta name="twitter:card" content="summary_large_image">
@@ -240,7 +240,7 @@
             <div class="markdown-body">
               <h1 id="前言">前言</h1>
 <p>谈谈最近的小事。</p>
-<h2 id="sway-平铺窗口管理">Sway-平铺窗口管理</h2>
+<h2 id="sway-平铺窗口管理">Sway 平铺窗口管理</h2>
 <p>GNOME 桌面 的极简主义让我很满意。为了让 GNOME
 更符合自己的审美，我添加了七八个插件。正因此，最近多次重启电脑，因为这货居然会卡住没反应！考虑到GNOME
 一直以内存泄漏出名，我打算试试平铺窗口管理（Tiling Window
@@ -249,15 +249,14 @@ Manager）。</p>
 <p>Linux 上平铺窗口管理最著名的就是 <a target="_blank" rel="noopener" href="https://i3wm.org/"
 title="i3wm">i3wm</a>，我选择 <a target="_blank" rel="noopener" href="https://swaywm.org/"
 title="Sway">Sway</a>，适用于 <a target="_blank" rel="noopener" href="https://wayland.freedesktop.org/"
-title="Wayland">Wayland</a> 的 i3。<a target="_blank" rel="noopener" href="https://manjaro.org/"
+title="Wayland">Wayland</a> 的 i3。 <a target="_blank" rel="noopener" href="https://manjaro.org/"
 title="Manjaro Linux">Manjaro Linux</a> 社区有在维护 Sway
 版，可惜我最开始的时候并没有选择 Sway。</p>
 <p><img
 src="http://cdn.jsdelivr.net/gh/chunshuyumao/202203@master/2022/06/27/202206271741491.png" srcset="/img/loading.gif" lazyload
-title="官网截的图，因为我的 Sway 已经被我卸了。"
 alt="官网截的图，因为我的 Sway 已经被我卸了。" /></p>
 <p>平铺有利于桌面空间的利用，全快捷键操作也可以让人脱离键盘，看起来极富极客（Geek）风格，也就是装～。其实
-Windows 系统也有平铺的功能，以前都是快捷键，Windows11
+Windows 系统也有平铺的功能，以前都是快捷键， Windows11
 之后直接在最大化按钮加上平铺。</p>
 <p>安装 Sway 主要借助的是 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/"
 title="Arch Linux Wiki">Arch Linux
@@ -284,12 +283,12 @@ title="GitHub Copilot" alt="GitHub Copilot" /></p>
 <h2 id="picgo">PicGo</h2>
 <p><a target="_blank" rel="noopener" href="https://www.picgo.net/" title="PicGO">PicGo</a>
 才是今天的主角，准确说是即将退场的主角。PicGo
-是一款集成各类图床的上传工具，可以通过 图床API（Application Programming
+是一款集成各类图床的上传工具，可以通过图床 API（Application Programming
 Interface，应用编程接口）轻松实现图片的上传。具体就不介绍了。</p>
 <p>是这样的，Linux 系统 PicGo 的 AppImage 包高达
 100M。不得不说，对于有洁癖的人来说，是可忍孰不可忍？自己使用的图床主要包括
 <a target="_blank" rel="noopener" href="https://chevereto-free.github.io/"
-title="Chevereto">Chevereto</a>、<a target="_blank" rel="noopener" href="https://github.com/"
+title="Chevereto">Chevereto</a>、 <a target="_blank" rel="noopener" href="https://github.com/"
 title="GitHub">GitHub</a> 和 <a target="_blank" rel="noopener" href="https://sm.ms/"
 title="SM.MS">SM.MS</a>，主要是前两者，后者只是以前用的。自己用不上
 PicGo 的多功能，而且 PicGo
@@ -306,9 +305,9 @@ Windows 系统的生态确实太好了，没必要折腾。</p>
 <ol type="1">
 <li>Linux GNOME 桌面环境。指定 GNOME 系统是为了使用 GNOME
 的全局自定义快捷键。因为我需要减少依赖，不可能为了设置全局快捷键下载一个软件或者程序。</li>
-<li>Xclip，Linux X桌面协议系统（Xorg）的剪贴板程序。Linux 不是 X协议
-就是 Wayland协议。由于 Wayland协议 现在生态不咋地，为了兼容 Xorg 生出了
-XWayland 这个缝合怪（对的，就是两者的结合），因此直接使用Xclip
+<li>Xclip，Linux X桌面协议系统（Xorg）的剪贴板程序。Linux 不是 X
+协议就是 Wayland 协议。由于 Wayland 协议现在生态不咋地，为了兼容 Xorg
+生出了 XWayland 这个缝合怪（对的，就是两者的结合），因此直接使用 Xclip
 就行，没必要用 wl-clipboard，徒增兼容问题。这是 Linux 标配。</li>
 <li>Bash/Shell，最普遍的 Shell 环境，Linux 标配。</li>
 <li>SED，Stream Editor，流式编辑器，Linux 标配。</li>
@@ -529,7 +528,7 @@ title="添加快捷键" alt="添加快捷键" /></p>
                     
                     
                       <a href="/2022/06/08/Shell%E8%84%9A%E6%9C%AC%E4%B8%8B%E8%BD%BDB%E7%AB%99%E8%A7%86%E9%A2%91/">
-                        <span class="hidden-mobile">Shell脚本下载B站视频</span>
+                        <span class="hidden-mobile">Shell 脚本下载B站视频</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
